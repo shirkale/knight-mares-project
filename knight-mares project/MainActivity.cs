@@ -6,6 +6,7 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using Android.Graphics;
 using Android.Views;
+using System;
 
 namespace knight_mares_project
 {
@@ -45,6 +46,9 @@ namespace knight_mares_project
 
             // creating menu
 
+            // toast for save
+
+            Console.Write("hi");
 
         }
 
