@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/backgroundfireflydarker"
+    >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:id="@+id/flBoard"
+        android:layout_weight="5"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:text ="Time: "
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#BFA380"
+        android:layout_weight="1"
+        android:id="@+id/tvTime"/>
+        
+
+</LinearLayout>

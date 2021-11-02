@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/forest"
+    >
+
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="difficultydisplay"
+        android:id="@+id/tvDisplayDifficulty"
+        android:background="#8C6A03"
+        android:textColor="#213501"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:alpha="0.65"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+                />  
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Knight-mares"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="@android:color/white"
+        android:id="@+id/tvTitle" 
+        android:alpha="0.7"
+        />
+    
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="click here to play"
+            android:id="@+id/btnStart"
+            android:fontFamily="sans-serif-smallcaps"
+            android:backgroundTint="#171747"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            />
+
+    <ImageView
+        android:layout_width="281dp"
+        android:layout_height="222dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/jackolanternremoved2"
+        android:alpha="0.75"/>
+
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:id="@+id/tvWinMessage"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

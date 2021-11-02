@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:background="@drawable/ghostpattern2"
+    >
+
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=":select level of difficulty:"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#171747"
+        />
+
+    <SeekBar
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+        android:id="@+id/sbDifficulty"
+        android:thumbTint="#171747"
+        android:orientation="vertical"
+        android:progress="50"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="display difficulty"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:textColor="#171747"
+        android:fontFamily="sans-serif-smallcaps"
+        android:id="@+id/displayDifficulty"
+        android:textStyle="bold"
+        
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSubmit"
+        android:text="submit"
+        android:backgroundTint="#171747"
+        />
+
+</LinearLayout>
