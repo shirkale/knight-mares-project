@@ -53,6 +53,8 @@ namespace knight_mares_project
         {
             base.OnDraw(canvas);
             InitializeBoard(canvas);
+            InitializeKnight();
+            this.player.Draw(canvas);
             //GenerateRandomMap(canvas, this.difficulty);
         }
 
@@ -186,7 +188,6 @@ namespace knight_mares_project
             }
             else
                 this.player.Draw(canvas);
-            
         }
 
     }
