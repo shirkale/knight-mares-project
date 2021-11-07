@@ -30,25 +30,26 @@ namespace knight_mares_project
             this.bitmap = this.bitmap.Copy(Bitmap.Config.Argb8888, true); // turning the bitmap mutable
 
             this.isKnightResized = false;
+            this.curSquare.SetImageVisability(false);
         }
 
         public void Draw(Canvas canvas)
         {
-            int paddingRight = (int)(this.curSquare.GetW() * 0.2); // padding for the knight figure in the tiles
-            int paddingTop = (int)(this.curSquare.GetH() * 0.2);
+            int padding = (int)(this.curSquare.GetW() * 0.2); // padding for the knight figure in the tiles
 
-            int x = (int)this.curSquare.GetX() + paddingRight;
-            int y = (int)this.curSquare.GetY() + paddingTop;
+            int x = (int)this.curSquare.GetX() + padding;
+            int y = (int)this.curSquare.GetY() + padding;
 
             if(!isKnightResized)  // resizing the bitmap
             {
-                int w = (int)this.curSquare.GetW() - paddingRight;
-                int h = (int)this.curSquare.GetH() - paddingTop;
+                int w = (int)this.curSquare.GetW() - padding;
+                int h = (int)this.curSquare.GetH() - padding;
 
                 this.bitmap = Bitmap.CreateScaledBitmap(this.bitmap, w, h, true);
 
                 this.isKnightResized = true;
             }
+
 
             canvas.DrawBitmap(this.bitmap, x, y, null);
 
@@ -56,8 +57,10 @@ namespace knight_mares_project
 
         public void moveToSquare(Square s) // moves the knight to the square inputted
         {
+            this.curSquare.SetImageVisability(true);
             this.curSquare = s;
             this.curSquare.StepOn();
+            this.curSquare.SetImageVisability(false);
         }
 
         public Square GetCurrentSquare()

@@ -25,6 +25,10 @@ namespace knight_mares_project
         private bool isBitmapResized;
         private int i, j; // square id in matrix
 
+        private bool visibility; // if the knight is on the square, visibility will be false
+
+        Paint p;
+
         Context context;
         public Square(float x, float y, float w, float h, string bitmap, int i, int j, Context context)
         {
@@ -41,18 +45,28 @@ namespace knight_mares_project
             isBitmapResized = false;
 
             this.context = context;
+            visibility = true;
+
+            this.p = new Paint();
+            this.p.Color = Color.ParseColor("#014760");
         }
 
         public void Draw(Canvas canvas)
         {
-            if (!isBitmapResized)  // resizing the bitmap
+            if(visibility)
             {
-                Bitmap toDraw = Bitmap.CreateScaledBitmap(Helper.Base64ToBitmap(this.bitmap), (int)this.w, (int)this.h, true);
-                this.bitmap = Helper.BitmapToBase64(toDraw);
-                this.isBitmapResized = true;
+                if (!isBitmapResized)  // resizing the bitmap
+                {
+                    Bitmap toDraw = Bitmap.CreateScaledBitmap(Helper.Base64ToBitmap(this.bitmap), (int)this.w, (int)this.h, true);
+                    this.bitmap = Helper.BitmapToBase64(toDraw);
+                    this.isBitmapResized = true;
+                }
+                canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null);
             }
-            canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null);
-            //canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
+            else
+            {
+                canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
+            }
         }
 
         public bool IsXandYInSquare(float otherX, float otherY)
@@ -75,6 +89,11 @@ namespace knight_mares_project
                     return true;
             }
             return false;
+        }
+
+        internal void SetImageVisability(bool visibility)
+        {
+            this.visibility = visibility;
         }
 
         public float GetX()
