@@ -2,6 +2,7 @@
 using Android.Graphics;
 using Android.Views;
 using System;
+using System.Threading;
 
 namespace knight_mares_project
 {
@@ -53,8 +54,16 @@ namespace knight_mares_project
         {
             base.OnDraw(canvas);
             InitializeBoard(canvas);
-            InitializeKnight();
+            if(firstKnight)
+                InitializeKnight();
             this.player.Draw(canvas);
+            Thread.Sleep(300);
+
+            winEvent.Invoke(this, EventArgs.Empty);
+            checkWin = 0;
+            //this.player.moveToSquare(PickRandomStarter());
+            if(checkWin != 0)
+                Invalidate();
             //GenerateRandomMap(canvas, this.difficulty);
         }
 
@@ -87,6 +96,7 @@ namespace knight_mares_project
         {
             Square starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
+            this.firstKnight = false;
         }
 
         private Square PickRandomNextOpenPosition()
@@ -155,18 +165,26 @@ namespace knight_mares_project
             int y = 0;
             int w = canvas.Width / this.size;
             int h = canvas.Width / this.size;
+
             string snowtree = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.snowtreesmol)); // tree picture
             string cuteGhost = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmol)); // ghost picture
+            string cuteGhostPurp = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmolpurp)); // ghost picture purp
+            string cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmolblue)); // ghost picture
             string bitmap;
 
             for (int i = 0; i < this.size; i++)
             {
                 for (int j = 0; j < this.size; j++)
                 {
-                    if(j%2==0)
+                    if (j % 4 == 0)
                         bitmap = snowtree;
+                    else if (j % 4 == 1)
+                        bitmap = cuteGhostPurp;
+                    else if (j % 4 == 2)
+                        bitmap = cuteGhostBlue;
                     else
-                        bitmap = cuteGhost;
+                        bitmap = cuteGhost; // showing all bitmaps for screens
+
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
                         this.squares[i, j] = new Square(x, y, w, h, bitmap, i, j, this.context);

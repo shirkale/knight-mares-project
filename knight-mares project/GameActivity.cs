@@ -79,10 +79,11 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
+            string msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, time);
             won = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetTitle("You Win!!! Hooray!!!");
-            builder.SetMessage("You have accumulated " + difficulty + " points during the game\nGo back to main menu!");
+            builder.SetMessage(msg);
             builder.SetCancelable(false);
             builder.SetPositiveButton("take me there!", OkAction);
             AlertDialog dialog = builder.Create();

@@ -35,15 +35,15 @@ namespace knight_mares_project
 
         public void Draw(Canvas canvas)
         {
-            int padding = (int)(this.curSquare.GetW() * 0.2); // padding for the knight figure in the tiles
+            int padding = (int)(this.curSquare.GetW() * 0.01); // padding for the knight figure in the tiles
 
             int x = (int)this.curSquare.GetX() + padding;
             int y = (int)this.curSquare.GetY() + padding;
 
             if(!isKnightResized)  // resizing the bitmap
             {
-                int w = (int)this.curSquare.GetW() - padding;
-                int h = (int)this.curSquare.GetH() - padding;
+                int w = (int)this.curSquare.GetW() - 2 * padding;
+                int h = (int)this.curSquare.GetH() - 2 * padding;
 
                 this.bitmap = Bitmap.CreateScaledBitmap(this.bitmap, w, h, true);
 

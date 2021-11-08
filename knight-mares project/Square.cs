@@ -18,18 +18,17 @@ namespace knight_mares_project
     public class Square
     {
         private float x, y, w, h;
-        //private Paint p;
         private bool walkedOver;
 
         private string bitmap;
-        private bool isBitmapResized;
+        private bool isBitmapResized; // if false on draw, the bitmap will be resized
         private int i, j; // square id in matrix
 
         private bool visibility; // if the knight is on the square, visibility will be false
 
-        Paint p;
+        private Paint p; // paint is used when knight stands on square, hiding the image with visibility
 
-        Context context;
+        private Context context;
         public Square(float x, float y, float w, float h, string bitmap, int i, int j, Context context)
         {
             this.x = x;
@@ -53,14 +52,14 @@ namespace knight_mares_project
 
         public void Draw(Canvas canvas)
         {
-            if(visibility)
+            if (!isBitmapResized)  // resizing the bitmap
             {
-                if (!isBitmapResized)  // resizing the bitmap
-                {
-                    Bitmap toDraw = Bitmap.CreateScaledBitmap(Helper.Base64ToBitmap(this.bitmap), (int)this.w, (int)this.h, true);
-                    this.bitmap = Helper.BitmapToBase64(toDraw);
-                    this.isBitmapResized = true;
-                }
+                Bitmap toDraw = Bitmap.CreateScaledBitmap(Helper.Base64ToBitmap(this.bitmap), (int)this.w, (int)this.h, true);
+                this.bitmap = Helper.BitmapToBase64(toDraw);
+                this.isBitmapResized = true;
+            }
+            if (visibility)
+            {
                 canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null);
             }
             else
@@ -120,7 +119,8 @@ namespace knight_mares_project
         public void StepOn() // makes knight unable to step on square
         {
             this.walkedOver = true;
-            this.bitmap = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.snowtreesmol));
+            this.bitmap = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.little_red_flag));
+            this.isBitmapResized = false;
         }
 
         public void UnstepOn() // makes knight able to step on square
