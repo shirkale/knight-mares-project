@@ -44,11 +44,6 @@ namespace knight_mares_project
 
             spHighScore = this.GetSharedPreferences("details", FileCreationMode.Private);
 
-            // creating menu
-
-            // toast for save
-
-            Console.Write("hi");
 
         }
 
@@ -138,28 +133,30 @@ namespace knight_mares_project
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok)
             {
-                int curScore = data.GetIntExtra("score", 0);
-                string str = CheckHighScoreInLevel(requestCode, curScore);
+                int timecompleted = data.GetIntExtra("time", 0);
+                string str = CheckHighScoreInLevel(requestCode, timecompleted);
 
-                tvTitle.Visibility = Android.Views.ViewStates.Gone;
+                tvTitle.Visibility = ViewStates.Gone;
 
+                tvWinMessage.TextSize = 20;
+                tvWinMessage.Gravity = GravityFlags.Center;
                 tvWinMessage.Text = str;
-                tvWinMessage.Visibility = Android.Views.ViewStates.Visible;
+                tvWinMessage.Visibility = ViewStates.Visible;
                 btnStart.Text = "play again?";
             }
         }
 
-        private string CheckHighScoreInLevel(int requestCode, int score) // updates high score and returns string to display
+        private string CheckHighScoreInLevel(int requestCode, int time) // updates high score and returns string to display
         {
-            string str = "Level " + (requestCode + 1) + "\nYou made " + score + " moves.";
+            string str = "You completed the level in " + time + " seconds.";
 
             string level = "level" + requestCode;
 
-            if (score <= spHighScore.GetInt(level, score)) // checking high score in this level
+            if (time <= spHighScore.GetInt(level, time)) // checking high score in this level
             {
-                str += "\n\nYou currently have the lowest amount of moves for this level!\nCONGRATS!";
+                str += "\nYou currently have the fastest time for this level!\nCONGRATS!";
                 var editor = spHighScore.Edit();
-                editor.PutInt(level, score);
+                editor.PutInt(level, time);
                 editor.Commit();
             }
             return str;

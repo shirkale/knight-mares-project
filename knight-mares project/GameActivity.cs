@@ -24,6 +24,8 @@ namespace knight_mares_project
 
         int time;
         bool won;
+
+        ImageButton btnBack;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,7 +37,9 @@ namespace knight_mares_project
             // initializing widgets
 
             this.flGame = (FrameLayout)FindViewById(Resource.Id.flBoard);
-            //this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
+            this.btnBack = (ImageButton)FindViewById(Resource.Id.btnReturn);
+
+            this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
 
             // initializing board according to level selection
             int levelSelected = Intent.GetIntExtra("level", 8);
@@ -63,6 +67,13 @@ namespace knight_mares_project
             ThreadStart timerstart = new ThreadStart(TimerFunc);
             Thread timer = new Thread(timerstart);
             timer.Start();*/
+
+            btnBack.Click += BtnBack_Click;
+        }
+
+        private void BtnBack_Click(object sender, EventArgs e)
+        {
+            this.game.GoBack();
         }
 
         private void TimerFunc()
@@ -93,7 +104,7 @@ namespace knight_mares_project
         private void OkAction(object sender, DialogClickEventArgs e)
         {
             Intent i = new Intent();
-            i.PutExtra("score", difficulty);
+            i.PutExtra("time", this.time);
             SetResult(Result.Ok, i);
             Finish();
         }

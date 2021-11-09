@@ -2,6 +2,7 @@
 using Android.Graphics;
 using Android.Views;
 using System;
+using System.Collections;
 using System.Threading;
 
 namespace knight_mares_project
@@ -28,6 +29,8 @@ namespace knight_mares_project
         public EventHandler winEvent;
         public EventHandler updateEvent;
 
+        private Stack moves; // stack into which we insert squares the player goes on
+
         public Board(Context context, int size, int difficulty) : base(context)
         {
             this.context = context;
@@ -48,6 +51,16 @@ namespace knight_mares_project
 
             this.difficulty = difficulty;
 
+            this.moves = new Stack();
+
+        }
+
+        public void GoBack()
+        {
+            if(this.moves.Count != 0)
+            {
+                this.player.moveToSquare((Square)this.moves.Pop());
+            }
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -97,6 +110,7 @@ namespace knight_mares_project
             Square starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
             this.firstKnight = false;
+            this.moves.Push(starter);
         }
 
         private Square PickRandomNextOpenPosition()

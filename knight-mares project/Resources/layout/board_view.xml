@@ -14,17 +14,32 @@
         android:layout_weight="5"
         />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:text ="Time: "
-        android:gravity="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-smallcaps"
-        android:textColor="#BFA380"
         android:layout_weight="1"
-        android:id="@+id/tvTime"/>
-        
+        android:orientation="horizontal"
+        android:padding="20dp">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text ="Time: "
+            android:gravity="left"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="#BFA380"
+            android:id="@+id/tvTime"/>
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btnReturn"
+            android:background="@drawable/back_arrow"
+            />
+        
+    </LinearLayout>
 </LinearLayout>
