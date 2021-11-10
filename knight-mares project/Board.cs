@@ -80,6 +80,12 @@ namespace knight_mares_project
             //GenerateRandomMap(canvas, this.difficulty);
         }
 
+        public override bool OnTouchEvent(MotionEvent e)
+        {
+            // make the winevent invoke here
+            return true;
+        }
+
         private void GenerateRandomMap(Canvas canvas, int steps) // generates map by going backwards and unsteping squares
         {
             InitializeBoard(canvas);

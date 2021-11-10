@@ -59,13 +59,9 @@ namespace knight_mares_project
                 this.isBitmapResized = true;
             }
             if (visibility)
-            {
                 canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null);
-            }
             else
-            {
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
-            }
         }
 
         public bool IsXandYInSquare(float otherX, float otherY)
