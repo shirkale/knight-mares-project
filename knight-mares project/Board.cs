@@ -71,9 +71,9 @@ namespace knight_mares_project
                 InitializeKnight();
             this.player.Draw(canvas);
             Thread.Sleep(300);
-
-            winEvent.Invoke(this, EventArgs.Empty);
-            checkWin = 0;
+            Invalidate();
+            // winEvent.Invoke(this, EventArgs.Empty);
+            // checkWin = 0;
             //this.player.moveToSquare(PickRandomStarter());
             if(checkWin != 0)
                 Invalidate();

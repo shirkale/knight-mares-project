@@ -47,7 +47,8 @@ namespace knight_mares_project
             visibility = true;
 
             this.p = new Paint();
-            this.p.Color = Color.ParseColor("#014760");
+            this.p.Color = Color.ParseColor("#F07E1A");
+            this.p.Alpha = 10;
         }
 
         public void Draw(Canvas canvas)
