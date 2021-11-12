@@ -71,7 +71,6 @@ namespace knight_mares_project
                 InitializeKnight();
             this.player.Draw(canvas);
             Thread.Sleep(300);
-            Invalidate();
             // winEvent.Invoke(this, EventArgs.Empty);
             // checkWin = 0;
             //this.player.moveToSquare(PickRandomStarter());
@@ -82,7 +81,11 @@ namespace knight_mares_project
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            // make the winevent invoke here
+            if(e.Action == MotionEventActions.Down)
+            {
+                winEvent.Invoke(this, EventArgs.Empty);
+                checkWin = 0;
+            }
             return true;
         }
 
@@ -117,6 +120,7 @@ namespace knight_mares_project
             this.player = new Knight(starter, this.context);
             this.firstKnight = false;
             this.moves.Push(starter);
+            this.player.GetCurrentSquare().SetImageVisability(false);
         }
 
         private Square PickRandomNextOpenPosition()
