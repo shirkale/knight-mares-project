@@ -35,9 +35,6 @@ namespace knight_mares_project
 
         public void Draw(Canvas canvas)
         {
-            this.curSquare.SetImageVisability(false);
-            this.curSquare.Draw(canvas);
-
             int padding = (int)(this.curSquare.GetW() * 0.01); // padding for the knight figure in the tiles
 
             int x = (int)this.curSquare.GetX() + padding;

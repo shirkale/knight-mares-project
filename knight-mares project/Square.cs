@@ -48,7 +48,7 @@ namespace knight_mares_project
 
             this.p = new Paint();
             this.p.Color = Color.ParseColor("#F07E1A");
-            this.p.Alpha = 10;
+            this.p.Alpha = 60;
         }
 
         public void Draw(Canvas canvas)

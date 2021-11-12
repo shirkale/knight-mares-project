@@ -69,13 +69,9 @@ namespace knight_mares_project
             InitializeBoard(canvas);
             if(firstKnight)
                 InitializeKnight();
-            this.player.Draw(canvas);
-            Thread.Sleep(300);
-            // winEvent.Invoke(this, EventArgs.Empty);
-            // checkWin = 0;
             //this.player.moveToSquare(PickRandomStarter());
-            if(checkWin != 0)
-                Invalidate();
+            //if(checkWin != 0)
+            Invalidate();
             //GenerateRandomMap(canvas, this.difficulty);
         }
 
@@ -120,7 +116,7 @@ namespace knight_mares_project
             this.player = new Knight(starter, this.context);
             this.firstKnight = false;
             this.moves.Push(starter);
-            this.player.GetCurrentSquare().SetImageVisability(false);
+            //this.player.GetCurrentSquare().SetImageVisability(false);
         }
 
         private Square PickRandomNextOpenPosition()
