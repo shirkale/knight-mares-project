@@ -26,12 +26,26 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text ="Time: "
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:textSize="30sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#BFA380"
             android:id="@+id/tvTime"/>
+
+        
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnSave"
+            android:text="save"
+            android:backgroundTint="#485157"
+            android:textColor="#D9A941"
+            android:layout_marginRight="20dp"
+            android:textSize="12sp"
+            
+        />
 
         <ImageButton
             android:layout_width="0dp"
@@ -40,6 +54,7 @@
             android:id="@+id/btnReturn"
             android:background="@drawable/back_arrow"
             />
+
         
     </LinearLayout>
 </LinearLayout>
