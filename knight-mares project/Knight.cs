@@ -31,6 +31,7 @@ namespace knight_mares_project
 
             this.isKnightResized = false;
             this.curSquare.SetImageVisability(false);
+            this.curSquare.StepOn();
         }
 
         public void Draw(Canvas canvas)

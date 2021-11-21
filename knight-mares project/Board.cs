@@ -79,6 +79,10 @@ namespace knight_mares_project
         {
             if(e.Action == MotionEventActions.Down)
             {
+                this.player.moveToSquare(PickRandomStarter());
+            }
+            if(e.Action == MotionEventActions.Pointer2Down)
+            {
                 winEvent.Invoke(this, EventArgs.Empty);
                 checkWin = 0;
             }
@@ -169,9 +173,8 @@ namespace knight_mares_project
             return true;
         }
 
-        private Square PickRandomStarter()
+        private Square PickRandomStarter() // picking random square for starter position
         {
-            // picking random square for starter position
             Random random = new Random();
             int i = random.Next(0, size);
             int j = random.Next(0, size);
