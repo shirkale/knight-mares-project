@@ -13,6 +13,12 @@ namespace knight_mares_project
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        public static string snowtree;
+        public static string cuteGhost; // ghost picture
+        public static string cuteGhostPurp; // ghost picture purp
+        public static string cuteGhostBlue;
+        public static string flag;
+
 
         Button btnStart;
         // Button btnLvl0, btnLvl1, btnLvl2;
@@ -44,6 +50,12 @@ namespace knight_mares_project
 
             spHighScore = this.GetSharedPreferences("details", FileCreationMode.Private);
 
+
+            snowtree = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.snowtreesmol)); // tree picture
+            cuteGhost = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmol)); // ghost picture
+            cuteGhostPurp = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolpurp)); // ghost picture purp
+            cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue));
+            flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
 
         }
 

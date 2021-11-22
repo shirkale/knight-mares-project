@@ -69,10 +69,14 @@ namespace knight_mares_project
             InitializeBoard(canvas);
             if(firstKnight)
                 InitializeKnight();
-            //this.player.moveToSquare(PickRandomStarter());
-            //if(checkWin != 0)
+
+            if(firstDraw)
+            {
+                firstDraw = false;
+                GenerateRandomMap(canvas);
+            }
+
             Invalidate();
-            //GenerateRandomMap(canvas, this.difficulty);
         }
 
         public override bool OnTouchEvent(MotionEvent e)
@@ -89,14 +93,9 @@ namespace knight_mares_project
             return true;
         }
 
-        private void GenerateRandomMap(Canvas canvas, int steps) // generates map by going backwards and unsteping squares
+        private void GenerateRandomMap(Canvas canvas) // generates map by going backwards and unsteping squares
         {
-            InitializeBoard(canvas);
-            if (firstKnight)
-            {
-                InitializeKnight();
-            }
-            this.player.GetCurrentSquare().UnstepOn();
+            int steps = difficulty;
 
             for (int i = 0; i < steps; i++)
             {
@@ -108,7 +107,7 @@ namespace knight_mares_project
                 }
                 else
                 {
-                    GenerateRandomMap(canvas, steps);
+                    GenerateRandomMap(canvas);
                     break;
                 }
             }
@@ -120,7 +119,6 @@ namespace knight_mares_project
             this.player = new Knight(starter, this.context);
             this.firstKnight = false;
             this.moves.Push(starter);
-            //this.player.GetCurrentSquare().SetImageVisability(false);
         }
 
         private Square PickRandomNextOpenPosition()
@@ -133,13 +131,13 @@ namespace knight_mares_project
 
             bool[] tried = new bool[8];
 
-            for (int k = 0; k < tried.Length; k++)
+            for (int k = 0; k < tried.Length; k++) // initializing tried array with false
                 tried[k] = false;
 
 
             int newX, newY;
 
-            while (!AllTrue(tried))
+            while (!AllTrue(tried)) // if tried array is all true, then there isn't a way to get to a new square. 
             { 
                 n = random.Next(0, tried.Length);
 
@@ -160,7 +158,6 @@ namespace knight_mares_project
         private bool EdgeCheck(int newX, int newY)
         {
             return (!(newX < 0 || newX >= this.size || newY < 0 || newY >= this.size));
-
         }
 
         private bool AllTrue(bool[] boolArray)
@@ -189,29 +186,18 @@ namespace knight_mares_project
             int w = canvas.Width / this.size;
             int h = canvas.Width / this.size;
 
-            string snowtree = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.snowtreesmol)); // tree picture
-            string cuteGhost = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmol)); // ghost picture
-            string cuteGhostPurp = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmolpurp)); // ghost picture purp
-            string cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmolblue)); // ghost picture
-            string bitmap;
+            
+            // string bitmap;
+            // bitmap = MainActivity.snowtree;
 
             for (int i = 0; i < this.size; i++)
             {
                 for (int j = 0; j < this.size; j++)
                 {
-                    if (j % 4 == 0)
-                        bitmap = snowtree;
-                    else if (j % 4 == 1)
-                        bitmap = cuteGhostPurp;
-                    else if (j % 4 == 2)
-                        bitmap = cuteGhostBlue;
-                    else
-                        bitmap = cuteGhost; // showing all bitmaps for screens
-
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
-                        this.squares[i, j] = new Square(x, y, w, h, bitmap, i, j, this.context);
-                        //this.squares[i, j].StepOn(); // step on all, so later they can be unstepped
+                        this.squares[i, j] = new Square(x, y, w, h, i, j, this.context);
+                        this.squares[i, j].StepOn(MainActivity.snowtree); // step on all, so later they can be unstepped
                     }
 
                     this.squares[i, j].Draw(canvas); // draw cur square
@@ -223,11 +209,7 @@ namespace knight_mares_project
                 x = 0;
             }
 
-            if (this.firstDraw)
-            {
-                this.firstDraw = false;
-            }
-            else
+            if (!this.firstDraw)
                 this.player.Draw(canvas);
         }
 

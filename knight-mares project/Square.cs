@@ -29,13 +29,13 @@ namespace knight_mares_project
         private Paint p; // paint is used when knight stands on square, hiding the image with visibility
 
         private Context context;
-        public Square(float x, float y, float w, float h, string bitmap, int i, int j, Context context)
+        public Square(float x, float y, float w, float h, int i, int j, Context context)
         {
             this.x = x;
             this.y = y;
             this.w = w;
             this.h = h;
-            this.bitmap = bitmap;
+            this.bitmap = MainActivity.snowtree;
             this.walkedOver = false;
 
             this.i = i;
@@ -113,10 +113,10 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public void StepOn() // makes knight unable to step on square
+        public void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
         {
             this.walkedOver = true;
-            this.bitmap = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.little_red_flag));
+            this.bitmap = bitmap;
             this.isBitmapResized = false;
         }
 
@@ -124,7 +124,6 @@ namespace knight_mares_project
         {
             this.walkedOver = false;
             this.bitmap = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmol));
-            //this.p.Color = Color.White;
         }
 
         public int GetI()
