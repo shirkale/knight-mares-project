@@ -146,8 +146,7 @@ namespace knight_mares_project
 
                 if (tried[n] == false && EdgeCheck(newX, newY))
                 {
-                    if (this.player.GetCurrentSquare().CanMakeJump(squares[newX, newY]))
-                        return squares[newX, newY];
+                    return squares[newX, newY];
                 }
                 else
                     tried[n] = true;

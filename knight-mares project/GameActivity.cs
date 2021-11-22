@@ -45,7 +45,7 @@ namespace knight_mares_project
             int levelSelected = Intent.GetIntExtra("level", 8);
             int boardSize = levelSelected;
 
-            difficulty = 5;
+            difficulty = 20;
 
             this.game = new Board(this, boardSize, difficulty);
 
