@@ -65,6 +65,11 @@ namespace knight_mares_project
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
         }
 
+        public void BitmapResized(bool resize)
+        {
+            this.isBitmapResized = resize;
+        }
+
         public bool IsXandYInSquare(float otherX, float otherY)
         {
             return otherX >= this.x && otherX <= this.x + this.w && otherY >= this.y && otherY <= this.y + this.h;
@@ -123,7 +128,7 @@ namespace knight_mares_project
         public void UnstepOn() // makes knight able to step on square
         {
             this.walkedOver = false;
-            this.bitmap = Helper.BitmapToBase64(BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.cutearmsupghostsmol));
+            this.bitmap = MainActivity.cuteGhost;
         }
 
         public int GetI()
@@ -133,6 +138,11 @@ namespace knight_mares_project
         public int GetJ()
         {
             return j;
+        }
+
+        public void SetBitmap(string bitmap)
+        {
+            this.bitmap = bitmap;
         }
     }
 }

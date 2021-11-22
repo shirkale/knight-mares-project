@@ -56,11 +56,11 @@ namespace knight_mares_project
 
         }
 
-        public void moveToSquare(Square s) // moves the knight to the square inputted
+        public void moveToSquare(Square s)
+            // moves the knight to the square inputted
         {
             this.curSquare.SetImageVisability(true);
             this.curSquare = s;
-            this.curSquare.StepOn(MainActivity.flag);
             this.curSquare.SetImageVisability(false);
         }
 

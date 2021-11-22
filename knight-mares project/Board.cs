@@ -47,7 +47,7 @@ namespace knight_mares_project
             this.borders.StrokeWidth = 10;
             this.borders.Alpha = 60;
 
-            // this.checkWin = this.squares.Length - 1;
+            this.checkWin = difficulty;
 
             this.difficulty = difficulty;
 
@@ -59,6 +59,7 @@ namespace knight_mares_project
         {
             if(this.moves.Count != 0)
             {
+                this.player.GetCurrentSquare().UnstepOn();
                 this.player.moveToSquare((Square)this.moves.Pop());
             }
         }
@@ -74,23 +75,40 @@ namespace knight_mares_project
             {
                 firstDraw = false;
                 GenerateRandomMap(canvas);
+                this.player.GetCurrentSquare().StepOn(MainActivity.flag);
             }
-
-            Invalidate();
         }
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            if(e.Action == MotionEventActions.Down)
+            if (e.Action == MotionEventActions.Down)
             {
-                this.player.moveToSquare(PickRandomStarter());
+                Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
+                if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
+                {
+                    //checkWin--;
+                    this.player.moveToSquare(newSquare);
+                    newSquare.StepOn(MainActivity.flag);
+                    Invalidate();
+                }
             }
-            if(e.Action == MotionEventActions.Pointer2Down)
+            return false;
+        }
+
+        // getting a square with x and y coordinates
+        public Square FindClickedSquare(int x, int y)
+        {
+            for (int i = 0; i < this.size; i++)
             {
-                winEvent.Invoke(this, EventArgs.Empty);
-                checkWin = 0;
+                for (int j = 0; j < this.size; j++)
+                {
+                    if (squares[i, j].IsXandYInSquare(x, y))
+                    {
+                        return squares[i, j];
+                    }
+                }
             }
-            return true;
+            return squares[0, 0];
         }
 
         private void GenerateRandomMap(Canvas canvas) // generates map by going backwards and unsteping squares
@@ -102,6 +120,7 @@ namespace knight_mares_project
                 Square nextSquare = PickRandomNextOpenPosition();
                 if(nextSquare != null)
                 {
+                    nextSquare.BitmapResized(false);
                     this.player.moveToSquare(nextSquare);
                     nextSquare.UnstepOn();
                 }
@@ -117,6 +136,7 @@ namespace knight_mares_project
         {
             Square starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
+            starter.BitmapResized(false);
             this.firstKnight = false;
             this.moves.Push(starter);
         }
@@ -185,9 +205,6 @@ namespace knight_mares_project
             int w = canvas.Width / this.size;
             int h = canvas.Width / this.size;
 
-            
-            // string bitmap;
-            // bitmap = MainActivity.snowtree;
 
             for (int i = 0; i < this.size; i++)
             {
@@ -210,6 +227,8 @@ namespace knight_mares_project
 
             if (!this.firstDraw)
                 this.player.Draw(canvas);
+
+            Invalidate();
         }
 
     }
