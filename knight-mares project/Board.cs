@@ -47,7 +47,7 @@ namespace knight_mares_project
             this.borders.StrokeWidth = 10;
             this.borders.Alpha = 60;
 
-            this.checkWin = difficulty;
+            this.checkWin = difficulty-1;
 
             this.difficulty = difficulty;
 
@@ -60,22 +60,32 @@ namespace knight_mares_project
             if(this.moves.Count != 0)
             {
                 this.player.GetCurrentSquare().UnstepOn();
+                this.player.GetCurrentSquare().BitmapResized(false);
                 this.player.moveToSquare((Square)this.moves.Pop());
+                checkWin++;
+                Invalidate();
             }
         }
 
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            InitializeBoard(canvas);
-            if(firstKnight)
-                InitializeKnight();
-
-            if(firstDraw)
+            if(checkWin > 0)
             {
-                firstDraw = false;
-                GenerateRandomMap(canvas);
-                this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                InitializeBoard(canvas);
+                if (firstKnight)
+                    InitializeKnight();
+
+                if (firstDraw)
+                {
+                    firstDraw = false;
+                    GenerateRandomMap(canvas);
+                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                }
+            }
+            else
+            {
+                winEvent.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -86,9 +96,10 @@ namespace knight_mares_project
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
-                    //checkWin--;
+                    checkWin--;
                     this.player.moveToSquare(newSquare);
                     newSquare.StepOn(MainActivity.flag);
+                    this.moves.Push(newSquare);
                     Invalidate();
                 }
             }
@@ -164,7 +175,7 @@ namespace knight_mares_project
                 newX = i + xMove[n];
                 newY = j + yMove[n];
 
-                if (tried[n] == false && EdgeCheck(newX, newY))
+                if (tried[n] == false && EdgeCheck(newX, newY) && squares[newX, newY].IsWalkedOver())
                 {
                     return squares[newX, newY];
                 }

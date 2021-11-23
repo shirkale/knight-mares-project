@@ -45,7 +45,7 @@ namespace knight_mares_project
             int levelSelected = Intent.GetIntExtra("level", 8);
             int boardSize = levelSelected;
 
-            difficulty = 20;
+            difficulty = 10;
 
             this.game = new Board(this, boardSize, difficulty);
 
@@ -62,11 +62,11 @@ namespace knight_mares_project
             };
 
             // creating timer
-            /*won = false;
+            won = false;
             time = 0;
             ThreadStart timerstart = new ThreadStart(TimerFunc);
             Thread timer = new Thread(timerstart);
-            timer.Start();*/
+            timer.Start();
 
             btnBack.Click += BtnBack_Click;
         }
