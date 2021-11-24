@@ -74,6 +74,7 @@ namespace knight_mares_project
         private void BtnBack_Click(object sender, EventArgs e)
         {
             this.game.GoBack();
+            this.game.Invalidate();
         }
 
         private void TimerFunc()

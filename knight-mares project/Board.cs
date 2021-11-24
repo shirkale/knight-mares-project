@@ -55,6 +55,7 @@ namespace knight_mares_project
 
         }
 
+
         public void GoBack()
         {
             if(this.moves.Count != 0)
@@ -63,13 +64,12 @@ namespace knight_mares_project
                 this.player.GetCurrentSquare().BitmapResized(false);
                 this.player.moveToSquare((Square)this.moves.Pop());
                 checkWin++;
-                Invalidate();
             }
         }
 
         protected override void OnDraw(Canvas canvas)
         {
-            base.OnDraw(canvas);
+                base.OnDraw(canvas);
             if(checkWin > 0)
             {
                 InitializeBoard(canvas);
@@ -96,10 +96,10 @@ namespace knight_mares_project
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
+                    this.moves.Push(this.player.GetCurrentSquare());
                     checkWin--;
                     this.player.moveToSquare(newSquare);
                     newSquare.StepOn(MainActivity.flag);
-                    this.moves.Push(newSquare);
                     Invalidate();
                 }
             }
@@ -149,7 +149,6 @@ namespace knight_mares_project
             this.player = new Knight(starter, this.context);
             starter.BitmapResized(false);
             this.firstKnight = false;
-            this.moves.Push(starter);
         }
 
         private Square PickRandomNextOpenPosition()
