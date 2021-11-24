@@ -27,6 +27,9 @@ namespace knight_mares_project
 
         //Dialog chooseLevel;
         Dialog difficultyDialog;
+
+        //difficulty chosen in dialog and sent to gameactivity
+        int difficulty;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -57,6 +60,7 @@ namespace knight_mares_project
             cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue));
             flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
 
+            this.difficulty = 15;
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -70,12 +74,12 @@ namespace knight_mares_project
             base.OnOptionsItemSelected(item);
             if(item.ItemId == Resource.Id.difficulty)
             {
-                LoginDialog();
+                DifficultyDialog();
             }
             return true;
         }
 
-        public void LoginDialog()
+        public void DifficultyDialog()
         {
             this.difficultyDialog = new Dialog(this);
             difficultyDialog.SetContentView(Resource.Layout.difficulty_dialog);
@@ -88,7 +92,17 @@ namespace knight_mares_project
 
         private void BtnSubmit_Click(object sender, System.EventArgs e)
         {
+            SeekBar sb = (SeekBar)difficultyDialog.FindViewById(Resource.Id.sbDifficulty);
+            sb.Max = 30;
+            sb.Min = 3;
+            sb.ProgressChanged += Sb_ProgressChanged;
             difficultyDialog.Dismiss();
+        }
+
+        private void Sb_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
+        {
+            this.difficulty = e.Progress;
+
         }
 
         private void BtnStart_Click(object sender, System.EventArgs e)
