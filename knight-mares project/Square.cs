@@ -17,18 +17,18 @@ namespace knight_mares_project
 {
     public class Square
     {
-        private float x, y, w, h;
-        private bool walkedOver;
+        protected float x, y, w, h;
+        protected bool walkedOver;
 
-        private string bitmap;
-        private bool isBitmapResized; // if false on draw, the bitmap will be resized
-        private int i, j; // square id in matrix
+        protected string bitmap;
+        protected bool isBitmapResized; // if false on draw, the bitmap will be resized
+        protected int i, j; // square id in matrix
 
-        private bool visibility; // if the knight is on the square, visibility will be false
+        protected bool visibility; // if the knight is on the square, visibility will be false
 
-        private Paint p; // paint is used when knight stands on square, hiding the image with visibility
+        protected Paint p; // paint is used when knight stands on square, hiding the image with visibility
 
-        private Context context;
+        protected Context context;
         public Square(float x, float y, float w, float h, int i, int j, Context context)
         {
             this.x = x;
@@ -51,7 +51,7 @@ namespace knight_mares_project
             this.p.Alpha = 60;
         }
 
-        public void Draw(Canvas canvas)
+        public virtual void Draw(Canvas canvas)
         {
             if (!isBitmapResized)  // resizing the bitmap
             {
@@ -60,7 +60,7 @@ namespace knight_mares_project
                 this.isBitmapResized = true;
             }
             if (visibility)
-                canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null);
+                canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null); // when the knight isn't on the square
             else
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
         }
@@ -118,14 +118,14 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
+        public virtual void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
         {
             this.walkedOver = true;
             this.bitmap = bitmap;
             this.isBitmapResized = false;
         }
 
-        public void UnstepOn() // makes knight able to step on square
+        public virtual void UnstepOn() // makes knight able to step on square
         {
             this.walkedOver = false;
             this.bitmap = MainActivity.cuteGhost;

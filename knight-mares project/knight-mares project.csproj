@@ -66,6 +66,7 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MultipleStepSquare.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Square.cs" />
