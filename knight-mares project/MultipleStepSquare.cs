@@ -15,15 +15,21 @@ namespace knight_mares_project
     class MultipleStepSquare : Square
     {
         private int steps; // the amount of steps you can step on the square
-        public MultipleStepSquare(int steps, float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
+        public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
         {
-            this.steps = steps;
-            this.p = new Paint();
+            this.steps = 0;
             this.p.Color = Color.YellowGreen;
             this.p.TextSize = 30;
         }
 
-        public override void StepOn(string bitmap)
+        public MultipleStepSquare(Square s) : base(s.x, s.y, s.w, s.h, s.i, s.j, s.context)
+        {
+            this.x = s.x;
+            this.y = s.y;
+
+        }
+
+        public void StepOn(string bitmap)
         {
             if (this.steps == 0)
             {
@@ -34,6 +40,11 @@ namespace knight_mares_project
                 steps--;
                 this.visibility = false;
             }
+        }
+
+        public void UnstepOn()
+        {
+            this.steps++;
         }
 
         public override void Draw(Canvas canvas)

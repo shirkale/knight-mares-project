@@ -126,21 +126,39 @@ namespace knight_mares_project
         {
             int steps = difficulty;
 
-            for (int i = 0; i < steps; i++)
+            bool chanceForMultSquare;
+            int i, j;
+
+            for (int k = 0; k < steps; k++)
             {
                 Square nextSquare = PickRandomNextOpenPosition();
                 if(nextSquare != null)
                 {
+                    chanceForMultSquare = CalculateChance();
+                    if (chanceForMultSquare)
+                    {
+                        i = nextSquare.GetI();
+                        j = nextSquare.GetJ();
+                        squares[i, j] = new MultipleStepSquare(nex)
+                    }
+                        nextSquare = (MultipleStepSquare)nextSquare;
                     nextSquare.BitmapResized(false);
                     this.player.moveToSquare(nextSquare);
                     nextSquare.UnstepOn();
                 }
                 else
                 {
-                    GenerateRandomMap(canvas);
+                    if(i < steps/2)
+                        GenerateRandomMap(canvas);
                     break;
                 }
             }
+        }
+
+        private bool CalculateChance()
+        {
+            Random random = new Random();
+            return random.Next(10000) < 10000;
         }
 
         private void InitializeKnight()

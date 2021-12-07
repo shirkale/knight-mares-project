@@ -51,6 +51,24 @@ namespace knight_mares_project
             this.p.Alpha = 60;
         }
 
+        public Square(Square s)
+        {
+            this.x = s.x;
+            this.y = s.y;
+            this.w = s.w;
+            this.h = s.h;
+            this.bitmap = s.bitmap;
+            this.walkedOver = s.walkedOver;
+
+            this.i = s.i;
+            this.j = s.j;
+
+            this.isBitmapResized = s.isBitmapResized;
+
+            this.context = s.context;
+            this.visibility = s.visibility;
+        }
+
         public virtual void Draw(Canvas canvas)
         {
             if (!isBitmapResized)  // resizing the bitmap
@@ -118,14 +136,14 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public virtual void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
+        public void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
         {
             this.walkedOver = true;
             this.bitmap = bitmap;
             this.isBitmapResized = false;
         }
 
-        public virtual void UnstepOn() // makes knight able to step on square
+        public void UnstepOn() // makes knight able to step on square
         {
             this.walkedOver = false;
             this.bitmap = MainActivity.cuteGhost;
