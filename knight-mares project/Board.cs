@@ -69,7 +69,7 @@ namespace knight_mares_project
 
         protected override void OnDraw(Canvas canvas)
         {
-                base.OnDraw(canvas);
+            base.OnDraw(canvas);
             if(checkWin > 0)
             {
                 InitializeBoard(canvas);
@@ -80,12 +80,28 @@ namespace knight_mares_project
                 {
                     firstDraw = false;
                     GenerateRandomMap(canvas);
+                    FinalStepOnMultSquares();
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
                 }
             }
             else
             {
                 winEvent.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void FinalStepOnMultSquares()
+        {
+            for (int i = 0; i < this.size; i++)
+            {
+                for (int j = 0; j < this.size; j++)
+                {
+                    if (this.squares[i, j] is MultipleStepSquare)
+                    {
+                        MultipleStepSquare mss = (MultipleStepSquare)this.squares[i, j];
+                        mss.UnstepOnFinal();
+                    }
+                }
             }
         }
 
@@ -139,20 +155,22 @@ namespace knight_mares_project
                     {
                         i = nextSquare.GetI();
                         j = nextSquare.GetJ();
-                        squares[i, j] = new MultipleStepSquare(nex)
+                        squares[i, j] = new MultipleStepSquare(nextSquare);
                     }
-                        nextSquare = (MultipleStepSquare)nextSquare;
+
                     nextSquare.BitmapResized(false);
                     this.player.moveToSquare(nextSquare);
                     nextSquare.UnstepOn();
                 }
                 else
                 {
-                    if(i < steps/2)
+                    if(k < steps/2)
                         GenerateRandomMap(canvas);
                     break;
                 }
             }
+
+
         }
 
         private bool CalculateChance()

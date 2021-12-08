@@ -7,6 +7,7 @@ using AndroidX.AppCompat.App;
 using Android.Graphics;
 using Android.Views;
 using System;
+using AndroidX.AppCompat.View.Menu;
 
 namespace knight_mares_project
 {
@@ -66,6 +67,8 @@ namespace knight_mares_project
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menuDif, menu);
+            MenuBuilder m = (MenuBuilder)menu;
+            m.SetOptionalIconsVisible(true);
             return base.OnCreateOptionsMenu(menu);
         }
 

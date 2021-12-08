@@ -18,15 +18,14 @@ namespace knight_mares_project
         public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
         {
             this.steps = 0;
+            this.p = new Paint();
             this.p.Color = Color.YellowGreen;
             this.p.TextSize = 30;
         }
 
-        public MultipleStepSquare(Square s) : base(s.x, s.y, s.w, s.h, s.i, s.j, s.context)
+        public MultipleStepSquare(Square s) : base(s)
         {
-            this.x = s.x;
-            this.y = s.y;
-
+            this.steps = 0;
         }
 
         public void StepOn(string bitmap)
@@ -45,6 +44,12 @@ namespace knight_mares_project
         public void UnstepOn()
         {
             this.steps++;
+        }
+
+        public void UnstepOnFinal()
+        {
+            this.walkedOver = false;
+            this.visibility = false;
         }
 
         public override void Draw(Canvas canvas)
