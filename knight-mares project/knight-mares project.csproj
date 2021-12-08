@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="BroadcastBattery.cs" />
     <Compile Include="GameActivity.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Knight.cs" />

@@ -31,6 +31,8 @@ namespace knight_mares_project
 
         //difficulty chosen in dialog and sent to gameactivity
         int difficulty;
+
+        BroadcastBattery broadcastBattery;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -62,6 +64,14 @@ namespace knight_mares_project
             flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
 
             this.difficulty = 15;
+
+            broadcastBattery = new BroadcastBattery();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -86,7 +96,7 @@ namespace knight_mares_project
         {
             this.difficultyDialog = new Dialog(this);
             difficultyDialog.SetContentView(Resource.Layout.difficulty_dialog);
-            difficultyDialog.SetTitle("Login");
+            difficultyDialog.SetTitle("Difficulty");
             difficultyDialog.SetCancelable(true);
             Button btnSubmit = (Button)difficultyDialog.FindViewById(Resource.Id.btnSubmit);
             difficultyDialog.Show();
@@ -131,8 +141,7 @@ namespace knight_mares_project
             btnLvl2.Click += BtnLvl_Click;
             */
             Intent i = new Intent(this, typeof(GameActivity));
-            int lvl = 8;
-            StartActivityForResult(i, lvl);
+            StartActivityForResult(i, this.difficulty);
         }
 
 
