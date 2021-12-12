@@ -80,7 +80,8 @@ namespace knight_mares_project
                 {
                     firstDraw = false;
                     GenerateRandomMap(canvas);
-                    FinalStepOnMultSquares();
+                    FinalUnStepOnMultSquares();
+                    this.player.SetCurrentSquare((Square)this.player.GetCurrentSquare());
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
                 }
             }
@@ -90,7 +91,7 @@ namespace knight_mares_project
             }
         }
 
-        private void FinalStepOnMultSquares()
+        private void FinalUnStepOnMultSquares()
         {
             for (int i = 0; i < this.size; i++)
             {
@@ -115,7 +116,13 @@ namespace knight_mares_project
                     this.moves.Push(this.player.GetCurrentSquare());
                     checkWin--;
                     this.player.moveToSquare(newSquare);
-                    newSquare.StepOn(MainActivity.flag);
+                    if(newSquare is MultipleStepSquare)
+                    {
+                        MultipleStepSquare mss = (MultipleStepSquare)newSquare;
+                        mss.StepOn(MainActivity.flag);
+                    }
+                    else
+                        newSquare.StepOn(MainActivity.flag);
                     Invalidate();
                 }
             }
@@ -156,11 +163,18 @@ namespace knight_mares_project
                         i = nextSquare.GetI();
                         j = nextSquare.GetJ();
                         squares[i, j] = new MultipleStepSquare(nextSquare);
+                        MultipleStepSquare nextSquareMult = (MultipleStepSquare)squares[i, j];
+                        nextSquareMult.BitmapResized(false);
+                        this.player.moveToSquare(nextSquareMult);
+                        nextSquareMult.UnstepOn();
+                    }
+                    else
+                    {
+                        nextSquare.BitmapResized(false);
+                        this.player.moveToSquare(nextSquare);
+                        nextSquare.UnstepOn();
                     }
 
-                    nextSquare.BitmapResized(false);
-                    this.player.moveToSquare(nextSquare);
-                    nextSquare.UnstepOn();
                 }
                 else
                 {

@@ -42,12 +42,10 @@ namespace knight_mares_project
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
 
             // initializing board according to level selection
-            int levelSelected = Intent.GetIntExtra("level", 8);
-            int boardSize = levelSelected;
 
-            difficulty = 2;
+            difficulty = Intent.GetIntExtra("level", 3);
 
-            this.game = new Board(this, boardSize, difficulty);
+            this.game = new Board(this, 8, difficulty);
 
             // adding the board to the framelayout
             this.flGame.AddView(this.game);

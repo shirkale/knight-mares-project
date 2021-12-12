@@ -69,5 +69,9 @@ namespace knight_mares_project
             return this.curSquare;
         }
 
+        internal void SetCurrentSquare(Square square)
+        {
+            this.curSquare = square;
+        }
     }
 }

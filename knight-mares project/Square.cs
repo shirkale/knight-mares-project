@@ -67,6 +67,7 @@ namespace knight_mares_project
 
             this.context = s.context;
             this.visibility = s.visibility;
+            this.p = s.p;
         }
 
         public virtual void Draw(Canvas canvas)
@@ -136,7 +137,7 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
+        public virtual void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
         {
             this.walkedOver = true;
             this.bitmap = bitmap;

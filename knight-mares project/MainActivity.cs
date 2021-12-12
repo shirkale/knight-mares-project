@@ -28,6 +28,8 @@ namespace knight_mares_project
 
         //Dialog chooseLevel;
         Dialog difficultyDialog;
+        SeekBar sb;
+        TextView tvDifficultyInDialog;
 
         //difficulty chosen in dialog and sent to gameactivity
         int difficulty;
@@ -101,21 +103,26 @@ namespace knight_mares_project
             Button btnSubmit = (Button)difficultyDialog.FindViewById(Resource.Id.btnSubmit);
             difficultyDialog.Show();
             btnSubmit.Click += BtnSubmit_Click;
+
+
+            sb = (SeekBar)difficultyDialog.FindViewById(Resource.Id.sbDifficulty);
+            sb.Max = 30;
+            sb.Min = 3;
+            sb.Progress = this.difficulty;
+            tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
+            tvDifficultyInDialog.Text = "" + this.difficulty;
+            sb.ProgressChanged += Sb_ProgressChanged;
         }
 
         private void BtnSubmit_Click(object sender, System.EventArgs e)
         {
-            SeekBar sb = (SeekBar)difficultyDialog.FindViewById(Resource.Id.sbDifficulty);
-            sb.Max = 30;
-            sb.Min = 3;
-            sb.ProgressChanged += Sb_ProgressChanged;
             difficultyDialog.Dismiss();
         }
 
         private void Sb_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
         {
             this.difficulty = e.Progress;
-
+            tvDifficultyInDialog.Text = "" + this.difficulty;
         }
 
         private void BtnStart_Click(object sender, System.EventArgs e)
@@ -141,11 +148,12 @@ namespace knight_mares_project
             btnLvl2.Click += BtnLvl_Click;
             */
             Intent i = new Intent(this, typeof(GameActivity));
+            i.PutExtra("level", difficulty);
             StartActivityForResult(i, this.difficulty);
         }
 
 
-        private void BtnLvl_Click(object sender, System.EventArgs e)
+        private void BtnLvl_Click(object sender, EventArgs e)
         {
             // hide level selection dialog
             //if (chooseLevel != null)
