@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using Android.Views;
+using Android.Widget;
 using System;
 using System.Collections;
 using System.Threading;
@@ -56,15 +57,24 @@ namespace knight_mares_project
         }
 
 
-        public void GoBack()
+        public void GoBack() // undo button
         {
-            if(this.moves.Count != 0)
+            if(this.moves.Count != 0) // if stack isn't empty - if the player has moved
             {
+                if (this.player.GetCurrentSquare() is MultipleStepSquare)
+                {
+                    MultipleStepSquare mssCur = (MultipleStepSquare)this.player.GetCurrentSquare();
+                    mssCur.SetWalkedOver(false);
+                }
+                else
+                    checkWin++; // checkwin goes up - player still needs to step on the square
                 this.player.GetCurrentSquare().UnstepOn();
                 this.player.GetCurrentSquare().BitmapResized(false);
                 this.player.moveToSquare((Square)this.moves.Pop());
-                checkWin++;
+
             }
+
+            Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short).Show();
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -81,7 +91,12 @@ namespace knight_mares_project
                     firstDraw = false;
                     GenerateRandomMap(canvas);
                     FinalUnStepOnMultSquares();
-                    this.player.SetCurrentSquare((Square)this.player.GetCurrentSquare());
+
+                    if(this.player.GetCurrentSquare() is MultipleStepSquare)
+                    {
+                        Square mss = (MultipleStepSquare)this.player.GetCurrentSquare();
+                        this.player.SetCurrentSquare(mss);
+                    }
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
                 }
             }
@@ -113,18 +128,19 @@ namespace knight_mares_project
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
-                    this.moves.Push(this.player.GetCurrentSquare());
+                    this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
                     checkWin--;
                     this.player.moveToSquare(newSquare);
                     if(newSquare is MultipleStepSquare)
                     {
                         MultipleStepSquare mss = (MultipleStepSquare)newSquare;
-                        mss.StepOn(MainActivity.flag);
+                        mss.StepOn(MainActivity.snowtree);
                     }
                     else
                         newSquare.StepOn(MainActivity.flag);
                     Invalidate();
                 }
+                Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short).Show();
             }
             return false;
         }
@@ -167,6 +183,8 @@ namespace knight_mares_project
                         nextSquareMult.BitmapResized(false);
                         this.player.moveToSquare(nextSquareMult);
                         nextSquareMult.UnstepOn();
+
+                        this.checkWin--; // for each square we turn into a multiplestepsquare, we have to take the checkwin down by 1, because multstep squares aren't a necessity for winning
                     }
                     else
                     {
@@ -174,7 +192,6 @@ namespace knight_mares_project
                         this.player.moveToSquare(nextSquare);
                         nextSquare.UnstepOn();
                     }
-
                 }
                 else
                 {
@@ -183,14 +200,12 @@ namespace knight_mares_project
                     break;
                 }
             }
-
-
         }
 
-        private bool CalculateChance()
+        private bool CalculateChance() // calculates chance for multstepsquares
         {
             Random random = new Random();
-            return random.Next(10000) < 10000;
+            return random.Next(100) < 10;
         }
 
         private void InitializeKnight()
@@ -201,6 +216,7 @@ namespace knight_mares_project
             this.firstKnight = false;
         }
 
+        // picks a random next position according to if the player has walked on the square before
         private Square PickRandomNextOpenPosition()
         {
             int i = this.player.GetCurrentSquare().GetI();

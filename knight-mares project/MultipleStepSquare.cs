@@ -47,7 +47,7 @@ namespace knight_mares_project
             }
         }
 
-        public void UnstepOn()
+        public override void UnstepOn()
         {
             this.steps++;
         }
@@ -68,6 +68,11 @@ namespace knight_mares_project
             {
                 canvas.DrawText("" + this.steps, this.x+this.w/2, this.y+this.h/2, this.numP);
             }
+        }
+
+        internal void SetWalkedOver(bool v)
+        {
+            this.walkedOver = v;
         }
     }
 }

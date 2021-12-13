@@ -144,7 +144,7 @@ namespace knight_mares_project
             this.isBitmapResized = false;
         }
 
-        public void UnstepOn() // makes knight able to step on square
+        public virtual void UnstepOn() // makes knight able to step on square
         {
             this.walkedOver = false;
             this.bitmap = MainActivity.cuteGhost;
