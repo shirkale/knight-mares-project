@@ -18,7 +18,7 @@ namespace knight_mares_project
         private Paint numP; // paint for the number on the multstepsquare
         public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
         {
-            this.steps = 1;
+            this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
             this.numP.TextSize = 30;
@@ -26,7 +26,7 @@ namespace knight_mares_project
 
         public MultipleStepSquare(Square s) : base(s)
         {
-            this.steps = 1;
+            this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
             this.numP.TextSize = 30;

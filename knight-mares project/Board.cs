@@ -32,6 +32,11 @@ namespace knight_mares_project
 
         private Stack moves; // stack into which we insert squares the player goes on
 
+
+        // ------------------- temp ------------------- 
+
+        Toast toast;
+
         public Board(Context context, int size, int difficulty) : base(context)
         {
             this.context = context;
@@ -54,6 +59,11 @@ namespace knight_mares_project
 
             this.moves = new Stack();
 
+
+
+            toast = Toast.MakeText(this.context, ""+checkWin, ToastLength.Short);
+
+
         }
 
 
@@ -74,7 +84,9 @@ namespace knight_mares_project
 
             }
 
-            Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short).Show();
+            toast.SetText("" + checkWin);
+            toast.Show();
+
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -98,6 +110,9 @@ namespace knight_mares_project
                         this.player.SetCurrentSquare(mss);
                     }
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+
+                    toast.SetText("" + checkWin);
+                    toast.Show();
                 }
             }
             else
@@ -129,7 +144,6 @@ namespace knight_mares_project
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
                     this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
-                    checkWin--;
                     this.player.moveToSquare(newSquare);
                     if(newSquare is MultipleStepSquare)
                     {
@@ -137,10 +151,18 @@ namespace knight_mares_project
                         mss.StepOn(MainActivity.snowtree);
                     }
                     else
+                    {
+                        checkWin--;
                         newSquare.StepOn(MainActivity.flag);
+                    }
                     Invalidate();
                 }
-                Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short).Show();
+
+
+
+
+                toast.SetText("" + checkWin);
+                toast.Show();
             }
             return false;
         }
@@ -173,25 +195,38 @@ namespace knight_mares_project
                 Square nextSquare = PickRandomNextOpenPosition();
                 if(nextSquare != null)
                 {
-                    chanceForMultSquare = CalculateChance();
-                    if (chanceForMultSquare)
+                    if(nextSquare is MultipleStepSquare nextSquareMult)
                     {
-                        i = nextSquare.GetI();
-                        j = nextSquare.GetJ();
-                        squares[i, j] = new MultipleStepSquare(nextSquare);
-                        MultipleStepSquare nextSquareMult = (MultipleStepSquare)squares[i, j];
                         nextSquareMult.BitmapResized(false);
                         this.player.moveToSquare(nextSquareMult);
                         nextSquareMult.UnstepOn();
 
-                        this.checkWin--; // for each square we turn into a multiplestepsquare, we have to take the checkwin down by 1, because multstep squares aren't a necessity for winning
+                        this.checkWin--;
                     }
                     else
                     {
-                        nextSquare.BitmapResized(false);
-                        this.player.moveToSquare(nextSquare);
-                        nextSquare.UnstepOn();
+                        chanceForMultSquare = CalculateChance();
+                        if (chanceForMultSquare && k != steps - 1)
+                        {
+                            i = nextSquare.GetI();
+                            j = nextSquare.GetJ();
+                            squares[i, j] = new MultipleStepSquare(nextSquare);
+                            MultipleStepSquare nextSquareMult2 = (MultipleStepSquare)squares[i, j];
+                            // for each square we turn into a multiplestepsquare, we have to take the checkwin down by 1, because multstep squares aren't a necessity for winning
+                            nextSquareMult2.BitmapResized(false);
+                            this.player.moveToSquare(nextSquareMult2);
+                            nextSquareMult2.UnstepOn();
+                            this.checkWin--;
+                        }
+                        else
+                        {
+                            nextSquare.BitmapResized(false);
+                            this.player.moveToSquare(nextSquare);
+                            nextSquare.UnstepOn();
+                        }
+
                     }
+                    
                 }
                 else
                 {
