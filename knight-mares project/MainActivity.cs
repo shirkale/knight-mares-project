@@ -23,7 +23,7 @@ namespace knight_mares_project
 
         Button btnStart;
         // Button btnLvl0, btnLvl1, btnLvl2;
-        TextView tvTitle, tvWinMessage;
+        TextView tvTitle, tvWinMessage, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
 
         //Dialog chooseLevel;
@@ -45,14 +45,14 @@ namespace knight_mares_project
             // initializing widgets
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
-            //btnStart.SetBackgroundColor(Color.ParseColor("#171747"));
-
+            tvDisplayDifficulty = (TextView)FindViewById(Resource.Id.tvDisplayDifficulty);
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
             tvWinMessage = (TextView)FindViewById(Resource.Id.tvTitle);
 
             // click functions
 
             btnStart.Click += BtnStart_Click; // button click that starts the game
+
 
             // high score code
 
@@ -66,6 +66,7 @@ namespace knight_mares_project
             flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
 
             this.difficulty = 15;
+            tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
             broadcastBattery = new BroadcastBattery();
         }
@@ -123,6 +124,8 @@ namespace knight_mares_project
         {
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
+            tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
+
         }
 
         private void BtnStart_Click(object sender, System.EventArgs e)
