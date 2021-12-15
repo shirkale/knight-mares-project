@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,11 @@ namespace knight_mares_project
         bool won;
 
         ImageButton btnBack;
+
+        //Animations
+
+        Animation animTurnUndo;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -66,13 +72,28 @@ namespace knight_mares_project
             Thread timer = new Thread(timerstart);
             timer.Start();
 
+            // initializing animations
+
+            animTurnUndo = AnimationUtils.LoadAnimation(this, Resource.Animation.undobuttonturn);
+
+
+
+
             btnBack.Click += BtnBack_Click;
         }
 
         private void BtnBack_Click(object sender, EventArgs e)
         {
+            Thread animateBackButton = new Thread(new ThreadStart(AnimateBackButton));
+            animateBackButton.Start();
             this.game.GoBack();
             this.game.Invalidate();
+            
+        }
+
+        private void AnimateBackButton()
+        {
+            RunOnUiThread(() => { this.btnBack.StartAnimation(animTurnUndo); }); 
         }
 
         private void TimerFunc()
@@ -80,7 +101,7 @@ namespace knight_mares_project
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
             while (!won)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(999);
                 time++;
                 RunOnUiThread(() => {this.tvTime.Text = "Time: " + time;} ); // runs the change in view on the main thread
             }

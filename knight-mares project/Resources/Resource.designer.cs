@@ -325,6 +325,9 @@ namespace knight_mares_project
 			// aapt resource value: 0x7F010022
 			public const int fragment_open_exit = 2130772002;
 			
+			// aapt resource value: 0x7F010023
+			public const int undobuttonturn = 2130772003;
+			
 			static Animation()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
