@@ -328,6 +328,9 @@ namespace knight_mares_project
 			// aapt resource value: 0x7F010023
 			public const int undobuttonturn = 2130772003;
 			
+			// aapt resource value: 0x7F010024
+			public const int undobuttonturn2 = 2130772004;
+			
 			static Animation()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
