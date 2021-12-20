@@ -69,14 +69,28 @@ namespace knight_mares_project
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
             broadcastBattery = new BroadcastBattery();
+
+
+            // music player
+
+            Intent musicIntent = new Intent(this, typeof(MyService));
+            StartService(musicIntent);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-
+            Intent musicIntent = new Intent(this, typeof(MyService));
+            StartService(musicIntent);
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+
+        // menu code
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menuDif, menu);
@@ -130,51 +144,9 @@ namespace knight_mares_project
 
         private void BtnStart_Click(object sender, System.EventArgs e)
         {
-            /* different level dialog
-            // creating dialog for level selection
-            chooseLevel = new Dialog(this);
-            chooseLevel.SetContentView(Resource.Layout.choose_level_view);
-            chooseLevel.SetCancelable(false);
-
-            // assigning buttons
-
-            btnLvl0 = (Button)chooseLevel.FindViewById(Resource.Id.btnLvl0);
-            btnLvl1 = (Button)chooseLevel.FindViewById(Resource.Id.btnLvl1);
-            btnLvl2 = (Button)chooseLevel.FindViewById(Resource.Id.btnLvl2);
-
-            chooseLevel.Show();
-
-            // click events for dialog buttons (level selection)
-
-            btnLvl0.Click += BtnLvl_Click;
-            btnLvl1.Click += BtnLvl_Click;
-            btnLvl2.Click += BtnLvl_Click;
-            */
             Intent i = new Intent(this, typeof(GameActivity));
             i.PutExtra("level", difficulty);
             StartActivityForResult(i, this.difficulty);
-        }
-
-
-        private void BtnLvl_Click(object sender, EventArgs e)
-        {
-            // hide level selection dialog
-            //if (chooseLevel != null)
-                //chooseLevel.Hide();
-
-            // getting level from button which was clicked
-            Button b = (Button)sender;
-            string lvlStr = b.Tag.ToString();
-            int lvl = int.Parse(lvlStr);
-
-            // creating intent
-            Intent i = new Intent(this, typeof(MainActivity));
-
-            // sending the lvl to the next screen in order to build the correct board
-            i.PutExtra("level", lvl);
-
-            // starting activity
-            StartActivityForResult(i, lvl);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

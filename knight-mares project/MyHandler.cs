@@ -8,14 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Android.Media;
 
 namespace knight_mares_project
 {
     public class MyHandler : Handler
     {
         Context context;
-        //TextView tvResult;
-
+        MediaPlayer mp;
         public MyHandler(Context context)
         {
             this.context = context;
@@ -23,7 +23,8 @@ namespace knight_mares_project
 
         public override void HandleMessage(Message msg)
         {
-            Toast.MakeText(context, "" + msg.Arg1, ToastLength.Long).Show();
+            mp = MediaPlayer.Create(context, Resource.Raw.music);
+            mp.Start();
         }
     }
 }

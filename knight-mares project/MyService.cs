@@ -24,17 +24,9 @@ namespace knight_mares_project
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            counter = intent.GetIntExtra("counter", 3);
-            Toast.MakeText(this, "service started " + counter, ToastLength.Long).Show();
             Thread t = new Thread(Run);
             t.Start();
             return base.OnStartCommand(intent, flags, startId);
-        }
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            Toast.MakeText(this, "Service Stoped", ToastLength.Long).Show();
-            counter = 0;
         }
         public override IBinder OnBind(Intent intent)
         {
@@ -43,14 +35,8 @@ namespace knight_mares_project
 
         private void Run()
         {
-            while (counter > 0)
-            {
-                Thread.Sleep(3000);
-                Message mes = new Message();
-                mes.Arg1 = counter;
-                myhandler.SendMessage(mes);
-                counter--;
-            }
+            Message mes = new Message();
+            myhandler.SendMessage(mes);
             StopSelf();
         }
     }
