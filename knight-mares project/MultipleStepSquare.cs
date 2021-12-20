@@ -32,7 +32,7 @@ namespace knight_mares_project
             this.numP.TextSize = 30;
         }
 
-        public virtual void StepOn(string bitmap)
+        public override void StepOn(string bitmap)
         {
             if (this.steps == 0)
             {

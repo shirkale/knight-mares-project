@@ -20,6 +20,8 @@ namespace knight_mares_project
         public static string cuteGhostBlue;
         public static string flag;
 
+        public static bool hasMusicStarted = false; // if music has been started, the code resumes it
+
 
         Button btnStart;
         // Button btnLvl0, btnLvl1, btnLvl2;
@@ -84,8 +86,15 @@ namespace knight_mares_project
             StartService(musicIntent);
         }
 
+        protected override void OnPause()
+        {
+            MyService.PauseMusic();
+            base.OnPause();
+        }
+
         protected override void OnDestroy()
         {
+            MyService.StopMusic();
             base.OnDestroy();
         }
 

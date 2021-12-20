@@ -71,15 +71,12 @@ namespace knight_mares_project
         {
             if(this.moves.Count != 0) // if stack isn't empty - if the player has moved
             {
-                if (this.player.GetCurrentSquare() is MultipleStepSquare)
-                {
-                    MultipleStepSquare mssCur = (MultipleStepSquare)this.player.GetCurrentSquare();
+                if (this.player.GetCurrentSquare() is MultipleStepSquare mssCur)
                     mssCur.SetWalkedOver(false);
-                }
                 else
                     checkWin++; // checkwin goes up - player still needs to step on the square
                 this.player.GetCurrentSquare().UnstepOn();
-                this.player.GetCurrentSquare().BitmapResized(false);
+                this.player.GetCurrentSquare().ResizeBitmap(false);
                 this.player.moveToSquare((Square)this.moves.Pop());
 
             }
@@ -104,10 +101,10 @@ namespace knight_mares_project
                     GenerateRandomMap(canvas);
                     FinalUnStepOnMultSquares();
 
-                    if(this.player.GetCurrentSquare() is MultipleStepSquare)
+                    if(this.player.GetCurrentSquare() is MultipleStepSquare mss) // if first is Mult, turn it back to square
                     {
-                        Square mss = (MultipleStepSquare)this.player.GetCurrentSquare();
-                        this.player.SetCurrentSquare(mss);
+                        Square newSquare = (Square)mss;
+                        this.player.SetCurrentSquare(newSquare);
                     }
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
 
@@ -127,9 +124,8 @@ namespace knight_mares_project
             {
                 for (int j = 0; j < this.size; j++)
                 {
-                    if (this.squares[i, j] is MultipleStepSquare)
+                    if (this.squares[i, j] is MultipleStepSquare mss)
                     {
-                        MultipleStepSquare mss = (MultipleStepSquare)this.squares[i, j];
                         mss.UnstepOnFinal();
                     }
                 }
@@ -145,16 +141,14 @@ namespace knight_mares_project
                 {
                     this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
                     this.player.moveToSquare(newSquare);
-                    if(newSquare is MultipleStepSquare)
-                    {
-                        MultipleStepSquare mss = (MultipleStepSquare)newSquare;
-                        mss.StepOn(MainActivity.snowtree);
-                    }
-                    else
+
+                    string newBitmap = MainActivity.snowtree;
+                    if (!(newSquare is MultipleStepSquare))
                     {
                         checkWin--;
-                        newSquare.StepOn(MainActivity.flag);
+                        newBitmap = MainActivity.flag;
                     }
+                    newSquare.StepOn(newBitmap);
                     Invalidate();
                 }
 
@@ -197,7 +191,7 @@ namespace knight_mares_project
                 {
                     if(nextSquare is MultipleStepSquare nextSquareMult)
                     {
-                        nextSquareMult.BitmapResized(false);
+                        nextSquareMult.ResizeBitmap(false);
                         this.player.moveToSquare(nextSquareMult);
                         nextSquareMult.UnstepOn();
 
@@ -213,14 +207,14 @@ namespace knight_mares_project
                             squares[i, j] = new MultipleStepSquare(nextSquare);
                             MultipleStepSquare nextSquareMult2 = (MultipleStepSquare)squares[i, j];
                             // for each square we turn into a multiplestepsquare, we have to take the checkwin down by 1, because multstep squares aren't a necessity for winning
-                            nextSquareMult2.BitmapResized(false);
+                            nextSquareMult2.ResizeBitmap(false);
                             this.player.moveToSquare(nextSquareMult2);
                             nextSquareMult2.UnstepOn();
                             this.checkWin--;
                         }
                         else
                         {
-                            nextSquare.BitmapResized(false);
+                            nextSquare.ResizeBitmap(false);
                             this.player.moveToSquare(nextSquare);
                             nextSquare.UnstepOn();
                         }
@@ -247,7 +241,7 @@ namespace knight_mares_project
         {
             Square starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
-            starter.BitmapResized(false);
+            starter.ResizeBitmap(false);
             this.firstKnight = false;
         }
 

@@ -84,7 +84,7 @@ namespace knight_mares_project
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
         }
 
-        public void BitmapResized(bool resize)
+        public void ResizeBitmap(bool resize)
         {
             this.isBitmapResized = resize;
         }

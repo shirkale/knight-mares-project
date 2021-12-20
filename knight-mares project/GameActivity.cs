@@ -77,7 +77,7 @@ namespace knight_mares_project
             animTurnUndo = AnimationUtils.LoadAnimation(this, Resource.Animation.undobuttonturn);
 
 
-
+            
 
             btnBack.Click += BtnBack_Click;
         }
@@ -128,6 +128,7 @@ namespace knight_mares_project
             SetResult(Result.Ok, i);
             Finish();
         }
+
 
 
     }

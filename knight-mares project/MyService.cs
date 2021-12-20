@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -15,12 +16,10 @@ namespace knight_mares_project
     [Service]
     public class MyService : Service
     {
-        int counter;
-        MyHandler myhandler;
+        static MediaPlayer mp;
         public override void OnCreate()
         {
             base.OnCreate();
-            myhandler = new MyHandler(this);
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
@@ -35,9 +34,23 @@ namespace knight_mares_project
 
         private void Run()
         {
-            Message mes = new Message();
-            myhandler.SendMessage(mes);
-            StopSelf();
+            if(!MainActivity.hasMusicStarted)
+            {
+                mp = MediaPlayer.Create(this, Resource.Raw.music);
+                MainActivity.hasMusicStarted = true;
+            }
+            mp.Start();
         }
+
+        public static void PauseMusic()
+        {
+            mp.Pause();
+        }
+        public static void StopMusic()
+        {
+            mp.Stop();
+            MainActivity.hasMusicStarted = false;
+        }
+
     }
 }
