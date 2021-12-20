@@ -42,6 +42,11 @@ namespace knight_mares_project
             mp.Start();
         }
 
+        public static void ResumeMusic()
+        {
+            mp.Start();
+        }
+
         public static void PauseMusic()
         {
             mp.Pause();

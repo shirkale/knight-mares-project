@@ -129,7 +129,17 @@ namespace knight_mares_project
             Finish();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            MyService.ResumeMusic();
+        }
 
+        protected override void OnPause()
+        {
+            MyService.PauseMusic();
+            base.OnPause();
+        }
 
     }
 }
