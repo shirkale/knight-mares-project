@@ -36,7 +36,6 @@ namespace knight_mares_project
         //difficulty chosen in dialog and sent to gameactivity
         int difficulty;
 
-        BroadcastBattery broadcastBattery;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -70,9 +69,6 @@ namespace knight_mares_project
             this.difficulty = 15;
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
-            broadcastBattery = new BroadcastBattery();
-
-
             // music player
 
             Intent musicIntent = new Intent(this, typeof(MyService));
@@ -84,6 +80,7 @@ namespace knight_mares_project
             base.OnResume();
             Intent musicIntent = new Intent(this, typeof(MyService));
             StartService(musicIntent);
+
         }
 
         protected override void OnPause()

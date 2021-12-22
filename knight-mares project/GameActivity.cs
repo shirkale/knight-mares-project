@@ -32,6 +32,9 @@ namespace knight_mares_project
 
         Animation animTurnUndo;
 
+        BroadcastBattery broadcastBattery;
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -76,8 +79,8 @@ namespace knight_mares_project
 
             animTurnUndo = AnimationUtils.LoadAnimation(this, Resource.Animation.undobuttonturn);
 
+            broadcastBattery = new BroadcastBattery();
 
-            
 
             btnBack.Click += BtnBack_Click;
         }
@@ -132,12 +135,14 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
+            RegisterReceiver(broadcastBattery, new IntentFilter(Intent.ActionBatteryChanged));
             MyService.ResumeMusic();
         }
 
         protected override void OnPause()
         {
             MyService.PauseMusic();
+            UnregisterReceiver(broadcastBattery);
             base.OnPause();
         }
 

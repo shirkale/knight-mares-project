@@ -26,8 +26,8 @@ namespace knight_mares_project
         public override void OnReceive(Context context, Intent intent)
         {
             int battery = intent.GetIntExtra("level", 0);
-
-            if(battery < 15)
+            Toast.MakeText(context, battery, ToastLength.Short).Show();
+            if (battery < 15)
             {
                 Toast.MakeText(context, "Your battery is getting low, how about saving the game just in case?", ToastLength.Short).Show();
             }
