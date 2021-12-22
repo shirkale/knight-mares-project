@@ -34,7 +34,7 @@ namespace knight_mares_project
 
         private void Run()
         {
-            if(!MainActivity.hasMusicStarted)
+            if(!MainActivity.hasMusicStarted || mp == null)
             {
                 mp = MediaPlayer.Create(this, Resource.Raw.music);
                 MainActivity.hasMusicStarted = true;
@@ -44,7 +44,8 @@ namespace knight_mares_project
 
         public static void ResumeMusic()
         {
-            mp.Start();
+            if(mp == null)
+                mp.Start();
         }
 
         public static void PauseMusic()

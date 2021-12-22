@@ -36,6 +36,9 @@ namespace knight_mares_project
         //difficulty chosen in dialog and sent to gameactivity
         int difficulty;
 
+        // music intent
+        Intent musicIntent;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -71,16 +74,14 @@ namespace knight_mares_project
 
             // music player
 
-            Intent musicIntent = new Intent(this, typeof(MyService));
+            musicIntent = new Intent(this, typeof(MyService));
             StartService(musicIntent);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            Intent musicIntent = new Intent(this, typeof(MyService));
-            StartService(musicIntent);
-
+            MyService.ResumeMusic();
         }
 
         protected override void OnPause()
@@ -92,6 +93,7 @@ namespace knight_mares_project
         protected override void OnDestroy()
         {
             MyService.StopMusic();
+            StopService(musicIntent);
             base.OnDestroy();
         }
 
