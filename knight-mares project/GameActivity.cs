@@ -129,17 +129,27 @@ namespace knight_mares_project
             Finish();
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-            MyService.ResumeMusic();
-        }
+        //protected override void OnResume()
+        //{
+        //    if (MyService.mp == null)
+        //    {
+        //        MainActivity.musicIntent = new Intent(this, typeof(MyService));
+        //        StartService(MainActivity.musicIntent);
+        //    }
+        //    base.OnResume();
+        //    MyService.ResumeMusic();
+        //}
 
-        protected override void OnPause()
-        {
-            MyService.PauseMusic();
-            base.OnPause();
-        }
+        //protected override void OnPause()
+        //{
+        //    if (MyService.mp == null)
+        //    {
+        //        MainActivity.musicIntent = new Intent(this, typeof(MyService));
+        //        StartService(MainActivity.musicIntent);
+        //    }
+        //    MyService.PauseMusic();
+        //    base.OnPause();
+        //}
 
     }
 }

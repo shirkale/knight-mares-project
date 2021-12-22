@@ -22,6 +22,7 @@ namespace knight_mares_project
 
         public static bool hasMusicStarted = false; // if music has been started, the code resumes it
 
+        public static Intent musicIntent;
 
         Button btnStart;
         // Button btnLvl0, btnLvl1, btnLvl2;
@@ -70,33 +71,40 @@ namespace knight_mares_project
             this.difficulty = 15;
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
-            broadcastBattery = new BroadcastBattery();
 
 
             // music player
 
-            Intent musicIntent = new Intent(this, typeof(MyService));
-            StartService(musicIntent);
+            //musicIntent = new Intent(this, typeof(MyService));
+            //StartService(musicIntent);
+
+
+            //broadcastBattery = new BroadcastBattery();
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-            Intent musicIntent = new Intent(this, typeof(MyService));
-            StartService(musicIntent);
-        }
+        //protected override void OnResume()
+        //{
+        //    base.OnResume();
+        //    MyService.ResumeMusic();
+        //}
 
-        protected override void OnPause()
-        {
-            MyService.PauseMusic();
-            base.OnPause();
-        }
+        //protected override void OnPause()
+        //{
+        //    if (MyService.mp == null)
+        //    {
+        //        musicIntent = new Intent(this, typeof(MyService));
+        //        StartService(musicIntent);
+        //    }
+        //    MyService.PauseMusic();
+        //    base.OnPause();
+        //}
 
-        protected override void OnDestroy()
-        {
-            MyService.StopMusic();
-            base.OnDestroy();
-        }
+        //protected override void OnDestroy()
+        //{
+        //    MyService.StopMusic();
+        //    //StopService(musicIntent);
+        //    base.OnDestroy();
+        //}
 
 
         // menu code

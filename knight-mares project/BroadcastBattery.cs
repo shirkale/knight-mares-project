@@ -15,13 +15,8 @@ namespace knight_mares_project
     [IntentFilter(new[] { Intent.ActionBatteryChanged })]
     public class BroadcastBattery : BroadcastReceiver
     {
-        TextView tv;
         public BroadcastBattery()
         {
-        }
-        public BroadcastBattery(TextView tv)
-        {
-            this.tv = tv;
         }
         public override void OnReceive(Context context, Intent intent)
         {
@@ -30,6 +25,11 @@ namespace knight_mares_project
             if(battery < 15)
             {
                 Toast.MakeText(context, "Your battery is getting low, how about saving the game just in case?", ToastLength.Short).Show();
+            }
+            else
+            {
+                Toast.MakeText(context, "battery good", ToastLength.Short).Show();
+
             }
 
         }
