@@ -3,7 +3,7 @@ using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace knight_mares_project
@@ -20,7 +20,7 @@ namespace knight_mares_project
         private Paint borders; // paintbrush for borders
 
 
-        private int checkWin; // when checkWin reaches 0, it means all the squares are walked on
+        private int checkWin; // when checkWin reaches 0, it means all the walkable squares are walked on
         
         private int difficulty; // maximum number of moves the computer simulates
 
@@ -30,7 +30,7 @@ namespace knight_mares_project
         public EventHandler winEvent;
         public EventHandler updateEvent;
 
-        private Stack moves; // stack into which we insert squares the player goes on
+        private Stack<Square> moves; // stack into which we insert squares the player goes on
 
 
         // ------------------- temp ------------------- 
@@ -57,7 +57,7 @@ namespace knight_mares_project
 
             this.difficulty = difficulty;
 
-            this.moves = new Stack();
+            this.moves = new Stack<Square>();
 
 
 

@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/difficulty"
-        android:title="Difficulty"
+        android:title="DIFFICULTY"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:icon="@drawable/skullmenu"

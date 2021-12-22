@@ -24,7 +24,7 @@ namespace knight_mares_project
 
         public static Intent musicIntent;
 
-        Button btnStart;
+        Button btnStart, btnLeader;
         // Button btnLvl0, btnLvl1, btnLvl2;
         TextView tvTitle, tvWinMessage, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
@@ -38,6 +38,10 @@ namespace knight_mares_project
         int difficulty;
 
         BroadcastBattery broadcastBattery;
+
+        // leaderboard
+        LinearLayout llLeaderBoard;
+        TextView tv1, tv2, tv3;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -48,13 +52,22 @@ namespace knight_mares_project
             // initializing widgets
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
+            btnLeader = (Button)FindViewById(Resource.Id.btnLeader);
             tvDisplayDifficulty = (TextView)FindViewById(Resource.Id.tvDisplayDifficulty);
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
             tvWinMessage = (TextView)FindViewById(Resource.Id.tvTitle);
 
+            tv1 = (TextView)FindViewById(Resource.Id.tv1);
+            tv2 = (TextView)FindViewById(Resource.Id.tv2);
+            tv3 = (TextView)FindViewById(Resource.Id.tv3);
+            llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
+            
+
+
             // click functions
 
             btnStart.Click += BtnStart_Click; // button click that starts the game
+            btnLeader.Click += BtnLeader_Click;
 
 
             // high score code
@@ -80,6 +93,36 @@ namespace knight_mares_project
 
 
             //broadcastBattery = new BroadcastBattery();
+        }
+
+        private void BtnLeader_Click(object sender, EventArgs e)
+        {
+            llLeaderBoard.Visibility = ViewStates.Visible;
+            string s1="", s2="", s3="";
+            int level = difficulty;
+
+            if(difficulty == 3)
+                level = 4;
+            if (difficulty == 30)
+                level = 29;
+
+            s1 = "" + (level - 1) + '\n';
+            if (spHighScore.GetInt("level" + (level - 1), 0) == 0)
+                s1 += "---";
+            else
+                s1 += "" + spHighScore.GetInt("level" + (level - 1), 0);
+
+            s2 = "" + (level - 1) + '\n';
+            if (spHighScore.GetInt("level" + (level), 0) == 0)
+                s2 += "---";
+            else
+                s2 += "" + spHighScore.GetInt("level" + (level), 0);
+
+            tv1.Text = s1;
+
+
+            s2 = "4\n" + spHighScore.GetInt("level" + 4, 9999);
+            s3 = "5\n" + spHighScore.GetInt("level" + 5, 9999);
         }
 
         //protected override void OnResume()

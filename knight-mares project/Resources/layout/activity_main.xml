@@ -49,6 +49,60 @@
             android:padding="10dp"
             />
 
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="leaderboard for this difficulty"
+            android:id="@+id/btnLeader"
+            android:fontFamily="sans-serif-smallcaps"
+            android:backgroundTint="#171747"
+            android:padding="10dp"
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:id="@+id/linLeader"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:background="#ffff8800"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:id="@+id/tv1"
+            android:layout_margin="5dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:background="#ffff8800"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:id="@+id/tv2"
+            android:layout_margin="5dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:background="#ffff8800"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:id="@+id/tv3"
+            android:layout_margin="5dp"
+            />
+
+    </LinearLayout>
+
     <ImageView
         android:layout_width="281dp"
         android:layout_height="222dp"
