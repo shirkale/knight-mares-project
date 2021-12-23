@@ -29,7 +29,6 @@ namespace knight_mares_project
             else
             {
                 Toast.MakeText(context, "battery good", ToastLength.Short).Show();
-
             }
 
         }

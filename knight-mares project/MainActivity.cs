@@ -37,7 +37,6 @@ namespace knight_mares_project
         //difficulty chosen in dialog and sent to gameactivity
         int difficulty;
 
-        BroadcastBattery broadcastBattery;
 
         // leaderboard
         LinearLayout llLeaderBoard;
@@ -48,6 +47,8 @@ namespace knight_mares_project
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
+
+            this.difficulty = 15;
 
             // initializing widgets
 
@@ -61,19 +62,22 @@ namespace knight_mares_project
             tv2 = (TextView)FindViewById(Resource.Id.tv2);
             tv3 = (TextView)FindViewById(Resource.Id.tv3);
             llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
-            
-
-
-            // click functions
-
-            btnStart.Click += BtnStart_Click; // button click that starts the game
-            btnLeader.Click += BtnLeader_Click;
-
 
             // high score code
 
             spHighScore = this.GetSharedPreferences("details", FileCreationMode.Private);
 
+
+            // click functions
+
+            btnStart.Click += BtnStart_Click; // button click that starts the game
+
+            btnLeader.Click += BtnLeader_Click;
+            btnLeader.CallOnClick();
+            btnLeader.CallOnClick();
+
+
+            
 
             snowtree = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.snowtreesmol)); // tree picture
             cuteGhost = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmol)); // ghost picture
@@ -81,73 +85,68 @@ namespace knight_mares_project
             cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue));
             flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
 
-            this.difficulty = 15;
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
 
 
             // music player
 
-            //musicIntent = new Intent(this, typeof(MyService));
-            //StartService(musicIntent);
-
-
-            //broadcastBattery = new BroadcastBattery();
+            musicIntent = new Intent(this, typeof(MyService));
+            StartService(musicIntent);
         }
 
         private void BtnLeader_Click(object sender, EventArgs e)
         {
-            llLeaderBoard.Visibility = ViewStates.Visible;
-            string s1="", s2="", s3="";
-            int level = difficulty;
-
-            if(difficulty == 3)
-                level = 4;
-            if (difficulty == 30)
-                level = 29;
-
-            s1 = "" + (level - 1) + '\n';
-            if (spHighScore.GetInt("level" + (level - 1), 0) == 0)
-                s1 += "---";
+            if(llLeaderBoard.Visibility == ViewStates.Visible)
+                llLeaderBoard.Visibility = ViewStates.Invisible;
             else
-                s1 += "" + spHighScore.GetInt("level" + (level - 1), 0);
+            {
+                llLeaderBoard.Visibility = ViewStates.Visible;
+                string s1 = "", s2 = "", s3 = "";
+                int level = difficulty;
 
-            s2 = "" + (level - 1) + '\n';
-            if (spHighScore.GetInt("level" + (level), 0) == 0)
-                s2 += "---";
-            else
-                s2 += "" + spHighScore.GetInt("level" + (level), 0);
+                if (difficulty == 3)
+                    level = 4;
+                if (difficulty == 30)
+                    level = 29;
 
-            tv1.Text = s1;
+                s1 = "" + (level - 1) + '\n';
+                if (spHighScore.GetInt("level" + (level - 1), 0) == 0)
+                    s1 += "---";
+                else
+                    s1 += "" + spHighScore.GetInt("level" + (level - 1), 0) + " seconds";
 
+                s2 = "" + (level) + '\n';
+                if (spHighScore.GetInt("level" + (level), 0) == 0)
+                    s2 += "---";
+                else
+                    s2 += "" + spHighScore.GetInt("level" + (level), 0) + " seconds";
 
-            s2 = "4\n" + spHighScore.GetInt("level" + 4, 9999);
-            s3 = "5\n" + spHighScore.GetInt("level" + 5, 9999);
+                s3 = "" + (level + 1) + '\n';
+                if (spHighScore.GetInt("level" + (level + 1), 0) == 0)
+                    s3 += "---";
+                else
+                    s3 += "" + spHighScore.GetInt("level" + (level + 1), 0) + " seconds";
+
+                tv1.Text = s1;
+                tv2.Text = s2;
+                tv3.Text = s3;
+            }
+            
         }
 
-        //protected override void OnResume()
-        //{
-        //    base.OnResume();
-        //    MyService.ResumeMusic();
-        //}
+        protected override void OnResume()
+        {
+            base.OnResume();
+            ResumeMusic();
+        }
 
-        //protected override void OnPause()
-        //{
-        //    if (MyService.mp == null)
-        //    {
-        //        musicIntent = new Intent(this, typeof(MyService));
-        //        StartService(musicIntent);
-        //    }
-        //    MyService.PauseMusic();
-        //    base.OnPause();
-        //}
+        protected override void OnPause()
+        {
+            PauseMusic();
+            base.OnPause();
+        }
 
-        //protected override void OnDestroy()
-        //{
-        //    MyService.StopMusic();
-        //    //StopService(musicIntent);
-        //    base.OnDestroy();
-        //}
 
 
         // menu code
@@ -187,6 +186,9 @@ namespace knight_mares_project
             tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
             tvDifficultyInDialog.Text = "" + this.difficulty;
             sb.ProgressChanged += Sb_ProgressChanged;
+
+
+            llLeaderBoard.Visibility = ViewStates.Invisible;
         }
 
         private void BtnSubmit_Click(object sender, System.EventArgs e)
@@ -217,13 +219,16 @@ namespace knight_mares_project
                 int timecompleted = data.GetIntExtra("time", 0);
                 string str = CheckHighScoreInLevel(requestCode, timecompleted);
 
-                tvTitle.Visibility = ViewStates.Gone;
+                tvTitle.Visibility = ViewStates.Invisible;
 
                 tvWinMessage.TextSize = 20;
                 tvWinMessage.Gravity = GravityFlags.Center;
                 tvWinMessage.Text = str;
                 tvWinMessage.Visibility = ViewStates.Visible;
                 btnStart.Text = "play again?";
+
+                llLeaderBoard.Visibility = ViewStates.Invisible;
+
             }
         }
 
@@ -242,6 +247,22 @@ namespace knight_mares_project
             }
             return str;
         }
+
+
+        public void ResumeMusic() // move to mainactivity
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", 1); // 1 to turn on
+            SendBroadcast(i);
+        }
+
+        public void PauseMusic() // move to main
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", 0); // 0 to turn on
+            SendBroadcast(i);
+        }
+
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

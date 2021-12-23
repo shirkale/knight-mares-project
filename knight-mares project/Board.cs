@@ -191,11 +191,19 @@ namespace knight_mares_project
                 {
                     if(nextSquare is MultipleStepSquare nextSquareMult)
                     {
-                        nextSquareMult.ResizeBitmap(false);
-                        this.player.moveToSquare(nextSquareMult);
-                        nextSquareMult.UnstepOn();
+                        if (k == steps - 1)
+                        {
+                            steps--;
+                        }
+                        else
+                        {
+                            nextSquareMult.ResizeBitmap(false);
+                            this.player.moveToSquare(nextSquareMult);
+                            nextSquareMult.UnstepOn();
 
-                        this.checkWin--;
+                            this.checkWin--;
+                        }
+                        
                     }
                     else
                     {

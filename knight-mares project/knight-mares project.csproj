@@ -68,6 +68,7 @@
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />
+    <Compile Include="MusicPlayerBroadcastReciever.cs" />
     <Compile Include="MyService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

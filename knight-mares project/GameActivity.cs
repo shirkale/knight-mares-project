@@ -23,7 +23,7 @@ namespace knight_mares_project
 
         int difficulty;
 
-        int time;
+        int time, result;
         bool won;
 
         ImageButton btnBack;
@@ -31,6 +31,9 @@ namespace knight_mares_project
         //Animations
 
         Animation animTurnUndo;
+
+
+        BroadcastBattery broadcastBattery;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -76,12 +79,13 @@ namespace knight_mares_project
 
             animTurnUndo = AnimationUtils.LoadAnimation(this, Resource.Animation.undobuttonturn);
 
-
-            
-
             btnBack.Click += BtnBack_Click;
+
+
+            broadcastBattery = new BroadcastBattery();
         }
 
+        
         private void BtnBack_Click(object sender, EventArgs e)
         {
             Thread animateBackButton = new Thread(new ThreadStart(AnimateBackButton));
@@ -110,7 +114,8 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
-            string msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, time);
+            this.result = time;
+            string msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, result);
             won = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetTitle("You Win!!! Hooray!!!");
@@ -124,32 +129,36 @@ namespace knight_mares_project
         private void OkAction(object sender, DialogClickEventArgs e)
         {
             Intent i = new Intent();
-            i.PutExtra("time", this.time);
+            i.PutExtra("time", this.result);
             SetResult(Result.Ok, i);
             Finish();
         }
 
-        //protected override void OnResume()
-        //{
-        //    if (MyService.mp == null)
-        //    {
-        //        MainActivity.musicIntent = new Intent(this, typeof(MyService));
-        //        StartService(MainActivity.musicIntent);
-        //    }
-        //    base.OnResume();
-        //    MyService.ResumeMusic();
-        //}
+        protected override void OnResume()
+        {
+            base.OnResume();
+            ResumeMusic();
+        }
 
-        //protected override void OnPause()
-        //{
-        //    if (MyService.mp == null)
-        //    {
-        //        MainActivity.musicIntent = new Intent(this, typeof(MyService));
-        //        StartService(MainActivity.musicIntent);
-        //    }
-        //    MyService.PauseMusic();
-        //    base.OnPause();
-        //}
+        protected override void OnPause()
+        {
+            PauseMusic();
+            base.OnPause();
+        }
+
+        public void ResumeMusic() // move to mainactivity
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", 1); // 1 to turn on
+            SendBroadcast(i);
+        }
+
+        public void PauseMusic() // move to main
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", 0); // 0 to turn on
+            SendBroadcast(i);
+        }
 
     }
 }

@@ -11,20 +11,28 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+
 namespace knight_mares_project
 {
     [Service]
     public class MyService : Service
     {
-        static MediaPlayer mp;
+        MediaPlayer mp;
+        MusicPlayerBroadcastReciever musicPlayerBroadcast;
         public override void OnCreate()
         {
             base.OnCreate();
+            mp = MediaPlayer.Create(this, Resource.Raw.music);
+            musicPlayerBroadcast = new MusicPlayerBroadcastReciever(mp);
+            IntentFilter intentFilter = new IntentFilter("music");
+            RegisterReceiver(musicPlayerBroadcast, intentFilter);
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Thread t = new Thread(Run);
-            t.Start();
+            Intent i = new Intent("music");
+            i.PutExtra("action", 1);
+            SendBroadcast(i);
+
             return base.OnStartCommand(intent, flags, startId);
         }
         public override IBinder OnBind(Intent intent)
@@ -41,21 +49,5 @@ namespace knight_mares_project
             }
             mp.Start();
         }
-
-        public static void ResumeMusic()
-        {
-            mp.Start();
-        }
-
-        public static void PauseMusic()
-        {
-            mp.Pause();
-        }
-        public static void StopMusic()
-        {
-            mp.Stop();
-            MainActivity.hasMusicStarted = false;
-        }
-
     }
 }
