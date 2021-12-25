@@ -194,6 +194,8 @@ namespace knight_mares_project
                         if (k == steps - 1)
                         {
                             steps--;
+                            checkWin--;
+                            break;
                         }
                         else
                         {
@@ -232,8 +234,10 @@ namespace knight_mares_project
                 }
                 else
                 {
-                    if(k < steps/2)
+                    if (k < steps / 2)
                         GenerateRandomMap(canvas);
+                    else
+                        checkWin -= (steps - k);
                     break;
                 }
             }

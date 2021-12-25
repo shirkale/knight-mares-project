@@ -155,15 +155,17 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\skullmenu.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\pumpkinAnimation.xml" />
+  </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\anim\undobuttonturn.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\anim\undobuttonturn2.xml" />
+    <AndroidResource Include="Resources\raw\music.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\music.mp3" />
+    <AndroidResource Include="Resources\raw\move2.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -32,22 +32,11 @@ namespace knight_mares_project
             Intent i = new Intent("music");
             i.PutExtra("action", 1);
             SendBroadcast(i);
-
             return base.OnStartCommand(intent, flags, startId);
         }
         public override IBinder OnBind(Intent intent)
         {
             return null;
-        }
-
-        private void Run()
-        {
-            if(!MainActivity.hasMusicStarted)
-            {
-                mp = MediaPlayer.Create(this, Resource.Raw.music);
-                MainActivity.hasMusicStarted = true;
-            }
-            mp.Start();
         }
     }
 }

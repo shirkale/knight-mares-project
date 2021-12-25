@@ -65,6 +65,7 @@
         android:orientation="horizontal"
         android:visibility="invisible"
         android:id="@+id/linLeader"
+        android:alpha="0.7"
         >
 
         <TextView
@@ -77,6 +78,7 @@
             android:textColor="@android:color/white"
             android:id="@+id/tv1"
             android:layout_margin="5dp"
+            
             />
         <TextView
             android:layout_width="0dp"
@@ -108,7 +110,7 @@
         android:layout_height="222dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/jackolanternremoved2"
-        android:alpha="0.75"/>
+        android:id="@+id/ivPumpkin"/>
 
     <TextView 
         android:layout_width="match_parent"

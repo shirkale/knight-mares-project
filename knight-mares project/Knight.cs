@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+using Android.Media;
 
 namespace knight_mares_project
 {
@@ -21,6 +22,7 @@ namespace knight_mares_project
         private Context context;
         private bool isKnightResized; // knight bitmap needs to be resized once only
 
+        private MediaPlayer mpMove;
         public Knight(Square starter, Context context)
         {
             this.curSquare = starter;
@@ -32,6 +34,9 @@ namespace knight_mares_project
             this.isKnightResized = false;
             this.curSquare.SetImageVisability(false);
             //this.curSquare.StepOn(MainActivity.flag);
+
+            mpMove = MediaPlayer.Create(context, Resource.Raw.move2);
+            mpMove.SetVolume(1, 1);
         }
 
         public void Draw(Canvas canvas)
@@ -59,9 +64,13 @@ namespace knight_mares_project
         public void moveToSquare(Square s)
             // moves the knight to the square inputted
         {
+
+            this.mpMove.Start();
             this.curSquare.SetImageVisability(true);
             this.curSquare = s;
             this.curSquare.SetImageVisability(false);
+
+
         }
 
         public Square GetCurrentSquare()

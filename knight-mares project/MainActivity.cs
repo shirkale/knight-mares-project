@@ -8,6 +8,8 @@ using Android.Graphics;
 using Android.Views;
 using System;
 using AndroidX.AppCompat.View.Menu;
+using Android.Views.Animations;
+using Android.Media;
 
 namespace knight_mares_project
 {
@@ -25,7 +27,6 @@ namespace knight_mares_project
         public static Intent musicIntent;
 
         Button btnStart, btnLeader;
-        // Button btnLvl0, btnLvl1, btnLvl2;
         TextView tvTitle, tvWinMessage, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
 
@@ -41,6 +42,10 @@ namespace knight_mares_project
         // leaderboard
         LinearLayout llLeaderBoard;
         TextView tv1, tv2, tv3;
+
+        // animation
+        ImageView ivPumpkin;
+        Animation pumpkinAnimation;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -62,6 +67,8 @@ namespace knight_mares_project
             tv2 = (TextView)FindViewById(Resource.Id.tv2);
             tv3 = (TextView)FindViewById(Resource.Id.tv3);
             llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
+
+            ivPumpkin = (ImageView)FindViewById(Resource.Id.ivPumpkin);
 
             // high score code
 
@@ -93,6 +100,19 @@ namespace knight_mares_project
 
             musicIntent = new Intent(this, typeof(MyService));
             StartService(musicIntent);
+
+            // animation init
+
+            pumpkinAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.pumpkinAnimation);
+            ivPumpkin.StartAnimation(pumpkinAnimation);
+            ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
+
+            
+        }
+
+        private void Animation_AnimationEnd(object sender, Animation.AnimationEndEventArgs e)
+        {
+            ivPumpkin.StartAnimation(pumpkinAnimation);
         }
 
         private void BtnLeader_Click(object sender, EventArgs e)
