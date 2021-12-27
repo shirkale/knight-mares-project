@@ -3,12 +3,19 @@
 
     <item
         android:id="@+id/difficulty"
-        android:orderInCategory="100"
+        android:orderInCategory="10"
         android:icon="@drawable/skullmenu"
-		android:showAsAction="never"
+		    android:showAsAction="never"
         android:title="DIFFICULTY"
-		layout_width="wrap_content"
-		android:visible="true"
+		    android:visible="true"
         />
+  <item
+    android:id="@+id/mute"
+        android:orderInCategory="100"
+        android:icon="@drawable/mute"
+		    android:showAsAction="never"
+        android:title="MUTE"
+		    android:visible="true"
+    />
 	
 </menu>

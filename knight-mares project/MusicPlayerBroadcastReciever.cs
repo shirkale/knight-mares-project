@@ -17,7 +17,6 @@ namespace knight_mares_project
     public class MusicPlayerBroadcastReciever : BroadcastReceiver
     {
         MediaPlayer mp;
-        AudioManager am;
         Thread t;
         public MusicPlayerBroadcastReciever()
         {
@@ -30,8 +29,7 @@ namespace knight_mares_project
             
 
             mp.SetVolume(1, 1);
-
-            t = new Thread(Run);
+            
         }
 
         private void Run()
@@ -40,6 +38,8 @@ namespace knight_mares_project
             {
                 Thread.Sleep(1000);
             }
+
+            MyService.musicStopped = true;
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -50,12 +50,16 @@ namespace knight_mares_project
             {
                 mp.Start();
                 mp.SetVolume((float)0.3, (float)0.3);
-                MyService.musicStopped = false;
+
+                if(t!=null && t.IsAlive)
+                    t.Abort();
             }
             else if(action == 0)
             {
                 mp.Pause();
-                MyService.musicStopped = true;
+
+                t = new Thread(Run);
+                t.Start();
             }
         }
 

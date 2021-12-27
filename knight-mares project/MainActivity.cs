@@ -46,6 +46,10 @@ namespace knight_mares_project
         // animation
         ImageView ivPumpkin;
         Animation pumpkinAnimation;
+
+        // sound
+
+        bool muted;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -53,6 +57,7 @@ namespace knight_mares_project
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+            muted = false;
             this.difficulty = 15;
 
             // initializing widgets
@@ -194,18 +199,32 @@ namespace knight_mares_project
         // menu code
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.menuDif, menu);
             MenuBuilder m = (MenuBuilder)menu;
             m.SetOptionalIconsVisible(true);
+            MenuInflater.Inflate(Resource.Menu.menuDif, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             base.OnOptionsItemSelected(item);
-            if(item.ItemId == Resource.Id.difficulty)
+            if (item.ItemId == Resource.Id.difficulty)
             {
                 DifficultyDialog();
+            }
+            else if (item.ItemId == Resource.Id.mute)
+            {
+                if (muted)
+                {
+                    ResumeMusic();
+                    item.SetIcon(Resource.Drawable.mute);
+                }
+                else
+                { 
+                    PauseMusic();
+                    item.SetIcon(Resource.Drawable.sound);
+                }
+                muted = !muted;
             }
             return true;
         }

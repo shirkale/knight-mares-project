@@ -17,14 +17,17 @@ namespace knight_mares_project
     [Service]
     public class MyService : Service
     {
-        MediaPlayer mp;
-        MusicPlayerBroadcastReciever musicPlayerBroadcast;
+        MediaPlayer mp; // media player which plays the music
+        MusicPlayerBroadcastReciever musicPlayerBroadcast; // broadcast reciever, is registered with the media player an plays the music according to the user
+
         public static bool musicStopped = false;
         public override void OnCreate()
         {
             base.OnCreate();
+
             mp = MediaPlayer.Create(this, Resource.Raw.music);
             musicPlayerBroadcast = new MusicPlayerBroadcastReciever(mp);
+
             IntentFilter intentFilter = new IntentFilter("music");
             RegisterReceiver(musicPlayerBroadcast, intentFilter);
         }
@@ -33,22 +36,19 @@ namespace knight_mares_project
             Intent i = new Intent("music");
             i.PutExtra("action", 1);
             SendBroadcast(i);
+
+
+            // thread which stops the service if music is stopped for a long time, user left the app
             Thread t = new Thread(Run);
             t.Start();
-
 
             return base.OnStartCommand(intent, flags, startId);
         }
 
         private void Run()
         {
-            while (true)
-            {
-                if (musicStopped)
-                {
-
-                }
-            }
+            while (!musicStopped) ;
+            StopSelf();
         }
 
         public override IBinder OnBind(Intent intent)
