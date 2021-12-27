@@ -19,6 +19,7 @@ namespace knight_mares_project
     {
         MediaPlayer mp;
         MusicPlayerBroadcastReciever musicPlayerBroadcast;
+        public static bool musicStopped = false;
         public override void OnCreate()
         {
             base.OnCreate();
@@ -32,8 +33,24 @@ namespace knight_mares_project
             Intent i = new Intent("music");
             i.PutExtra("action", 1);
             SendBroadcast(i);
+            Thread t = new Thread(Run);
+            t.Start();
+
+
             return base.OnStartCommand(intent, flags, startId);
         }
+
+        private void Run()
+        {
+            while (true)
+            {
+                if (musicStopped)
+                {
+
+                }
+            }
+        }
+
         public override IBinder OnBind(Intent intent)
         {
             return null;

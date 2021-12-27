@@ -107,7 +107,29 @@ namespace knight_mares_project
             ivPumpkin.StartAnimation(pumpkinAnimation);
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
-            
+            tv1.Click += Tv1_Click;
+            tv3.Click += Tv3_Click;
+        }
+
+        private void Tv3_Click(object sender, EventArgs e)
+        {
+            if (difficulty != 29)
+            {
+                difficulty++;
+                BtnLeader_Click(sender, e);
+                BtnLeader_Click(sender, e);
+            }
+
+        }
+
+        private void Tv1_Click(object sender, EventArgs e)
+        {
+            if (difficulty != 4)
+            {
+                difficulty--;
+                BtnLeader_Click(sender, e);
+                BtnLeader_Click(sender, e);
+            }
         }
 
         private void Animation_AnimationEnd(object sender, Animation.AnimationEndEventArgs e)

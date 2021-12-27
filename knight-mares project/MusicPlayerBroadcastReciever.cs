@@ -49,11 +49,13 @@ namespace knight_mares_project
             if(action == 1)
             {
                 mp.Start();
-                mp.SetVolume((float)0.1, (float)0.1);
+                mp.SetVolume((float)0.3, (float)0.3);
+                MyService.musicStopped = false;
             }
             else if(action == 0)
             {
                 mp.Pause();
+                MyService.musicStopped = true;
             }
         }
 
