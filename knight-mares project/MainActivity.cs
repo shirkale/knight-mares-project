@@ -22,8 +22,6 @@ namespace knight_mares_project
         public static string cuteGhostBlue;
         public static string flag;
 
-        public static bool hasMusicStarted = false; // if music has been started, the code resumes it
-
         public static Intent musicIntent;
 
         Button btnStart, btnLeader;
@@ -41,7 +39,7 @@ namespace knight_mares_project
 
         // leaderboard
         LinearLayout llLeaderBoard;
-        TextView tv1, tv2, tv3;
+        TextView tvLbSmall, tvLb, tvLbBig;
 
         // animation
         ImageView ivPumpkin;
@@ -50,6 +48,7 @@ namespace knight_mares_project
         // sound
 
         bool muted;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -68,9 +67,9 @@ namespace knight_mares_project
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
             tvWinMessage = (TextView)FindViewById(Resource.Id.tvTitle);
 
-            tv1 = (TextView)FindViewById(Resource.Id.tv1);
-            tv2 = (TextView)FindViewById(Resource.Id.tv2);
-            tv3 = (TextView)FindViewById(Resource.Id.tv3);
+            tvLbSmall = (TextView)FindViewById(Resource.Id.tv1);
+            tvLb = (TextView)FindViewById(Resource.Id.tv2);
+            tvLbBig = (TextView)FindViewById(Resource.Id.tv3);
             llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
 
             ivPumpkin = (ImageView)FindViewById(Resource.Id.ivPumpkin);
@@ -112,8 +111,8 @@ namespace knight_mares_project
             ivPumpkin.StartAnimation(pumpkinAnimation);
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
-            tv1.Click += Tv1_Click;
-            tv3.Click += Tv3_Click;
+            tvLbSmall.Click += Tv1_Click;
+            tvLbBig.Click += Tv3_Click;
         }
 
         private void Tv3_Click(object sender, EventArgs e)
@@ -175,9 +174,9 @@ namespace knight_mares_project
                 else
                     s3 += "" + spHighScore.GetInt("level" + (level + 1), 0) + " seconds";
 
-                tv1.Text = s1;
-                tv2.Text = s2;
-                tv3.Text = s3;
+                tvLbSmall.Text = s1;
+                tvLb.Text = s2;
+                tvLbBig.Text = s3;
             }
             
         }
@@ -252,7 +251,7 @@ namespace knight_mares_project
             llLeaderBoard.Visibility = ViewStates.Invisible;
         }
 
-        private void BtnSubmit_Click(object sender, System.EventArgs e)
+        private void BtnSubmit_Click(object sender, EventArgs e)
         {
             difficultyDialog.Dismiss();
         }
@@ -265,7 +264,7 @@ namespace knight_mares_project
 
         }
 
-        private void BtnStart_Click(object sender, System.EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
         {
             Intent i = new Intent(this, typeof(GameActivity));
             i.PutExtra("level", difficulty);
