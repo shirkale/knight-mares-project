@@ -25,16 +25,11 @@ namespace knight_mares_project
         {
             this.mp = mp;
             mp.Looping = true;
-
-            
-
-            mp.SetVolume(1, 1);
-            
         }
 
-        private void Run()
+        private void CountDownTilMusicStopped()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(1000);
             }
@@ -49,7 +44,7 @@ namespace knight_mares_project
             if(action == 1)
             {
                 mp.Start();
-                mp.SetVolume((float)0.3, (float)0.3);
+                mp.SetVolume((float)0.4, (float)0.4);
 
                 if(t!=null && t.IsAlive)
                     t.Abort();
@@ -58,7 +53,7 @@ namespace knight_mares_project
             {
                 mp.Pause();
 
-                t = new Thread(Run);
+                t = new Thread(CountDownTilMusicStopped);
                 t.Start();
             }
         }

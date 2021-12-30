@@ -13,7 +13,7 @@ using Android.Media;
 
 namespace knight_mares_project
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/homebutton4")]
     public class MainActivity : AppCompatActivity
     {
         public static string snowtree;
@@ -47,7 +47,7 @@ namespace knight_mares_project
 
         // sound
 
-        bool muted;
+        public static bool muted = false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,7 +56,6 @@ namespace knight_mares_project
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            muted = false;
             this.difficulty = 15;
 
             // initializing widgets
@@ -112,10 +111,11 @@ namespace knight_mares_project
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
             tvLbSmall.Click += Tv1_Click;
-            tvLbBig.Click += Tv3_Click;
+            tvLbBig.Click += TvLbBig_Click;
         }
 
-        private void Tv3_Click(object sender, EventArgs e)
+
+        private void TvLbBig_Click(object sender, EventArgs e)
         {
             if (difficulty != 29)
             {
@@ -214,16 +214,17 @@ namespace knight_mares_project
             else if (item.ItemId == Resource.Id.mute)
             {
                 if (muted)
-                {
+                { 
+                    muted = !muted;
                     ResumeMusic();
                     item.SetIcon(Resource.Drawable.mute);
                 }
                 else
-                { 
+                {
+                    muted = !muted;
                     PauseMusic();
                     item.SetIcon(Resource.Drawable.sound);
                 }
-                muted = !muted;
             }
             return true;
         }
@@ -311,9 +312,21 @@ namespace knight_mares_project
 
         public void ResumeMusic() // move to mainactivity
         {
-            Intent i = new Intent("music");
-            i.PutExtra("action", 1); // 1 to turn on
-            SendBroadcast(i);
+            if(!muted)
+            {
+                if (MyService.musicStopped)
+                {
+                    MyService.musicStopped = false;
+                    musicIntent = new Intent(this, typeof(MyService));
+                    StartService(musicIntent);
+                }
+                else
+                {
+                    Intent i = new Intent("music");
+                    i.PutExtra("action", 1); // 1 to turn on
+                    SendBroadcast(i);
+                }
+            }
         }
 
         public void PauseMusic() // move to main

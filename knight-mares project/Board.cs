@@ -32,11 +32,6 @@ namespace knight_mares_project
 
         private Stack<Square> moves; // stack into which we insert squares the player goes on
 
-
-        // ------------------- temp ------------------- 
-
-        Toast toast;
-
         public Board(Context context, int size, int difficulty) : base(context)
         {
             this.context = context;
@@ -61,9 +56,6 @@ namespace knight_mares_project
 
 
 
-            toast = Toast.MakeText(this.context, ""+checkWin, ToastLength.Short);
-
-
         }
 
 
@@ -78,12 +70,7 @@ namespace knight_mares_project
                 this.player.GetCurrentSquare().UnstepOn();
                 this.player.GetCurrentSquare().ResizeBitmap(false);
                 this.player.moveToSquare((Square)this.moves.Pop());
-
             }
-
-            toast.SetText("" + checkWin);
-            toast.Show();
-
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -108,8 +95,6 @@ namespace knight_mares_project
                     }
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
 
-                    toast.SetText("" + checkWin);
-                    toast.Show();
                 }
             }
             else
@@ -151,12 +136,6 @@ namespace knight_mares_project
                     newSquare.StepOn(newBitmap);
                     Invalidate();
                 }
-
-
-
-
-                toast.SetText("" + checkWin);
-                toast.Show();
             }
             return false;
         }
@@ -349,5 +328,4 @@ namespace knight_mares_project
         }
 
     }
-        
 }

@@ -39,16 +39,21 @@ namespace knight_mares_project
 
 
             // thread which stops the service if music is stopped for a long time, user left the app
-            Thread t = new Thread(Run);
+            Thread t = new Thread(RunUntilMusicStopped);
             t.Start();
 
             return base.OnStartCommand(intent, flags, startId);
         }
 
-        private void Run()
+        private void RunUntilMusicStopped()
         {
             while (!musicStopped) ;
             StopSelf();
+        }
+
+        public override void OnDestroy()
+        {
+            UnregisterReceiver(musicPlayerBroadcast);
         }
 
         public override IBinder OnBind(Intent intent)

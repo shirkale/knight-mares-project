@@ -23,17 +23,16 @@ namespace knight_mares_project
 
         int difficulty;
 
-        int time, result;
+        int time, result; // time counts the time, result saves the time when win:avoiding mistakenly counted seconds
         bool won;
 
         ImageButton btnBack;
+        ImageButton btnHome;
 
         //Animations
 
         Animation animTurnUndo;
 
-
-        BroadcastBattery broadcastBattery;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -47,6 +46,7 @@ namespace knight_mares_project
 
             this.flGame = (FrameLayout)FindViewById(Resource.Id.flBoard);
             this.btnBack = (ImageButton)FindViewById(Resource.Id.btnReturn);
+            this.btnHome = (ImageButton)FindViewById(Resource.Id.btnBackToMainActivity);
 
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
 
@@ -80,12 +80,15 @@ namespace knight_mares_project
             animTurnUndo = AnimationUtils.LoadAnimation(this, Resource.Animation.undobuttonturn);
 
             btnBack.Click += BtnBack_Click;
+            btnHome.Click += BtnHome_Click;
 
-
-            broadcastBattery = new BroadcastBattery();
         }
 
-        
+        private void BtnHome_Click(object sender, EventArgs e)
+        {
+            Finish();
+        }
+
         private void BtnBack_Click(object sender, EventArgs e)
         {
             Thread animateBackButton = new Thread(new ThreadStart(AnimateBackButton));
@@ -147,10 +150,13 @@ namespace knight_mares_project
         }
 
         public void ResumeMusic() // move to mainactivity
-        {
-            Intent i = new Intent("music");
-            i.PutExtra("action", 1); // 1 to turn on
-            SendBroadcast(i);
+        { 
+            if(!MainActivity.muted)
+            {
+                Intent i = new Intent("music");
+                i.PutExtra("action", 1); // 1 to turn on
+                SendBroadcast(i);
+            }
         }
 
         public void PauseMusic() // move to main
