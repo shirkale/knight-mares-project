@@ -16,11 +16,11 @@ namespace knight_mares_project
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, Icon = "@drawable/homebutton4")]
     public class MainActivity : AppCompatActivity
     {
-        public static string snowtree;
-        public static string cuteGhost; // ghost picture
-        public static string cuteGhostPurp; // ghost picture purp
-        public static string cuteGhostBlue;
-        public static string flag;
+        public static Bitmap snowtree;
+        public static Bitmap cuteGhost; // ghost picture
+        public static Bitmap cuteGhostPurp; // ghost picture purp
+        public static Bitmap cuteGhostBlue;
+        public static Bitmap flag;
 
         public static Intent musicIntent;
 
@@ -89,11 +89,11 @@ namespace knight_mares_project
 
             
 
-            snowtree = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.snowtreesmol)); // tree picture
-            cuteGhost = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmol)); // ghost picture
-            cuteGhostPurp = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolpurp)); // ghost picture purp
-            cuteGhostBlue = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue));
-            flag = Helper.BitmapToBase64(BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag));
+            snowtree = BitmapFactory.DecodeResource(Resources, Resource.Drawable.snowtreesmol); // tree picture
+            cuteGhost = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmol); // ghost picture
+            cuteGhostPurp = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolpurp); // ghost picture purp
+            cuteGhostBlue = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue);
+            flag = BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag);
 
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 

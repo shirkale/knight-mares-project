@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="GameActivity.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />

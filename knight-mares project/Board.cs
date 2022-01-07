@@ -11,7 +11,7 @@ namespace knight_mares_project
     public class Board : View
     {
         private Context context;
-        private Square[,] squares;
+        private Square[,] squares; // board 
         private int size; // size * size = board size
         private Knight player; // knight piece that moves on the board
 
@@ -53,11 +53,7 @@ namespace knight_mares_project
             this.difficulty = difficulty;
 
             this.moves = new Stack<Square>();
-
-
-
         }
-
 
         public void GoBack() // undo button
         {
@@ -94,7 +90,6 @@ namespace knight_mares_project
                         this.player.SetCurrentSquare(newSquare);
                     }
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
-
                 }
             }
             else
@@ -110,9 +105,7 @@ namespace knight_mares_project
                 for (int j = 0; j < this.size; j++)
                 {
                     if (this.squares[i, j] is MultipleStepSquare mss)
-                    {
                         mss.UnstepOnFinal();
-                    }
                 }
             }
         }
@@ -127,7 +120,7 @@ namespace knight_mares_project
                     this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
                     this.player.moveToSquare(newSquare);
 
-                    string newBitmap = MainActivity.snowtree;
+                    Bitmap newBitmap = MainActivity.snowtree;
                     if (!(newSquare is MultipleStepSquare))
                     {
                         checkWin--;
@@ -214,7 +207,11 @@ namespace knight_mares_project
                 else
                 {
                     if (k < steps / 2)
+                    {
+                        firstDraw = true;
+                        InitializeBoard(canvas);
                         GenerateRandomMap(canvas);
+                    }
                     else
                         checkWin -= (steps - k);
                     break;

@@ -56,7 +56,6 @@ namespace knight_mares_project
                 this.isKnightResized = true;
             }
 
-
             canvas.DrawBitmap(this.bitmap, x, y, null);
 
         }

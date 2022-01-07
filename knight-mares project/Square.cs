@@ -20,7 +20,7 @@ namespace knight_mares_project
         protected float x, y, w, h;
         protected bool walkedOver;
 
-        protected string bitmap;
+        protected Bitmap bitmap;
         protected bool isBitmapResized; // if false on draw, the bitmap will be resized
         protected int i, j; // square id in matrix
 
@@ -74,12 +74,12 @@ namespace knight_mares_project
         {
             if (!isBitmapResized)  // resizing the bitmap
             {
-                Bitmap toDraw = Bitmap.CreateScaledBitmap(Helper.Base64ToBitmap(this.bitmap), (int)this.w, (int)this.h, true);
-                this.bitmap = Helper.BitmapToBase64(toDraw);
+                Bitmap toDraw = Bitmap.CreateScaledBitmap(this.bitmap, (int)this.w, (int)this.h, true);
+                this.bitmap = toDraw;
                 this.isBitmapResized = true;
             }
             if (visibility)
-                canvas.DrawBitmap(Helper.Base64ToBitmap(this.bitmap), this.x, this.y, null); // when the knight isn't on the square
+                canvas.DrawBitmap(this.bitmap, this.x, this.y, null); // when the knight isn't on the square
             else
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
         }
@@ -137,7 +137,7 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public virtual void StepOn(string bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
+        public virtual void StepOn(Bitmap bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
         {
             this.walkedOver = true;
             this.bitmap = bitmap;
@@ -159,7 +159,7 @@ namespace knight_mares_project
             return j;
         }
 
-        public void SetBitmap(string bitmap)
+        public void SetBitmap(Bitmap bitmap)
         {
             this.bitmap = bitmap;
         }
