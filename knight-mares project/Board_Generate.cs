@@ -8,31 +8,33 @@ using System.Threading;
 
 namespace knight_mares_project
 {
-    public class Board : View
+    public class Board_Generate : View
     {
-        private Context context;
-        private Square[,] squares; // board 
-        private int size; // size * size = board size
-        private Knight player; // knight piece that moves on the board
+        protected Context context;
+        protected Square[,] squares; // board 
+        protected int size; // size * size = board size
+        protected Knight player; // knight piece that moves on the board
 
-        private bool firstDraw; // helps create the matrix
-        private bool firstKnight; // helps initiailize the knight
-        private Paint borders; // paintbrush for borders
+        protected bool firstDraw; // helps create the matrix
+        protected bool firstKnight; // helps initiailize the knight
+        protected Paint borders; // paintbrush for borders
 
 
-        private int checkWin; // when checkWin reaches 0, it means all the walkable squares are walked on
-        
+        protected int checkWin; // when checkWin reaches 0, it means all the walkable squares are walked on
+
         private int difficulty; // maximum number of moves the computer simulates
 
-        private readonly int[] xMove = { -1, 1, 2, 2, 1, -1, -2, -2}; 
-        private readonly int[] yMove = { 2, 2, 1, -1, -2, -2, -1, 1};
+        protected readonly int[] xMove = { -1, 1, 2, 2, 1, -1, -2, -2};
+        protected readonly int[] yMove = { 2, 2, 1, -1, -2, -2, -1, 1};
 
         public EventHandler winEvent;
         public EventHandler updateEvent;
 
-        private Stack<Square> moves; // stack into which we insert squares the player goes on
+        protected Stack<Square> moves; // stack into which we insert squares the player goes on
 
-        public Board(Context context, int size, int difficulty) : base(context)
+        protected Square starter; // saves the starter square
+
+        public Board_Generate(Context context, int size, int difficulty) : base(context)
         {
             this.context = context;
             this.size = size;
@@ -225,7 +227,7 @@ namespace knight_mares_project
             return random.Next(100) < 10;
         }
 
-        private void InitializeKnight()
+        protected void InitializeKnight()
         {
             Square starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
@@ -267,12 +269,12 @@ namespace knight_mares_project
             return null;
         }
 
-        private bool EdgeCheck(int newX, int newY)
+        protected bool EdgeCheck(int newX, int newY)
         {
             return (!(newX < 0 || newX >= this.size || newY < 0 || newY >= this.size));
         }
 
-        private bool AllTrue(bool[] boolArray)
+        protected bool AllTrue(bool[] boolArray)
         {
             for (int i = 0; i < boolArray.Length; i++)
             {
@@ -291,7 +293,7 @@ namespace knight_mares_project
             return squares[i, j];
         }
 
-        private void InitializeBoard(Canvas canvas) // initializes board and player on first run, draws all squares
+        public void InitializeBoard(Canvas canvas) // initializes board and player on first run, draws all squares
         {
             int x = 0;
             int y = 0;
@@ -306,7 +308,8 @@ namespace knight_mares_project
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
                         this.squares[i, j] = new Square(x, y, w, h, i, j, this.context);
-                        this.squares[i, j].StepOn(MainActivity.snowtree); // step on all, so later they can be unstepped
+                        if (this is Board_Knight_s_Tour)
+                            this.squares[i, j].UnstepOn();
                     }
 
                     this.squares[i, j].Draw(canvas); // draw cur square

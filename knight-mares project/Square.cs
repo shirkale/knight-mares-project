@@ -36,7 +36,7 @@ namespace knight_mares_project
             this.w = w;
             this.h = h;
             this.bitmap = MainActivity.snowtree;
-            this.walkedOver = false;
+            this.walkedOver = true; // for gen board all squares need to be stepped on init. 
 
             this.i = i;
             this.j = j;

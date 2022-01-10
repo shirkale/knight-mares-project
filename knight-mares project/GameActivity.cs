@@ -17,7 +17,7 @@ namespace knight_mares_project
     public class GameActivity : Activity
     {
         FrameLayout flGame;
-        Board game;
+        Board_Generate game;
 
         TextView tvTime;
 
@@ -54,7 +54,7 @@ namespace knight_mares_project
 
             difficulty = Intent.GetIntExtra("level", 3);
 
-            this.game = new Board(this, 8, difficulty);
+            this.game = new Board_Knight_s_Tour(this, 8);
 
             // adding the board to the framelayout
             this.flGame.AddView(this.game);
