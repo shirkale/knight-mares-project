@@ -9,16 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace knight_mares_project
 {
     public class Board_Knight_s_Tour : Board_Generate
     {
-        List<Square> solution;
+        List<Square> solution; // list into which a path will be inserted
+        bool won;
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size - 1;
             this.solution = new List<Square>();
+            won = false;
         }
         protected override void OnDraw(Canvas canvas)
         {
@@ -32,6 +35,7 @@ namespace knight_mares_project
                 {
                     firstDraw = false;
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    SolveTour();
                 }
             }
             else
@@ -43,29 +47,62 @@ namespace knight_mares_project
         public void SolveTour()
         {
             UnstepOnAll();
+            solution.Add(starter);
             FindTour(this.starter);
+            //for (int i = 1; i < this.solution.Count; i++)
+            //{
+            //    this.player.moveToSquare(this.solution[i]);
+            //    Thread.Sleep(1000);
+            //}
+
+            Console.WriteLine("solution count: " + solution.Count);
+
+            for (int i = 0; i < this.solution.Count; i++)
+            {
+                Console.WriteLine(this.solution[i].GetI() + ", " + this.solution[i].GetJ());
+            }
         }
 
-        private List<Square> FindTour(Square curSquare)
+        private void FindTour(Square curSquare)
         {
-            if (checkWin == 0)
-                return this.solution;
-            else if (Stuck(curSquare))
-            {
-                solution.Remove(solution[solution.Count]);
-                return this.solution;
-            }
+            if (won)
+            { }
             else
             {
-                int i = curSquare.GetI();
-                int j = curSquare.GetJ();
-                for(int k = 0; k < 8; k++)
+                if (solution.Count == size * size)
                 {
-                    Square newSquare = this.squares[i + xMove[k], j + yMove[k]];
-                    solution.Add(newSquare);
-                    FindTour(newSquare);
+                    Console.WriteLine("win");
+                    won = true;
                 }
-                return this.solution;
+                else if (Stuck(curSquare))
+                {
+                    solution[solution.Count - 1].UnstepOn();
+                    Console.WriteLine("stuck " + curSquare.GetI() + " " + curSquare.GetJ());
+                    solution.Remove(solution[solution.Count - 1]);
+                }
+                else
+                {
+                    Console.WriteLine("not stuck " + curSquare.GetI() + " " + curSquare.GetJ());
+                    for (int k = 0; k < 8; k++)
+                    {
+                        int newX = curSquare.GetI() + xMove[k];
+                        int newY = curSquare.GetJ() + yMove[k];
+                        if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
+                        {
+                            Square newSquare = this.squares[newX, newY];
+                            newSquare.StepOn(MainActivity.flag);
+                            solution.Add(newSquare);
+                            Console.WriteLine(newSquare.GetI() + ", " + newSquare.GetJ());
+                            FindTour(newSquare);
+                        }
+                    }
+                    if(!won)
+                    {
+                        Console.WriteLine("going back from " + curSquare.GetI() + " " + curSquare.GetJ());
+                        solution[solution.Count - 1].UnstepOn();
+                        solution.RemoveAt(solution.Count - 1);
+                    }
+                }
             }
         }
 
@@ -74,14 +111,14 @@ namespace knight_mares_project
             for (int i = 0; i < 8; i++)
             {
                 int newX = curSquare.GetI() + xMove[i];
-                int newY = curSquare.GetJ() + xMove[i];
+                int newY = curSquare.GetJ() + yMove[i];
                 
-                if (EdgeCheck(newX, newY) && squares[newX, newY].IsWalkedOver())
+                if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
         private void UnstepOnAll()

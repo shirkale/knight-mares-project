@@ -54,7 +54,7 @@ namespace knight_mares_project
 
             difficulty = Intent.GetIntExtra("level", 3);
 
-            this.game = new Board_Knight_s_Tour(this, 8);
+            this.game = new Board_Knight_s_Tour(this, 5);
 
             // adding the board to the framelayout
             this.flGame.AddView(this.game);

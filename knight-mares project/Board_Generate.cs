@@ -229,7 +229,7 @@ namespace knight_mares_project
 
         protected void InitializeKnight()
         {
-            Square starter = PickRandomStarter();
+            this.starter = PickRandomStarter();
             this.player = new Knight(starter, this.context);
             starter.ResizeBitmap(false);
             this.firstKnight = false;
@@ -269,7 +269,7 @@ namespace knight_mares_project
             return null;
         }
 
-        protected bool EdgeCheck(int newX, int newY)
+        protected bool EdgeCheck(int newX, int newY) // returns true if the x and y are on the board
         {
             return (!(newX < 0 || newX >= this.size || newY < 0 || newY >= this.size));
         }
