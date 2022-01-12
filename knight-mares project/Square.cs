@@ -29,7 +29,10 @@ namespace knight_mares_project
         protected Paint p; // paint is used when knight stands on square, hiding the image with visibility
 
         protected Context context;
-        public Square(float x, float y, float w, float h, int i, int j, Context context)
+
+        protected int numOfPossibleMoves; // num of possible moves for each square according to it's placement on the board
+
+        public Square(float x, float y, float w, float h, int i, int j, Context context, int size)
         {
             this.x = x;
             this.y = y;
@@ -49,6 +52,61 @@ namespace knight_mares_project
             this.p = new Paint();
             this.p.Color = Color.ParseColor("#F07E1A");
             this.p.Alpha = 60;
+
+
+            // https://www.sciencedirect.com/science/article/pii/S0166218X04003488
+            // https://bradfieldcs.com/algos/graphs/knights-tour/
+
+
+            if (i == 0)
+            {
+                if(j == 0 || j == size-1) // corner : 2
+                {
+                    numOfPossibleMoves = 2;
+                }
+                else if(j == 1 || j == size - 2) // around corner : 3
+                {
+                    numOfPossibleMoves = 3;
+                }
+                else
+                {
+                    numOfPossibleMoves = 4; // middle row 0
+                }
+            }
+            else if(i == size-1)
+            {
+                if (j == 0 || j == size - 1) // corner : 2
+                {
+                    numOfPossibleMoves = 2;
+                }
+                else if (j == 1 || j == size - 2) // around corner : 3
+                {
+                    numOfPossibleMoves = 3;
+                }
+                else
+                {
+                    numOfPossibleMoves = 4; // middle row size-1
+                }
+            }
+            else if(i == 1)
+            {
+                if (j == 0 || j == size - 1) // around corner : 3
+                {
+                    numOfPossibleMoves = 3;
+                }
+                else if (j == 1 || j == size - 2) // around corner : 4
+                {
+                    numOfPossibleMoves = 4;
+                }
+            }
+            else if(i == size-2)
+            {
+                if (j == 0 || j == size - 1) // around corner : 3
+                {
+                    numOfPossibleMoves = 3;
+                }
+            }
+
         }
 
         public Square(Square s)

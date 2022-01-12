@@ -83,6 +83,18 @@ namespace knight_mares_project
                 else
                 {
                     Console.WriteLine("not stuck " + curSquare.GetI() + " " + curSquare.GetJ());
+
+                    Square[] toSort = new Square[8];
+
+                    for (int i = 0; i < toSort.Length; i++)
+                    {
+                        int newX = curSquare.GetI() + xMove[i];
+                        int newY = curSquare.GetJ() + yMove[i];
+                        Square newSquare = this.squares[newX, newY];
+
+                    }
+
+
                     for (int k = 0; k < 8; k++)
                     {
                         int newX = curSquare.GetI() + xMove[k];

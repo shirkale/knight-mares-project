@@ -12,7 +12,7 @@ namespace knight_mares_project
     {
         protected Context context;
         protected Square[,] squares; // board 
-        protected int size; // size * size = board size
+        public int size; // size * size = board size
         protected Knight player; // knight piece that moves on the board
 
         protected bool firstDraw; // helps create the matrix
