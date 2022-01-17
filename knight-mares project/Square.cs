@@ -58,22 +58,7 @@ namespace knight_mares_project
             // https://bradfieldcs.com/algos/graphs/knights-tour/
 
 
-            if (i == 0)
-            {
-                if(j == 0 || j == size-1) // corner : 2
-                {
-                    numOfPossibleMoves = 2;
-                }
-                else if(j == 1 || j == size - 2) // around corner : 3
-                {
-                    numOfPossibleMoves = 3;
-                }
-                else
-                {
-                    numOfPossibleMoves = 4; // middle row 0
-                }
-            }
-            else if(i == size-1)
+            if (i == 0 || i == size - 1)
             {
                 if (j == 0 || j == size - 1) // corner : 2
                 {
@@ -85,10 +70,10 @@ namespace knight_mares_project
                 }
                 else
                 {
-                    numOfPossibleMoves = 4; // middle row size-1
+                    numOfPossibleMoves = 4; // middle row
                 }
             }
-            else if(i == 1)
+            else if (i == 1 || i == size - 2)
             {
                 if (j == 0 || j == size - 1) // around corner : 3
                 {
@@ -98,15 +83,32 @@ namespace knight_mares_project
                 {
                     numOfPossibleMoves = 4;
                 }
-            }
-            else if(i == size-2)
-            {
-                if (j == 0 || j == size - 1) // around corner : 3
+                else
                 {
-                    numOfPossibleMoves = 3;
+                    numOfPossibleMoves = 6; // middle row
+                }
+            }
+            else // middle rows
+            {
+                if (j == 0 || j == size - 1) // edges
+                {
+                    numOfPossibleMoves = 4;
+                }
+                else if (j == 1 || j == size - 2) // left and right
+                {
+                    numOfPossibleMoves = 6;
+                }
+                else
+                {
+                    numOfPossibleMoves = 8; // center row
                 }
             }
 
+        }
+
+        public int GetNumPossibleMoves()
+        {
+            return numOfPossibleMoves;
         }
 
         public Square(Square s)

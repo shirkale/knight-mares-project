@@ -84,29 +84,52 @@ namespace knight_mares_project
                 {
                     Console.WriteLine("not stuck " + curSquare.GetI() + " " + curSquare.GetJ());
 
-                    Square[] toSort = new Square[8];
+                    List<Square> toSort = new List<Square>();
 
-                    for (int i = 0; i < toSort.Length; i++)
+                    for (int i = 0; i < 8; i++)
                     {
                         int newX = curSquare.GetI() + xMove[i];
                         int newY = curSquare.GetJ() + yMove[i];
-                        Square newSquare = this.squares[newX, newY];
-
-                    }
-
-
-                    for (int k = 0; k < 8; k++)
-                    {
-                        int newX = curSquare.GetI() + xMove[k];
-                        int newY = curSquare.GetJ() + yMove[k];
                         if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
                         {
-                            Square newSquare = this.squares[newX, newY];
-                            newSquare.StepOn(MainActivity.flag);
-                            solution.Add(newSquare);
-                            Console.WriteLine(newSquare.GetI() + ", " + newSquare.GetJ());
-                            FindTour(newSquare);
+                            Square squareToSort = this.squares[newX, newY];
+                            if (toSort.Count == 0)
+                                toSort.Add(squareToSort);
+                            else if (squareToSort.GetNumPossibleMoves() <= 3)
+                            {
+                                toSort.Insert(0, squareToSort);
+                            }
+                            else if (squareToSort.GetNumPossibleMoves() == 8)
+                            {
+                                toSort.Add(squareToSort);
+                            }
+                            else
+                            {
+                                bool added = false;
+                                for (int j = 0; j < toSort.Count; j++)
+                                {
+                                    if (toSort[j].GetNumPossibleMoves() >= squareToSort.GetNumPossibleMoves())
+                                    {
+                                        toSort.Insert(j, squareToSort);
+                                        added = true;
+                                        j = toSort.Count;
+                                    }
+                                }
+                                if(!added)
+                                {
+                                    toSort.Add(squareToSort);
+                                }
+                            }
                         }
+                    }
+
+                    for (int k = 0; k < toSort.Count; k++)
+                    {
+                        Square newSquare = toSort[k];
+                        newSquare.StepOn(MainActivity.flag);
+                        solution.Add(newSquare);
+                        Console.WriteLine(newSquare.GetI() + ", " + newSquare.GetJ());
+                        FindTour(newSquare);
                     }
                     if(!won)
                     {
