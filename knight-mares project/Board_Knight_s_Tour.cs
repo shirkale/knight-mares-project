@@ -16,25 +16,28 @@ namespace knight_mares_project
     public class Board_Knight_s_Tour : Board_Generate
     {
         List<Square> solution; // list into which a path will be inserted
-        bool won;
+        int count;
+
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size - 1;
             this.solution = new List<Square>();
-            won = false;
+            count = 0;
         }
         protected override void OnDraw(Canvas canvas)
         {
             if (checkWin > 0)
             {
                 InitializeBoard(canvas);
-                if (firstKnight)
-                    InitializeKnight();
+                //if (firstKnight)
+                //    InitializeKnight();
 
                 if (firstDraw)
                 {
                     firstDraw = false;
-                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    //this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    this.starter = this.squares[0, 3];
+                    this.starter.StepOn(MainActivity.flag);
                     SolveTour();
                 }
             }
@@ -63,98 +66,83 @@ namespace knight_mares_project
             }
         }
 
-        private void FindTour(Square curSquare)
+        private bool FindTour(Square curSquare)
         {
-            if (won)
-            { }
+            count++;
+            Console.WriteLine(count);
+            if (solution.Count == size * size)
+                return true;
             else
             {
-                if (solution.Count == size * size)
-                {
-                    Console.WriteLine("win");
-                    won = true;
-                }
-                else if (Stuck(curSquare))
-                {
-                    solution[solution.Count - 1].UnstepOn();
-                    Console.WriteLine("stuck " + curSquare.GetI() + " " + curSquare.GetJ());
-                    solution.Remove(solution[solution.Count - 1]);
-                }
-                else
-                {
-                    Console.WriteLine("not stuck " + curSquare.GetI() + " " + curSquare.GetJ());
+                Console.WriteLine("trying " + curSquare.GetI() + " " + curSquare.GetJ());
 
-                    List<Square> toSort = new List<Square>();
+                List<Square> toSort = new List<Square>();
 
-                    for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 8; i++)
+                {
+                    int newX = curSquare.GetI() + xMove[i];
+                    int newY = curSquare.GetJ() + yMove[i];
+                    if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
                     {
-                        int newX = curSquare.GetI() + xMove[i];
-                        int newY = curSquare.GetJ() + yMove[i];
-                        if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
+                        Square squareToSort = this.squares[newX, newY];
+                        if (toSort.Count == 0)
+                            toSort.Add(squareToSort);
+                        else if (squareToSort.GetNumPossibleMoves() <= 3)
                         {
-                            Square squareToSort = this.squares[newX, newY];
-                            if (toSort.Count == 0)
-                                toSort.Add(squareToSort);
-                            else if (squareToSort.GetNumPossibleMoves() <= 3)
+                            toSort.Insert(0, squareToSort);
+                        }
+                        else if (squareToSort.GetNumPossibleMoves() == 8)
+                        {
+                            toSort.Add(squareToSort);
+                        }
+                        else
+                        {
+                            bool added = false;
+                            for (int j = 0; j < toSort.Count; j++)
                             {
-                                toSort.Insert(0, squareToSort);
-                            }
-                            else if (squareToSort.GetNumPossibleMoves() == 8)
-                            {
-                                toSort.Add(squareToSort);
-                            }
-                            else
-                            {
-                                bool added = false;
-                                for (int j = 0; j < toSort.Count; j++)
+                                if (toSort[j].GetNumPossibleMoves() >= squareToSort.GetNumPossibleMoves())
                                 {
-                                    if (toSort[j].GetNumPossibleMoves() >= squareToSort.GetNumPossibleMoves())
-                                    {
-                                        toSort.Insert(j, squareToSort);
-                                        added = true;
-                                        j = toSort.Count;
-                                    }
+                                    toSort.Insert(j, squareToSort);
+                                    added = true;
+                                    j = toSort.Count;
                                 }
-                                if(!added)
-                                {
-                                    toSort.Add(squareToSort);
-                                }
+                            }
+                            if(!added)
+                            {
+                                toSort.Add(squareToSort);
                             }
                         }
                     }
-
-                    for (int k = 0; k < toSort.Count; k++)
-                    {
-                        Square newSquare = toSort[k];
-                        newSquare.StepOn(MainActivity.flag);
-                        solution.Add(newSquare);
-                        Console.WriteLine(newSquare.GetI() + ", " + newSquare.GetJ());
-                        FindTour(newSquare);
-                    }
-                    if(!won)
-                    {
-                        Console.WriteLine("going back from " + curSquare.GetI() + " " + curSquare.GetJ());
-                        solution[solution.Count - 1].UnstepOn();
-                        solution.RemoveAt(solution.Count - 1);
-                    }
                 }
-            }
-        }
 
-        private bool Stuck(Square curSquare)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                int newX = curSquare.GetI() + xMove[i];
-                int newY = curSquare.GetJ() + yMove[i];
-                
-                if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
+                if (toSort.Count == 0) // stuck, no way to go
                 {
+                    solution[solution.Count - 1].UnstepOn();
+                    Console.WriteLine("stuck " + solution[solution.Count - 1].GetI() + " " + solution[solution.Count - 1].GetJ());
+                    solution.RemoveAt(solution.Count - 1);
                     return false;
                 }
+
+                for (int k = 0; k < toSort.Count; k++)
+                {
+                    Console.WriteLine("****going down****");
+                    Square newSquare = toSort[k];
+                    newSquare.StepOn(MainActivity.flag);
+                    solution.Add(newSquare);
+                    if (FindTour(newSquare))
+                        return true;
+                    //else
+                    //{
+                    //    solution[solution.Count - 1].UnstepOn();
+                    //    solution.RemoveAt(solution.Count - 1);
+                    //}
+                }
+                solution[solution.Count - 1].UnstepOn();
+                solution.RemoveAt(solution.Count - 1);
+                return false; // couldn't find knight's tour
             }
-            return true;
         }
+
 
         private void UnstepOnAll()
         {
