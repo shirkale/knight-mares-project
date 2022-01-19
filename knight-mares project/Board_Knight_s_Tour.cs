@@ -36,7 +36,7 @@ namespace knight_mares_project
                 {
                     firstDraw = false;
                     //this.player.GetCurrentSquare().StepOn(MainActivity.flag);
-                    this.starter = this.squares[0, 1];
+                    this.starter = this.squares[0, 2];
                     this.starter.StepOn(MainActivity.flag);
                     SolveTour();
                 }
@@ -98,7 +98,6 @@ namespace knight_mares_project
                             else
                             {
                                 toSort.RemoveAt(0);
-                                solution.RemoveAt(solution.Count - 1);
                             }
                         }
                         else if (squareToSort.GetNumPossibleMoves() == 8)
