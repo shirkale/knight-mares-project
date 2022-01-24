@@ -17,14 +17,14 @@ namespace knight_mares_project
     {
         List<Square> solution; // list into which a path will be inserted
         int count;
-        bool showSolution;
+        int index;
 
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
-            this.checkWin = size * size - 1;
+            this.checkWin = size * size;
             this.solution = new List<Square>();
             count = 0;
-            showSolution = false;
+            index = 1;
         }
         protected override void OnDraw(Canvas canvas)
         {
@@ -34,22 +34,28 @@ namespace knight_mares_project
                 if (firstKnight)
                     InitializeKnight();
 
+                this.player.Draw(canvas);
+
                 if (firstDraw)
                 {
                     firstDraw = false;
                     this.player.GetCurrentSquare().StepOn(MainActivity.flag);
                     SolveTour();
-                    showSolution = true;
 
+                    UnstepAll();
                     this.player.moveToSquare(solution[0]);
                     solution[0].StepOn(MainActivity.flag);
                 }
 
-                if(showSolution)
+                if(index < solution.Count)
                 {
-                    GoOverSolution();
-                    showSolution = false;
+                    this.player.moveToSquare(solution[index]);
+                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    index++;
+                    Thread.Sleep(500);
+                    Invalidate();
                 }
+
             }
             else
             {
@@ -57,26 +63,11 @@ namespace knight_mares_project
             }
         }
 
-        private void GoOverSolution()
-        {
-            for(int i = 1; i < solution.Count; i++)
-            {
-                this.player.moveToSquare(solution[i]);
-                solution[0].StepOn(MainActivity.flag);
-                Thread.Sleep(100);
-            }
-        }
-
         public void SolveTour()
         {
-            UnstepOnAll();
+            GoBackAll();
             solution.Add(starter);
             FindTour(this.starter);
-            //for (int i = 1; i < this.solution.Count; i++)
-            //{
-            //    this.player.moveToSquare(this.solution[i]);
-            //    Thread.Sleep(1000);
-            //}
 
             Console.WriteLine("solution count: " + solution.Count);
 
@@ -90,7 +81,7 @@ namespace knight_mares_project
         {
             count++;
             Console.WriteLine(count);
-            if (solution.Count == size * size)
+            if (solution.Count == this.checkWin)
                 return true;
             else
             {
@@ -168,11 +159,22 @@ namespace knight_mares_project
         }
 
 
-        private void UnstepOnAll()
+        private void GoBackAll()
         {
             while (this.moves.Count > 0)
             {
                 this.GoBack();
+            }
+        }
+
+        private void UnstepAll()
+        {
+            for (int i = 0; i < this.size; i++)
+            {
+                for (int j = 0; j < this.size; j++)
+                {
+                    squares[i, j].UnstepOn();
+                }
             }
         }
     }
