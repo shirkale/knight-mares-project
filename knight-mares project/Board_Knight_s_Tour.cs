@@ -17,33 +17,53 @@ namespace knight_mares_project
     {
         List<Square> solution; // list into which a path will be inserted
         int count;
+        bool showSolution;
 
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size - 1;
             this.solution = new List<Square>();
             count = 0;
+            showSolution = false;
         }
         protected override void OnDraw(Canvas canvas)
         {
             if (checkWin > 0)
             {
                 InitializeBoard(canvas);
-                //if (firstKnight)
-                //    InitializeKnight();
+                if (firstKnight)
+                    InitializeKnight();
 
                 if (firstDraw)
                 {
                     firstDraw = false;
-                    //this.player.GetCurrentSquare().StepOn(MainActivity.flag);
-                    this.starter = this.squares[0, 2];
-                    this.starter.StepOn(MainActivity.flag);
+                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
                     SolveTour();
+                    showSolution = true;
+
+                    this.player.moveToSquare(solution[0]);
+                    solution[0].StepOn(MainActivity.flag);
+                }
+
+                if(showSolution)
+                {
+                    GoOverSolution();
+                    showSolution = false;
                 }
             }
             else
             {
                 winEvent.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void GoOverSolution()
+        {
+            for(int i = 1; i < solution.Count; i++)
+            {
+                this.player.moveToSquare(solution[i]);
+                solution[0].StepOn(MainActivity.flag);
+                Thread.Sleep(100);
             }
         }
 
