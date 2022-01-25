@@ -49,6 +49,10 @@ namespace knight_mares_project
 
         public static bool muted = false;
 
+        // TypeGame
+
+        private TypeGame typegame;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -112,6 +116,10 @@ namespace knight_mares_project
 
             tvLbSmall.Click += Tv1_Click;
             tvLbBig.Click += TvLbBig_Click;
+
+            // typgame init
+
+            typegame = TypeGame.Generate;
         }
 
 
@@ -141,7 +149,7 @@ namespace knight_mares_project
             ivPumpkin.StartAnimation(pumpkinAnimation);
         }
 
-        private void BtnLeader_Click(object sender, EventArgs e)
+        private void BtnLeader_Click(object sender, EventArgs e) // display leaderboards
         {
             if(llLeaderBoard.Visibility == ViewStates.Visible)
                 llLeaderBoard.Visibility = ViewStates.Invisible;
@@ -262,13 +270,13 @@ namespace knight_mares_project
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
-
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
         {
             Intent i = new Intent(this, typeof(GameActivity));
             i.PutExtra("level", difficulty);
+            i.PutExtra("type", (char)this.typegame);
             StartActivityForResult(i, this.difficulty);
         }
 

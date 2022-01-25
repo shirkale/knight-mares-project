@@ -37,18 +37,34 @@
         android:id="@+id/tvTitle" 
         android:alpha="0.7"
         />
-    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        >
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="click here to play"
+            android:text="Generate Path"
             android:id="@+id/btnStart"
             android:fontFamily="sans-serif-smallcaps"
             android:backgroundTint="#171747"
-            android:layout_marginTop="20dp"
             android:padding="10dp"
+            android:layout_marginRight="10dp"
             />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Knight's Tour"
+            android:id="@+id/btnKnightsTour"
+            android:fontFamily="sans-serif-smallcaps"
+            android:backgroundTint="#171747"
+            android:padding="10dp"
+            />
+    </LinearLayout>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

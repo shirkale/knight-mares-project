@@ -38,18 +38,15 @@ namespace knight_mares_project
             this.y = y;
             this.w = w;
             this.h = h;
-            this.bitmap = MainActivity.snowtree;
             this.walkedOver = true; // for gen board all squares need to be stepped on init. 
 
             this.i = i;
             this.j = j;
 
-            isBitmapResized = false;
-
             this.context = context;
             visibility = true;
 
-            this.p = new Paint();
+            this.p = new Paint(); 
             this.p.Color = Color.ParseColor("#F07E1A");
             this.p.Alpha = 60;
 
@@ -57,59 +54,8 @@ namespace knight_mares_project
             // https://www.sciencedirect.com/science/article/pii/S0166218X04003488
             // https://bradfieldcs.com/algos/graphs/knights-tour/
 
-
-            if (i == 0 || i == size - 1)
-            {
-                if (j == 0 || j == size - 1) // corner : 2
-                {
-                    numOfPossibleMoves = 2;
-                }
-                else if (j == 1 || j == size - 2) // around corner : 3
-                {
-                    numOfPossibleMoves = 3;
-                }
-                else
-                {
-                    numOfPossibleMoves = 4; // middle row
-                }
-            }
-            else if (i == 1 || i == size - 2)
-            {
-                if (j == 0 || j == size - 1) // around corner : 3
-                {
-                    numOfPossibleMoves = 3;
-                }
-                else if (j == 1 || j == size - 2) // around corner : 4
-                {
-                    numOfPossibleMoves = 4;
-                }
-                else
-                {
-                    numOfPossibleMoves = 6; // middle row
-                }
-            }
-            else // middle rows
-            {
-                if (j == 0 || j == size - 1) // edges
-                {
-                    numOfPossibleMoves = 4;
-                }
-                else if (j == 1 || j == size - 2) // left and right
-                {
-                    numOfPossibleMoves = 6;
-                }
-                else
-                {
-                    numOfPossibleMoves = 8; // center row
-                }
-            }
-
         }
 
-        public int GetNumPossibleMoves()
-        {
-            return numOfPossibleMoves;
-        }
 
         public Square(Square s)
         {

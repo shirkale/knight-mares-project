@@ -16,8 +16,8 @@ namespace knight_mares_project
     public class Board_Knight_s_Tour : Board_Generate
     {
         List<Square> solution; // list into which a path will be inserted
-        int count;
-        int index;
+        int count; // for debugging delete when done
+        int index; // for running the simulation solution comp calculates
 
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
@@ -107,9 +107,7 @@ namespace knight_mares_project
                             if (FindTour(squareToSort))
                                 return true;
                             else
-                            {
                                 toSort.RemoveAt(0);
-                            }
                         }
                         else if (squareToSort.GetNumPossibleMoves() == 8)
                         {
@@ -143,10 +141,9 @@ namespace knight_mares_project
                     return false;
                 }
 
-                for (int k = 0; k < toSort.Count; k++)
+                foreach(Square newSquare in toSort)
                 {
                     Console.WriteLine("****going down****");
-                    Square newSquare = toSort[k];
                     newSquare.StepOn(MainActivity.flag);
                     solution.Add(newSquare);
                     if (FindTour(newSquare))

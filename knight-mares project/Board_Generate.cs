@@ -322,7 +322,7 @@ namespace knight_mares_project
             }
 
             if (!this.firstDraw)
-                //this.player.Draw(canvas);
+                this.player.Draw(canvas);
 
             Invalidate();
         }

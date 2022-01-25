@@ -53,8 +53,22 @@ namespace knight_mares_project
             // initializing board according to level selection
 
             difficulty = Intent.GetIntExtra("level", 3);
+            TypeGame type = (TypeGame)Intent.GetCharExtra("type", '0');
+            int size = 8;
 
-            this.game = new Board_Knight_s_Tour(this, 8);
+            switch(type)
+            {
+                case TypeGame.Generate:
+                    this.game = new Board_Generate(this, size, difficulty);
+                    break;
+                case TypeGame.Tour:
+                    this.game = new Board_Knight_s_Tour(this, size);
+                    break;
+                default:
+                    this.game = new Board_Generate(this, size, difficulty);
+                    break;
+            }
+            
 
             // adding the board to the framelayout
             this.flGame.AddView(this.game);

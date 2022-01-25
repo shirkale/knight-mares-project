@@ -64,6 +64,7 @@
     <Compile Include="Board_Generate.cs" />
     <Compile Include="Board_Knight_s_Tour.cs" />
     <Compile Include="GameActivity.cs" />
+    <Compile Include="GhostSquare.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />
