@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -13,61 +14,58 @@ namespace knight_mares_project
 {
     public class GhostSquare : Square
     {
+        protected Bitmap bitmap;
+        protected bool isBitmapResized; // if false on draw, the bitmap will be resized
         public GhostSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context, size)
         {
             this.bitmap = MainActivity.snowtree;
             this.isBitmapResized = false;
+        }
 
-            if (i == 0 || i == size - 1)
-            {
-                if (j == 0 || j == size - 1) // corner : 2
-                {
-                    numOfPossibleMoves = 2;
-                }
-                else if (j == 1 || j == size - 2) // around corner : 3
-                {
-                    numOfPossibleMoves = 3;
-                }
-                else
-                {
-                    numOfPossibleMoves = 4; // middle row
-                }
-            }
-            else if (i == 1 || i == size - 2)
-            {
-                if (j == 0 || j == size - 1) // around corner : 3
-                {
-                    numOfPossibleMoves = 3;
-                }
-                else if (j == 1 || j == size - 2) // around corner : 4
-                {
-                    numOfPossibleMoves = 4;
-                }
-                else
-                {
-                    numOfPossibleMoves = 6; // middle row
-                }
-            }
-            else // middle rows
-            {
-                if (j == 0 || j == size - 1) // edges
-                {
-                    numOfPossibleMoves = 4;
-                }
-                else if (j == 1 || j == size - 2) // left and right
-                {
-                    numOfPossibleMoves = 6;
-                }
-                else
-                {
-                    numOfPossibleMoves = 8; // center row
-                }
-            }
+        public GhostSquare(Square s) : base(s)
+        {
+            this.bitmap = MainActivity.snowtree;
+            this.isBitmapResized = false;
+        }
 
+        public override void Draw(Canvas canvas)
+        {
+            base.Draw(canvas);
 
-            public int GetNumPossibleMoves()
+            if(visibility)  // when the knight isn't on the square
             {
-                return numOfPossibleMoves;
+                if (!isBitmapResized)  // resizing the bitmap
+                {
+                    Bitmap toDraw = Bitmap.CreateScaledBitmap(this.bitmap, (int)this.w, (int)this.h, true);
+                    this.bitmap = toDraw;
+                    this.isBitmapResized = true;
+                }
+                canvas.DrawBitmap(this.bitmap, this.x, this.y, null);
             }
         }
+
+        public void ResizeBitmap(bool resize)
+        {
+            this.isBitmapResized = resize;
+        }
+
+        public override void StepOn()
+        {
+            base.StepOn();
+            this.bitmap = MainActivity.flag;
+            this.isBitmapResized = false;
+        }
+
+        public override void UnstepOn()
+        {
+            base.UnstepOn();
+            this.bitmap = MainActivity.cuteGhost;
+            this.isBitmapResized = false;
+        }
+        public void SetBitmap(Bitmap bitmap)
+        {
+            this.bitmap = bitmap;
+        }
+    }
+
 }

@@ -12,16 +12,18 @@ using System.Text;
 
 namespace knight_mares_project
 {
-    class MultipleStepSquare : Square
+    public class MultipleStepSquare : Square
     {
         private int steps; // the amount of steps you can step on the square
         private Paint numP; // paint for the number on the multstepsquare
+        private char endChar; // x to put at end of path - when can't be stepped on
         public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context, size)
         {
             this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
             this.numP.TextSize = 30;
+            this.endChar = 'x';
         }
 
         public MultipleStepSquare(Square s) : base(s)
@@ -32,18 +34,18 @@ namespace knight_mares_project
             this.numP.TextSize = 30;
         }
 
-        public override void StepOn(Bitmap bitmap)
+        public override void StepOn()
         {
             if (this.steps == 0)
             {
-                base.StepOn(bitmap);
+                base.StepOn();
             }
             else
             {
                 steps--;
                 this.visibility = false;
                 if (this.steps == 0)
-                    base.StepOn(bitmap);
+                    base.StepOn();
             }
         }
 
@@ -60,19 +62,20 @@ namespace knight_mares_project
 
         public override void Draw(Canvas canvas)
         {
-            if(this.steps == 0 || !visibility)
+            base.Draw(canvas);
+            if(visibility)
             {
-                base.Draw(canvas);
-            }
-            else
-            {
-                canvas.DrawText("" + this.steps, this.x+this.w/2, this.y+this.h/2, this.numP);
+                if(this.steps == 0)
+                    canvas.DrawText("" + this.endChar, this.x + this.w / 2, this.y + this.h / 2, this.numP);
+                else
+                    canvas.DrawText("" + this.steps, this.x + this.w / 2, this.y + this.h / 2, this.numP);
             }
         }
 
-        internal void SetWalkedOver(bool v)
+
+        public int GetSteps()
         {
-            this.walkedOver = v;
+            return this.steps;
         }
     }
 }

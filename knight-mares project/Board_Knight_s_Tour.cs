@@ -26,6 +26,7 @@ namespace knight_mares_project
             count = 0;
             index = 1;
         }
+
         protected override void OnDraw(Canvas canvas)
         {
             if (checkWin > 0)
@@ -39,18 +40,18 @@ namespace knight_mares_project
                 if (firstDraw)
                 {
                     firstDraw = false;
-                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    this.player.GetCurrentSquare().StepOn();
                     SolveTour();
 
                     UnstepAll();
                     this.player.moveToSquare(solution[0]);
-                    solution[0].StepOn(MainActivity.flag);
+                    solution[0].StepOn();
                 }
 
                 if(index < solution.Count)
                 {
                     this.player.moveToSquare(solution[index]);
-                    this.player.GetCurrentSquare().StepOn(MainActivity.flag);
+                    this.player.GetCurrentSquare().StepOn();
                     index++;
                     Thread.Sleep(500);
                     Invalidate();
@@ -95,14 +96,14 @@ namespace knight_mares_project
                     int newY = curSquare.GetJ() + yMove[i];
                     if (EdgeCheck(newX, newY) && !squares[newX, newY].IsWalkedOver())
                     {
-                        Square squareToSort = this.squares[newX, newY];
+                        GhostSquareForKnightsTour squareToSort = (GhostSquareForKnightsTour)this.squares[newX, newY];
                         if (toSort.Count == 0)
                             toSort.Add(squareToSort);
                         else if (squareToSort.GetNumPossibleMoves() <= 3)
                         {
                             toSort.Insert(0, squareToSort);
                             Console.WriteLine("****going down****");
-                            squareToSort.StepOn(MainActivity.flag);
+                            squareToSort.StepOn();
                             solution.Add(squareToSort);
                             if (FindTour(squareToSort))
                                 return true;
@@ -118,7 +119,8 @@ namespace knight_mares_project
                             bool added = false;
                             for (int j = 0; j < toSort.Count; j++)
                             {
-                                if (toSort[j].GetNumPossibleMoves() >= squareToSort.GetNumPossibleMoves())
+                                GhostSquareForKnightsTour testsquare = (GhostSquareForKnightsTour)toSort[j];
+                                if (testsquare.GetNumPossibleMoves() >= squareToSort.GetNumPossibleMoves())
                                 {
                                     toSort.Insert(j, squareToSort);
                                     added = true;
@@ -144,7 +146,7 @@ namespace knight_mares_project
                 foreach(Square newSquare in toSort)
                 {
                     Console.WriteLine("****going down****");
-                    newSquare.StepOn(MainActivity.flag);
+                    newSquare.StepOn();
                     solution.Add(newSquare);
                     if (FindTour(newSquare))
                         return true;

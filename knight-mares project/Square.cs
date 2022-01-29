@@ -15,13 +15,11 @@ using Color = Android.Graphics.Color;
 
 namespace knight_mares_project
 {
-    public class Square
+    public abstract class Square
     {
         protected float x, y, w, h;
         protected bool walkedOver;
 
-        protected Bitmap bitmap;
-        protected bool isBitmapResized; // if false on draw, the bitmap will be resized
         protected int i, j; // square id in matrix
 
         protected bool visibility; // if the knight is on the square, visibility will be false
@@ -30,7 +28,6 @@ namespace knight_mares_project
 
         protected Context context;
 
-        protected int numOfPossibleMoves; // num of possible moves for each square according to it's placement on the board
 
         public Square(float x, float y, float w, float h, int i, int j, Context context, int size)
         {
@@ -63,13 +60,11 @@ namespace knight_mares_project
             this.y = s.y;
             this.w = s.w;
             this.h = s.h;
-            this.bitmap = s.bitmap;
             this.walkedOver = s.walkedOver;
 
             this.i = s.i;
             this.j = s.j;
 
-            this.isBitmapResized = s.isBitmapResized;
 
             this.context = s.context;
             this.visibility = s.visibility;
@@ -78,21 +73,8 @@ namespace knight_mares_project
 
         public virtual void Draw(Canvas canvas)
         {
-            if (!isBitmapResized)  // resizing the bitmap
-            {
-                Bitmap toDraw = Bitmap.CreateScaledBitmap(this.bitmap, (int)this.w, (int)this.h, true);
-                this.bitmap = toDraw;
-                this.isBitmapResized = true;
-            }
-            if (visibility)
-                canvas.DrawBitmap(this.bitmap, this.x, this.y, null); // when the knight isn't on the square
-            else
+            if(!visibility)
                 canvas.DrawRect(this.x, this.y, this.x + this.w, this.y + this.h, this.p);
-        }
-
-        public void ResizeBitmap(bool resize)
-        {
-            this.isBitmapResized = resize;
         }
 
         public bool IsXandYInSquare(float otherX, float otherY)
@@ -143,17 +125,14 @@ namespace knight_mares_project
             return this.walkedOver;
         }
 
-        public virtual void StepOn(Bitmap bitmap) // makes knight unable to step on square, bitmap is the bitmap we want to have on it: tree (for beginning) or flag (in game)
+        public virtual void StepOn() // makes knight unable to step on square
         {
             this.walkedOver = true;
-            this.bitmap = bitmap;
-            this.isBitmapResized = false;
         }
 
         public virtual void UnstepOn() // makes knight able to step on square
         {
             this.walkedOver = false;
-            this.bitmap = MainActivity.cuteGhost;
         }
 
         public int GetI()
@@ -165,9 +144,5 @@ namespace knight_mares_project
             return j;
         }
 
-        public void SetBitmap(Bitmap bitmap)
-        {
-            this.bitmap = bitmap;
-        }
     }
 }
