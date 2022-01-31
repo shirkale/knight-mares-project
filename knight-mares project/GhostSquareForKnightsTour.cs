@@ -14,7 +14,7 @@ namespace knight_mares_project
     public class GhostSquareForKnightsTour : GhostSquare
     {
         protected int numOfPossibleMoves; // num of possible moves for each square according to it's placement on the board
-        public GhostSquareForKnightsTour(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context, size)
+        public GhostSquareForKnightsTour(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context)
         {
             this.walkedOver = false;
             if (i == 0 || i == size - 1)

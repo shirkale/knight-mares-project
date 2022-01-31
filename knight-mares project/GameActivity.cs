@@ -24,14 +24,17 @@ namespace knight_mares_project
         int difficulty;
 
         int time, result; // time counts the time, result saves the time when win:avoiding mistakenly counted seconds
+        Thread timer;
         bool won;
 
         ImageButton btnBack;
         ImageButton btnHome;
+        Button btnSolve;
 
         //Animations
 
         Animation animTurnUndo;
+
 
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -47,6 +50,7 @@ namespace knight_mares_project
             this.flGame = (FrameLayout)FindViewById(Resource.Id.flBoard);
             this.btnBack = (ImageButton)FindViewById(Resource.Id.btnReturn);
             this.btnHome = (ImageButton)FindViewById(Resource.Id.btnBackToMainActivity);
+            this.btnSolve = (Button)FindViewById(Resource.Id.btnSolve);
 
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
 
@@ -60,9 +64,11 @@ namespace knight_mares_project
             {
                 case TypeGame.Generate:
                     this.game = new Board_Generate(this, size, difficulty);
+                    this.btnSolve.Visibility = ViewStates.Gone;
                     break;
                 case TypeGame.Tour:
                     this.game = new Board_Knight_s_Tour(this, size);
+                    this.btnSolve.Visibility = ViewStates.Visible;
                     break;
                 default:
                     this.game = new Board_Generate(this, size, difficulty);
@@ -77,16 +83,11 @@ namespace knight_mares_project
             // events
             this.game.winEvent += WinDialog;
 
-            this.game.updateEvent += (s, args) =>
-            {
-                // UpdateScore();
-            };
-
             // creating timer
             won = false;
             time = 0;
             ThreadStart timerstart = new ThreadStart(TimerFunc);
-            Thread timer = new Thread(timerstart);
+            timer = new Thread(timerstart);
             timer.Start();
 
             // initializing animations
@@ -95,11 +96,22 @@ namespace knight_mares_project
 
             btnBack.Click += BtnBack_Click;
             btnHome.Click += BtnHome_Click;
+            this.btnSolve.Click += BtnSolve_Click;
 
+        }
+
+        private void BtnSolve_Click(object sender, EventArgs e)
+        {
+            Board_Knight_s_Tour.solve = true;
+            timer.Abort();
+            tvTime.Visibility = ViewStates.Gone;
+            btnBack.Visibility = ViewStates.Gone;
+            btnSolve.Visibility = ViewStates.Gone;
         }
 
         private void BtnHome_Click(object sender, EventArgs e)
         {
+            Board_Knight_s_Tour.solve = false;
             Finish();
         }
 
@@ -131,14 +143,18 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
+            string msg = "";
             this.result = time;
-            string msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, result);
+            if (this.game is Board_Knight_s_Tour)
+                msg = "The Knight's Tour is complete!";
+            else
+                msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, result);
             won = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.SetTitle("You Win!!! Hooray!!!");
             builder.SetMessage(msg);
             builder.SetCancelable(false);
-            builder.SetPositiveButton("take me there!", OkAction);
+            builder.SetPositiveButton("back to main menu", OkAction);
             AlertDialog dialog = builder.Create();
             dialog.Show();
         }

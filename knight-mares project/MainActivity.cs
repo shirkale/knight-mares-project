@@ -24,7 +24,7 @@ namespace knight_mares_project
 
         public static Intent musicIntent;
 
-        Button btnStart, btnLeader;
+        Button btnStart, btnLeader, btnTour;
         TextView tvTitle, tvWinMessage, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
 
@@ -65,6 +65,7 @@ namespace knight_mares_project
             // initializing widgets
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
+            btnTour = (Button)FindViewById(Resource.Id.btnKnightsTour);
             btnLeader = (Button)FindViewById(Resource.Id.btnLeader);
             tvDisplayDifficulty = (TextView)FindViewById(Resource.Id.tvDisplayDifficulty);
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
@@ -89,6 +90,8 @@ namespace knight_mares_project
             btnLeader.Click += BtnLeader_Click;
             btnLeader.CallOnClick();
             btnLeader.CallOnClick();
+
+            btnTour.Click += BtnTour_Click;
 
 
             
@@ -122,6 +125,13 @@ namespace knight_mares_project
             typegame = TypeGame.Generate;
         }
 
+        private void BtnTour_Click(object sender, EventArgs e)
+        {
+            this.typegame = TypeGame.Tour;
+            Intent i = new Intent(this, typeof(GameActivity));
+            i.PutExtra("type", (char)this.typegame);
+            StartActivityForResult(i, 0);
+        }
 
         private void TvLbBig_Click(object sender, EventArgs e)
         {
@@ -274,6 +284,7 @@ namespace knight_mares_project
 
         private void BtnStart_Click(object sender, EventArgs e)
         {
+            this.typegame = TypeGame.Generate;
             Intent i = new Intent(this, typeof(GameActivity));
             i.PutExtra("level", difficulty);
             i.PutExtra("type", (char)this.typegame);
@@ -285,19 +296,25 @@ namespace knight_mares_project
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok)
             {
-                int timecompleted = data.GetIntExtra("time", 0);
-                string str = CheckHighScoreInLevel(requestCode, timecompleted);
+                if (requestCode == 0)
+                {
+                    tvWinMessage.Text = "KNIGHTS TOUR COMPLETE";
+                    Board_Knight_s_Tour.solve = false;
+                }
+                else
+                {
+                    int timecompleted = data.GetIntExtra("time", 0);
+                    tvWinMessage.Text = CheckHighScoreInLevel(requestCode, timecompleted);
+                }
 
                 tvTitle.Visibility = ViewStates.Invisible;
 
                 tvWinMessage.TextSize = 20;
                 tvWinMessage.Gravity = GravityFlags.Center;
-                tvWinMessage.Text = str;
                 tvWinMessage.Visibility = ViewStates.Visible;
-                btnStart.Text = "play again?";
 
                 llLeaderBoard.Visibility = ViewStates.Invisible;
-
+                
             }
         }
 
