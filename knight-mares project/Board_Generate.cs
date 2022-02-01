@@ -128,7 +128,7 @@ namespace knight_mares_project
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            if (e.Action == MotionEventActions.Down)
+            if (e.Action == MotionEventActions.Down && !Board_Knight_s_Tour.solve)
             {
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
