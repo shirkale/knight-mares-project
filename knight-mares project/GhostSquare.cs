@@ -16,10 +16,12 @@ namespace knight_mares_project
     {
         protected Bitmap bitmap;
         protected bool isBitmapResized; // if false on draw, the bitmap will be resized
+
         public GhostSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context, size)
         {
             this.bitmap = MainActivity.snowtree;
             this.isBitmapResized = false;
+            ghostCount = 0;
         }
 
         public GhostSquare(Square s) : base(s)
@@ -59,7 +61,16 @@ namespace knight_mares_project
         public override void UnstepOn()
         {
             base.UnstepOn();
-            this.bitmap = MainActivity.cuteGhost;
+
+            Random random = new Random();
+            int ghostCount = random.Next(3);
+
+            if(ghostCount % 3 == 0)
+                this.bitmap = MainActivity.cuteGhost;
+            else if(ghostCount % 3 == 1)
+                this.bitmap = MainActivity.cuteGhostBlue;
+            else
+                this.bitmap = MainActivity.cuteGhostPurp;
             this.isBitmapResized = false;
         }
         public void SetBitmap(Bitmap bitmap)
