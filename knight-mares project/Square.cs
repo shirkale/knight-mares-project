@@ -29,7 +29,7 @@ namespace knight_mares_project
         protected Context context;
 
 
-        public Square(float x, float y, float w, float h, int i, int j, Context context, int size)
+        public Square(float x, float y, float w, float h, int i, int j, Context context)
         {
             this.x = x;
             this.y = y;

@@ -19,12 +19,14 @@ namespace knight_mares_project
         int count; // for debugging delete when done
         int index; // for running the simulation solution comp calculates
 
+        public static bool solve = false;
+
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size;
             this.solution = new List<Square>();
             count = 0;
-            index = 1;
+            index = 0;
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -48,13 +50,23 @@ namespace knight_mares_project
                     solution[0].StepOn();
                 }
 
-                if(index < solution.Count)
+                if(solve)
                 {
-                    this.player.moveToSquare(solution[index]);
-                    this.player.GetCurrentSquare().StepOn();
-                    index++;
-                    Thread.Sleep(500);
-                    Invalidate();
+                    if (index < solution.Count)
+                    {
+                        if (index == 0)
+                            UnstepAll();
+                        this.player.moveToSquare(solution[index]);
+                        Thread.Sleep(1000);
+                        this.player.GetCurrentSquare().StepOn();
+                        index++;
+                        Invalidate();
+                    }
+                    if(index == solution.Count)
+                    {
+                        winEvent.Invoke(this, EventArgs.Empty);
+                        index++;
+                    }
                 }
 
             }

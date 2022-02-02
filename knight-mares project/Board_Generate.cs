@@ -128,7 +128,7 @@ namespace knight_mares_project
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            if (e.Action == MotionEventActions.Down)
+            if (e.Action == MotionEventActions.Down && !Board_Knight_s_Tour.solve)
             {
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
@@ -296,9 +296,9 @@ namespace knight_mares_project
                 {
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
-                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context, size);
+                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context);
                         if (this is Board_Knight_s_Tour)
-                            this.squares[i, j] = (GhostSquareForKnightsTour)this.squares[i, j];
+                            this.squares[i, j] = new GhostSquareForKnightsTour(x, y, w, h, i, j, this.context, size);
                     }
 
                     this.squares[i, j].Draw(canvas); // draw cur square
