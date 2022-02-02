@@ -57,7 +57,7 @@ namespace knight_mares_project
                         if (index == 0)
                             UnstepAll();
                         this.player.moveToSquare(solution[index]);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(TimeSpan.FromMilliseconds(700-index*10));
                         this.player.GetCurrentSquare().StepOn();
                         index++;
                         Invalidate();

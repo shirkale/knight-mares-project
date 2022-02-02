@@ -17,11 +17,10 @@ namespace knight_mares_project
         protected Bitmap bitmap;
         protected bool isBitmapResized; // if false on draw, the bitmap will be resized
 
-        public GhostSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context, size)
+        public GhostSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context)
         {
             this.bitmap = MainActivity.snowtree;
             this.isBitmapResized = false;
-            ghostCount = 0;
         }
 
         public GhostSquare(Square s) : base(s)

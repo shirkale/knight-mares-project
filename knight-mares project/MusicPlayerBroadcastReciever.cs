@@ -44,7 +44,7 @@ namespace knight_mares_project
             if(action == 1)
             {
                 mp.Start();
-                mp.SetVolume((float)0.4, (float)0.4);
+                mp.SetVolume((float)0.7, (float)0.7);
 
                 if(t!=null && t.IsAlive)
                     t.Abort();

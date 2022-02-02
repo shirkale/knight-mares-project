@@ -10,6 +10,9 @@ using System;
 using AndroidX.AppCompat.View.Menu;
 using Android.Views.Animations;
 using Android.Media;
+using System.Collections.Generic;
+using static Android.Resource;
+using Animation = Android.Views.Animations.Animation;
 
 namespace knight_mares_project
 {
@@ -52,6 +55,8 @@ namespace knight_mares_project
         // TypeGame
 
         private TypeGame typegame;
+
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -123,6 +128,16 @@ namespace knight_mares_project
             // typgame init
 
             typegame = TypeGame.Generate;
+
+
+
+            List<Integer> l = new List<Integer>();
+            for (int i = 0; i < 30; i++)
+            {
+                l.Add((Integer)(-1));
+            }
+            FirebaseHelper.Add(l);
+
         }
 
         private void BtnTour_Click(object sender, EventArgs e)

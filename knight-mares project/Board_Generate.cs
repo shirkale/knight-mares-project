@@ -93,6 +93,7 @@ namespace knight_mares_project
                     FinalUnStepOnMultSquares(); // makes all multstepsquares stepable, if 1 turn into ghostsquare
 
                     this.player.moveToSquare(this.starter);
+                    this.starter.StepOn();
                 }
             }
             else
@@ -296,7 +297,7 @@ namespace knight_mares_project
                 {
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
-                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context);
+                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context, size);
                         if (this is Board_Knight_s_Tour)
                             this.squares[i, j] = new GhostSquareForKnightsTour(x, y, w, h, i, j, this.context, size);
                     }
