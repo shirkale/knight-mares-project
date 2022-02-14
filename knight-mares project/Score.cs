@@ -19,6 +19,7 @@ namespace knight_mares_project
         public Score() { }
         public Score(List<Integer> l)
         {
+            this.l = l;
         }
         
 

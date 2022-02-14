@@ -19,50 +19,33 @@ namespace knight_mares_project
         public static FirebaseClient client = new FirebaseClient("https://database-37bc4-default-rtdb.europe-west1.firebasedatabase.app/");
         private static string database = "dbWorldRecords";
 
-        public static async Task<Score> GetAll()
+        public static async Task<List<Score>> GetAll()
         {
             var respone = await client.Child(database).OnceAsync<Score>();
             return (respone).Select(item => new Score
             {
-                score = item.Object.score,
+                l = item.Object.l,
 
             }).ToList();
         }
 
-        public static async Task Add(List<Score> l)
+        public static async Task Add(Score s)
         {
             await client
                 .Child(database)
-                .PostAsync(l);
-        }
-
-        public static async Task<Score> Get(int dif)
-        {
-            var allPersons = await GetAll();
-            await client
-              .Child(database)
-              .OnceAsync<Score>();
-            return allPersons.Where(a => a.difficulty == dif).FirstOrDefault();
+                .PostAsync(s);
         }
 
         public static async Task Update(Score state)
         {
             var toUpdatePerson = (await client
               .Child(database)
-              .OnceAsync<Score>()).Where(a => a.Object.difficulty == state.difficulty).FirstOrDefault();
+              .OnceAsync<Score>()).Where(a => true).FirstOrDefault();
 
             await client
               .Child(database)
               .Child(toUpdatePerson.Key)
               .PutAsync(state);
-        }
-        public static async Task Delete(int dif)
-        {
-            var toDeletePerson = (await client
-              .Child(database)
-              .OnceAsync<Score>()).Where(a => a.Object.difficulty == dif).FirstOrDefault();
-            await client.Child(database).Child(toDeletePerson.Key).DeleteAsync();
-
         }
     }
 }
