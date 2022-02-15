@@ -56,7 +56,7 @@ namespace knight_mares_project
 
         private TypeGame typegame;
 
-        List<Integer> worldRecord;
+        List<int> worldRecord;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -133,14 +133,13 @@ namespace knight_mares_project
 
             // initialization of firebase database
 
-            List<Integer> l = new List<Integer>();
-            Integer integ = -1;
-            for (int i = 0; i < 30; i++)
-            {
-                l.Add(integ);
-            }
-            Score s = new Score(l);
-            FirebaseHelper.Add(s);
+            //List<int> l = new List<int>();
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    l.Add(-1);
+            //}
+            //Score s = new Score(l);
+            //FirebaseHelper.Add(s);
 
             GetDatabase();
         }

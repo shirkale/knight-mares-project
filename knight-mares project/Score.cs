@@ -14,10 +14,10 @@ namespace knight_mares_project
 {
     public class Score
     {
-        public List<Integer> l;
+        public List<int> l;
 
         public Score() { }
-        public Score(List<Integer> l)
+        public Score(List<int> l)
         {
             this.l = l;
         }
