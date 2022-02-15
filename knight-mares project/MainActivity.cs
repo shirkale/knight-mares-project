@@ -13,6 +13,7 @@ using Android.Media;
 using System.Collections.Generic;
 using static Android.Resource;
 using Animation = Android.Views.Animations.Animation;
+using System.Threading.Tasks;
 
 namespace knight_mares_project
 {
@@ -43,6 +44,10 @@ namespace knight_mares_project
         // leaderboard
         LinearLayout llLeaderBoard;
         TextView tvLbSmall, tvLb, tvLbBig;
+
+        // world leaderboard
+        LinearLayout wlLeaderboard;
+        TextView tvWLbSmall, tvWLb, tvWLbBig;
 
         // animation
         ImageView ivPumpkin;
@@ -81,6 +86,11 @@ namespace knight_mares_project
             tvLbBig = (TextView)FindViewById(Resource.Id.tv3);
             llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
 
+            tvWLbSmall = (TextView)FindViewById(Resource.Id.tv1w);
+            tvWLb = (TextView)FindViewById(Resource.Id.tv2w);
+            tvWLbBig = (TextView)FindViewById(Resource.Id.tv3w);
+            wlLeaderboard = (LinearLayout)FindViewById(Resource.Id.linWorld);
+
             ivPumpkin = (ImageView)FindViewById(Resource.Id.ivPumpkin);
 
             // high score code
@@ -88,16 +98,7 @@ namespace knight_mares_project
             spHighScore = this.GetSharedPreferences("details", FileCreationMode.Private);
 
 
-            // click functions
-
-            btnStart.Click += BtnStart_Click; // button click that starts the game
-
-            btnLeader.Click += BtnLeader_Click;
-            btnLeader.CallOnClick();
-            btnLeader.CallOnClick();
-
-            btnTour.Click += BtnTour_Click;
-
+            
 
             
 
@@ -140,15 +141,27 @@ namespace knight_mares_project
             //}
             //Score s = new Score(l);
             //FirebaseHelper.Add(s);
-
+            
             GetDatabase();
+
+            // click functions
+
+            btnStart.Click += BtnStart_Click; // button click that starts the game
+
+            btnLeader.Click += BtnLeader_Click;
+            btnLeader.CallOnClick();
+            btnLeader.CallOnClick();
+
+            btnTour.Click += BtnTour_Click;
+
         }
 
-        public async void GetDatabase()
+        public async Task<List<int>> GetDatabase()
         {
             List<Score> getScore = await FirebaseHelper.GetAll();
             Score s = getScore[0];
             worldRecord = s.l;
+            return worldRecord;
         }
 
         private void BtnTour_Click(object sender, EventArgs e)
@@ -185,7 +198,7 @@ namespace knight_mares_project
             ivPumpkin.StartAnimation(pumpkinAnimation);
         }
 
-        private void BtnLeader_Click(object sender, EventArgs e) // display leaderboards
+        private async void BtnLeader_Click(object sender, EventArgs e) // display leaderboards
         {
             if(llLeaderBoard.Visibility == ViewStates.Visible)
                 llLeaderBoard.Visibility = ViewStates.Invisible;
@@ -222,7 +235,46 @@ namespace knight_mares_project
                 tvLb.Text = s2;
                 tvLbBig.Text = s3;
             }
-            
+
+            if (wlLeaderboard.Visibility == ViewStates.Visible)
+                wlLeaderboard.Visibility = ViewStates.Invisible;
+            else
+            {
+                wlLeaderboard.Visibility = ViewStates.Visible;
+                string s1 = "", s2 = "", s3 = "";
+                int level = difficulty;
+
+                if (difficulty == 3)
+                    level = 4;
+                if (difficulty == 30)
+                    level = 29;
+
+                if(worldRecord == null)
+                    await GetDatabase();
+
+                s1 = "" + (level - 1) + '\n';
+                if (worldRecord[level-4] == -1)
+                    s1 += "---";
+                else
+                    s1 += "" + worldRecord[level-4] + " seconds";
+
+                s2 = "" + (level) + '\n';
+                if (worldRecord[level - 3] == -1)
+                    s2 += "---";
+                else
+                    s2 += "" + worldRecord[level - 3] + " seconds";
+
+                s3 = "" + (level + 1) + '\n';
+                if (worldRecord[level - 2] == -1)
+                    s3 += "---";
+                else
+                    s3 += "" + worldRecord[level - 2] + " seconds";
+
+                tvWLbSmall.Text = s1;
+                tvWLb.Text = s2;
+                tvWLbBig.Text = s3;
+            }
+
         }
 
         protected override void OnResume()
@@ -340,6 +392,7 @@ namespace knight_mares_project
                 tvWinMessage.Visibility = ViewStates.Visible;
 
                 llLeaderBoard.Visibility = ViewStates.Invisible;
+                wlLeaderboard.Visibility = ViewStates.Invisible;
                 
             }
         }
@@ -352,10 +405,17 @@ namespace knight_mares_project
 
             if (time <= spHighScore.GetInt(level, time)) // checking high score in this level
             {
-                str += "\nYou currently have the fastest time for this level!\nCONGRATS!";
+                str += "\nYou currently played your fastest time for this level!\nCONGRATS!";
                 var editor = spHighScore.Edit();
                 editor.PutInt(level, time);
                 editor.Commit();
+            }
+
+            if(worldRecord[requestCode - 3] == -1 || time <= worldRecord[requestCode - 3]) // checking high score from world records
+            {
+                str += "\nWorld Record!!!!";
+                worldRecord[requestCode - 3] = time;
+                FirebaseHelper.Update(new Score(worldRecord));
             }
             return str;
         }

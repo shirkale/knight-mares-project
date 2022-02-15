@@ -9,77 +9,24 @@
     android:gravity="center_horizontal"
     android:background="@drawable/forest"
     >
-
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="difficultydisplay"
-        android:id="@+id/tvDisplayDifficulty"
-        android:background="#8C6A03"
-        android:textColor="#213501"
-        android:padding="10dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:alpha="0.65"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-                />  
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Knight-mares"
+        android:text="LEADERBOARDS"
         android:gravity="center_vertical"
         android:layout_marginTop="10dp"
         android:textSize="30sp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-smallcaps"
         android:textColor="@android:color/white"
-        android:id="@+id/tvTitle" 
+        android:id="@+id/tvLeaderTitle" 
         android:alpha="0.7"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Generate Path"
-            android:id="@+id/btnStart"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            android:layout_marginRight="10dp"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Knight's Tour"
-            android:id="@+id/btnKnightsTour"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            />
-    </LinearLayout>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="leaderboard for this difficulty"
-            android:id="@+id/btnLeader"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="invisible"
         android:id="@+id/linLeader"
         android:alpha="0.7"
         >
@@ -88,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -100,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -111,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -125,7 +72,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="invisible"
         android:id="@+id/linWorld"
         android:alpha="0.7"
         >
@@ -134,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -146,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -157,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -168,11 +114,11 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="281dp"
-        android:layout_height="222dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/jackolanternremoved2"
-        android:id="@+id/ivPumpkin"/>
+        android:background="@drawable/goblet"
+        android:id="@+id/ivGoblet"/>
 
 
 </LinearLayout>
