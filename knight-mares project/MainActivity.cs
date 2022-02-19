@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using static Android.Resource;
 using Animation = Android.Views.Animations.Animation;
 using System.Threading.Tasks;
+using Android.Support.Design.Widget;
 
 namespace knight_mares_project
 {
@@ -28,8 +29,8 @@ namespace knight_mares_project
 
         public static Intent musicIntent;
 
-        Button btnStart, btnLeader, btnTour;
-        TextView tvTitle, tvWinMessage, tvDisplayDifficulty;
+        Button btnStart, btnTour;
+        TextView tvTitle, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
 
         //Dialog chooseLevel;
@@ -50,6 +51,7 @@ namespace knight_mares_project
         TextView tvWLbSmall, tvWLb, tvWLbBig;
 
         // animation
+        ImageView ivGoblet;
         ImageView ivPumpkin;
         Animation pumpkinAnimation;
 
@@ -61,7 +63,10 @@ namespace knight_mares_project
 
         private TypeGame typegame;
 
-        List<int> worldRecord;
+        List<int> worldRecord; // list into which world record is put from firebase
+
+        // bottom menu
+        BottomNavigationView bottomnv;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -76,10 +81,8 @@ namespace knight_mares_project
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
             btnTour = (Button)FindViewById(Resource.Id.btnKnightsTour);
-            btnLeader = (Button)FindViewById(Resource.Id.btnLeader);
             tvDisplayDifficulty = (TextView)FindViewById(Resource.Id.tvDisplayDifficulty);
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
-            tvWinMessage = (TextView)FindViewById(Resource.Id.tvTitle);
 
             tvLbSmall = (TextView)FindViewById(Resource.Id.tv1);
             tvLb = (TextView)FindViewById(Resource.Id.tv2);
@@ -92,6 +95,10 @@ namespace knight_mares_project
             wlLeaderboard = (LinearLayout)FindViewById(Resource.Id.linWorld);
 
             ivPumpkin = (ImageView)FindViewById(Resource.Id.ivPumpkin);
+            ivGoblet = (ImageView)FindViewById(Resource.Id.ivGoblet);
+
+            bottomnv = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
+
 
             // high score code
 
@@ -148,12 +155,43 @@ namespace knight_mares_project
 
             btnStart.Click += BtnStart_Click; // button click that starts the game
 
-            btnLeader.Click += BtnLeader_Click;
-            btnLeader.CallOnClick();
-            btnLeader.CallOnClick();
-
             btnTour.Click += BtnTour_Click;
+            bottomnv.NavigationItemSelected += Bottomnv_NavigationItemSelected;
 
+        }
+
+        private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
+        {
+            if(e.Item.ItemId == Resource.Id.itemLeader)
+            {
+                tvDisplayDifficulty.Visibility = ViewStates.Gone;
+                btnStart.Visibility = ViewStates.Gone;
+                btnTour.Visibility = ViewStates.Gone;
+                ivPumpkin.ClearAnimation();
+                ivPumpkin.Visibility = ViewStates.Gone;
+
+                tvTitle.Text = "Leaderboards";
+                llLeaderBoard.Visibility = ViewStates.Visible;
+                wlLeaderboard.Visibility = ViewStates.Visible;
+                ivGoblet.Visibility = ViewStates.Visible;
+
+
+                SetLeaderboardText();
+            }
+            else if (e.Item.ItemId == Resource.Id.itemhome)
+            {
+                tvDisplayDifficulty.Visibility = ViewStates.Visible;
+                btnStart.Visibility = ViewStates.Visible;
+                btnTour.Visibility = ViewStates.Visible;
+                ivPumpkin.Visibility = ViewStates.Visible;
+                ivPumpkin.StartAnimation(pumpkinAnimation);
+                ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
+
+                tvTitle.Text = "Kight-Mares";
+                llLeaderBoard.Visibility = ViewStates.Gone;
+                wlLeaderboard.Visibility = ViewStates.Gone;
+                ivGoblet.Visibility = ViewStates.Gone;
+            }
         }
 
         public async Task<List<int>> GetDatabase()
@@ -177,8 +215,7 @@ namespace knight_mares_project
             if (difficulty != 29)
             {
                 difficulty++;
-                BtnLeader_Click(sender, e);
-                BtnLeader_Click(sender, e);
+                SetLeaderboardText();
             }
 
         }
@@ -188,93 +225,85 @@ namespace knight_mares_project
             if (difficulty != 4)
             {
                 difficulty--;
-                BtnLeader_Click(sender, e);
-                BtnLeader_Click(sender, e);
+                SetLeaderboardText();
             }
         }
 
         private void Animation_AnimationEnd(object sender, Animation.AnimationEndEventArgs e)
         {
-            ivPumpkin.StartAnimation(pumpkinAnimation);
+            if(ivPumpkin.Visibility == ViewStates.Visible)
+                ivPumpkin.StartAnimation(pumpkinAnimation);
         }
 
-        private async void BtnLeader_Click(object sender, EventArgs e) // display leaderboards
+        private async void SetLeaderboardText() // display leaderboards
         {
-            if(llLeaderBoard.Visibility == ViewStates.Visible)
-                llLeaderBoard.Visibility = ViewStates.Invisible;
+            // personal records
+            string s1 = "", s2 = "", s3 = "";
+            int level = difficulty;
+
+            if (difficulty == 3)
+                level = 4;
+            if (difficulty == 30)
+                level = 29;
+
+            s1 = "" + (level - 1) + '\n';
+            if (spHighScore.GetInt("level" + (level - 1), 0) == 0)
+                s1 += "---";
             else
-            {
-                llLeaderBoard.Visibility = ViewStates.Visible;
-                string s1 = "", s2 = "", s3 = "";
-                int level = difficulty;
+                s1 += "" + spHighScore.GetInt("level" + (level - 1), 0) + " seconds";
 
-                if (difficulty == 3)
-                    level = 4;
-                if (difficulty == 30)
-                    level = 29;
-
-                s1 = "" + (level - 1) + '\n';
-                if (spHighScore.GetInt("level" + (level - 1), 0) == 0)
-                    s1 += "---";
-                else
-                    s1 += "" + spHighScore.GetInt("level" + (level - 1), 0) + " seconds";
-
-                s2 = "" + (level) + '\n';
-                if (spHighScore.GetInt("level" + (level), 0) == 0)
-                    s2 += "---";
-                else
-                    s2 += "" + spHighScore.GetInt("level" + (level), 0) + " seconds";
-
-                s3 = "" + (level + 1) + '\n';
-                if (spHighScore.GetInt("level" + (level + 1), 0) == 0)
-                    s3 += "---";
-                else
-                    s3 += "" + spHighScore.GetInt("level" + (level + 1), 0) + " seconds";
-
-                tvLbSmall.Text = s1;
-                tvLb.Text = s2;
-                tvLbBig.Text = s3;
-            }
-
-            if (wlLeaderboard.Visibility == ViewStates.Visible)
-                wlLeaderboard.Visibility = ViewStates.Invisible;
+            s2 = "" + (level) + '\n';
+            if (spHighScore.GetInt("level" + (level), 0) == 0)
+                s2 += "---";
             else
-            {
-                wlLeaderboard.Visibility = ViewStates.Visible;
-                string s1 = "", s2 = "", s3 = "";
-                int level = difficulty;
+                s2 += "" + spHighScore.GetInt("level" + (level), 0) + " seconds";
 
-                if (difficulty == 3)
-                    level = 4;
-                if (difficulty == 30)
-                    level = 29;
+            s3 = "" + (level + 1) + '\n';
+            if (spHighScore.GetInt("level" + (level + 1), 0) == 0)
+                s3 += "---";
+            else
+                s3 += "" + spHighScore.GetInt("level" + (level + 1), 0) + " seconds";
 
-                if(worldRecord == null)
-                    await GetDatabase();
+            tvLbSmall.Text = s1;
+            tvLb.Text = s2;
+            tvLbBig.Text = s3;
 
-                s1 = "" + (level - 1) + '\n';
-                if (worldRecord[level-4] == -1)
-                    s1 += "---";
-                else
-                    s1 += "" + worldRecord[level-4] + " seconds";
+            // world records
 
-                s2 = "" + (level) + '\n';
-                if (worldRecord[level - 3] == -1)
-                    s2 += "---";
-                else
-                    s2 += "" + worldRecord[level - 3] + " seconds";
+            s1 = "";
+            s2 = "";
+            s3 = "";
 
-                s3 = "" + (level + 1) + '\n';
-                if (worldRecord[level - 2] == -1)
-                    s3 += "---";
-                else
-                    s3 += "" + worldRecord[level - 2] + " seconds";
+            if (difficulty == 3)
+                level = 4;
+            if (difficulty == 30)
+                level = 29;
 
-                tvWLbSmall.Text = s1;
-                tvWLb.Text = s2;
-                tvWLbBig.Text = s3;
-            }
+            if(worldRecord == null)
+                await GetDatabase();
 
+            s1 = "" + (level - 1) + '\n';
+            if (worldRecord[level-4] == -1)
+                s1 += "---";
+            else
+                s1 += "" + worldRecord[level-4] + " seconds";
+
+            s2 = "" + (level) + '\n';
+            if (worldRecord[level - 3] == -1)
+                s2 += "---";
+            else
+                s2 += "" + worldRecord[level - 3] + " seconds";
+
+            s3 = "" + (level + 1) + '\n';
+            if (worldRecord[level - 2] == -1)
+                s3 += "---";
+            else
+                s3 += "" + worldRecord[level - 2] + " seconds";
+
+            tvWLbSmall.Text = s1;
+            tvWLb.Text = s2;
+            tvWLbBig.Text = s3;
+            
         }
 
         protected override void OnResume()
@@ -344,8 +373,6 @@ namespace knight_mares_project
             tvDifficultyInDialog.Text = "" + this.difficulty;
             sb.ProgressChanged += Sb_ProgressChanged;
 
-
-            llLeaderBoard.Visibility = ViewStates.Invisible;
         }
 
         private void BtnSubmit_Click(object sender, EventArgs e)
@@ -358,6 +385,7 @@ namespace knight_mares_project
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
             tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
+            SetLeaderboardText();
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
@@ -376,20 +404,18 @@ namespace knight_mares_project
             {
                 if (requestCode == 0)
                 {
-                    tvWinMessage.Text = "KNIGHTS TOUR COMPLETE";
+                    tvTitle.Text = "KNIGHTS TOUR COMPLETE";
                     Board_Knight_s_Tour.solve = false;
                 }
                 else
                 {
                     int timecompleted = data.GetIntExtra("time", 0);
-                    tvWinMessage.Text = CheckHighScoreInLevel(requestCode, timecompleted);
+                    tvTitle.Text = CheckHighScoreInLevel(requestCode, timecompleted);
                 }
 
-                tvTitle.Visibility = ViewStates.Invisible;
 
-                tvWinMessage.TextSize = 20;
-                tvWinMessage.Gravity = GravityFlags.Center;
-                tvWinMessage.Visibility = ViewStates.Visible;
+                tvTitle.Gravity = GravityFlags.Center;
+                tvTitle.Visibility = ViewStates.Visible;
 
                 llLeaderBoard.Visibility = ViewStates.Invisible;
                 wlLeaderboard.Visibility = ViewStates.Invisible;

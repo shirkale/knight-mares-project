@@ -29,11 +29,20 @@ namespace knight_mares_project
             }).ToList();
         }
 
-        public static async Task Add(Score s)
+        public static async Task Add(List<Score> l)
         {
             await client
                 .Child(database)
-                .PostAsync(s);
+                .PostAsync(l);
+        }
+
+        public static async Task<Score> Get(int dif)
+        {
+            var allPersons = await GetAll();
+            await client
+              .Child(database)
+              .OnceAsync<Score>();
+            return allPersons.Where(a => true).FirstOrDefault();
         }
 
         public static async Task Update(Score state)

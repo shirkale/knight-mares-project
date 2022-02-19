@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     android:gravity="center_horizontal"
     android:background="@drawable/forest"
     >
@@ -22,13 +21,14 @@
         android:fontFamily="sans-serif-smallcaps"
         android:alpha="0.65"
         android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
         android:gravity="center"
                 />  
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Knight-mares"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -36,6 +36,7 @@
         android:textColor="@android:color/white"
         android:id="@+id/tvTitle" 
         android:alpha="0.7"
+        android:layout_below="@id/tvDisplayDifficulty"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,6 +44,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="20dp"
+        android:id="@+id/llbuttons"
+        android:layout_below="@id/tvTitle"
         >
         <Button
             android:layout_width="wrap_content"
@@ -65,30 +68,34 @@
             android:padding="10dp"
             />
     </LinearLayout>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="leaderboard for this difficulty"
-            android:id="@+id/btnLeader"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            />
+        
+    
 
+    <ImageView
+        android:layout_width="281dp"
+        android:layout_height="222dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/jackolanternremoved2"
+        android:id="@+id/ivPumpkin"
+        android:layout_below="@id/llbuttons"
+        android:layout_centerHorizontal="true"/>
+
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="invisible"
         android:id="@+id/linLeader"
         android:alpha="0.7"
+        android:visibility="gone"
+        android:layout_below="@id/tvTitle"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -100,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -111,7 +118,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -125,16 +132,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="invisible"
         android:id="@+id/linWorld"
         android:alpha="0.7"
+        android:visibility="gone"
+        android:layout_below="@id/linLeader"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -146,7 +154,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -157,7 +165,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="waiting..."
             android:background="#ffff8800"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -168,11 +176,36 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="281dp"
-        android:layout_height="222dp"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/jackolanternremoved2"
-        android:id="@+id/ivPumpkin"/>
+        android:background="@drawable/goblet"
+        android:id="@+id/ivGoblet"
+        android:baselineAlignBottom="true"
+        android:visibility="gone"
+        android:layout_below="@id/linWorld"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/goblet"
+        android:id="@+id/ivGoblet"
+        android:layout_below="@id/linWorld"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottommenu"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
+        android:background="#171747"
+    />
 
 
-</LinearLayout>
+</RelativeLayout>
