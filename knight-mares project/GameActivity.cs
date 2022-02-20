@@ -143,7 +143,6 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
-            Thread.Sleep(1000);
             string msg = "";
             this.result = time;
             if (this.game is Board_Knight_s_Tour)

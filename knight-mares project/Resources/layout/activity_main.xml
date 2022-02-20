@@ -176,25 +176,16 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/goblet"
         android:id="@+id/ivGoblet"
         android:baselineAlignBottom="true"
         android:visibility="gone"
         android:layout_below="@id/linWorld"
-        />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/goblet"
-        android:id="@+id/ivGoblet"
-        android:layout_below="@id/linWorld"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -98,6 +98,7 @@ namespace knight_mares_project
             }
             else
             {
+                //for(int)
                 winEvent.Invoke(this, EventArgs.Empty);
             }
         }

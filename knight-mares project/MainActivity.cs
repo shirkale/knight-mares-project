@@ -39,7 +39,27 @@ namespace knight_mares_project
         TextView tvDifficultyInDialog;
 
         //difficulty chosen in dialog and sent to gameactivity
-        int difficulty;
+        int _difficulty;
+        private int difficulty
+        {
+            get
+            {
+                return _difficulty;
+            }
+
+            set
+            {
+                //#3
+                _difficulty = value;
+                OnDifChanged();
+            }
+        }
+
+        protected void OnDifChanged()
+        {
+            if(tvDisplayDifficulty != null)
+                tvDisplayDifficulty.Text = "DIFFICULTY: " + difficulty;
+        }
 
 
         // leaderboard
@@ -68,6 +88,9 @@ namespace knight_mares_project
         // bottom menu
         BottomNavigationView bottomnv;
 
+        
+        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -75,7 +98,6 @@ namespace knight_mares_project
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            this.difficulty = 15;
 
             // initializing widgets
 
@@ -104,10 +126,11 @@ namespace knight_mares_project
 
             spHighScore = this.GetSharedPreferences("details", FileCreationMode.Private);
 
+            this.difficulty = 15;
 
-            
 
-            
+
+
 
             snowtree = BitmapFactory.DecodeResource(Resources, Resource.Drawable.snowtreesmol); // tree picture
             cuteGhost = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmol); // ghost picture
@@ -115,7 +138,6 @@ namespace knight_mares_project
             cuteGhostBlue = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue);
             flag = BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag);
 
-            tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
 
 
 
@@ -384,7 +406,6 @@ namespace knight_mares_project
         {
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
-            tvDisplayDifficulty.Text = "DIFFICULTY: " + this.difficulty;
             SetLeaderboardText();
         }
 
