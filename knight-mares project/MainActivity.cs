@@ -32,6 +32,26 @@ namespace knight_mares_project
         Button btnStart, btnTour;
         TextView tvTitle, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
+        string tvTitleText
+        {
+            get
+            {
+                return tvTitle.Text;
+            }
+
+            set
+            {
+                tvTitle.Text = value;
+                if (value.Contains('\n'))
+                {
+                    tvTitle.TextSize = 20;
+                }
+                else
+                {
+                    tvTitle.TextSize = 30;
+                }
+            }
+        }
 
         //Dialog chooseLevel;
         Dialog difficultyDialog;
@@ -170,7 +190,7 @@ namespace knight_mares_project
                 ivPumpkin.ClearAnimation();
                 ivPumpkin.Visibility = ViewStates.Gone;
 
-                tvTitle.Text = "Leaderboards";
+                tvTitleText = "Leaderboards";
                 llLeaderBoard.Visibility = ViewStates.Visible;
                 wlLeaderboard.Visibility = ViewStates.Visible;
                 ivGoblet.Visibility = ViewStates.Visible;
@@ -187,7 +207,7 @@ namespace knight_mares_project
                 ivPumpkin.StartAnimation(pumpkinAnimation);
                 ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
-                tvTitle.Text = "Kight-Mares";
+                tvTitleText = "Knight-Mares";
                 llLeaderBoard.Visibility = ViewStates.Gone;
                 wlLeaderboard.Visibility = ViewStates.Gone;
                 ivGoblet.Visibility = ViewStates.Gone;
@@ -404,13 +424,13 @@ namespace knight_mares_project
             {
                 if (requestCode == 0)
                 {
-                    tvTitle.Text = "KNIGHTS TOUR COMPLETE";
+                    tvTitleText = "KNIGHTS TOUR COMPLETE";
                     Board_Knight_s_Tour.solve = false;
                 }
                 else
                 {
                     int timecompleted = data.GetIntExtra("time", 0);
-                    tvTitle.Text = CheckHighScoreInLevel(requestCode, timecompleted);
+                    tvTitleText = CheckHighScoreInLevel(requestCode, timecompleted);
                 }
 
 
