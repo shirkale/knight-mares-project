@@ -32,24 +32,17 @@ namespace knight_mares_project
         Button btnStart, btnTour;
         TextView tvTitle, tvDisplayDifficulty;
         ISharedPreferences spHighScore;
-        string tvTitleText
-        {
-            get
-            {
-                return tvTitle.Text;
-            }
 
-            set
+        private void SetTvTitleText(string value)
+        {
+            tvTitle.Text = value;
+            if (value.Contains('\n'))
             {
-                tvTitle.Text = value;
-                if (value.Contains('\n'))
-                {
-                    tvTitle.TextSize = 20;
-                }
-                else
-                {
-                    tvTitle.TextSize = 30;
-                }
+                tvTitle.TextSize = 20;
+            }
+            else
+            {
+                tvTitle.TextSize = 30;
             }
         }
 
@@ -212,7 +205,7 @@ namespace knight_mares_project
                 ivPumpkin.ClearAnimation();
                 ivPumpkin.Visibility = ViewStates.Gone;
 
-                tvTitleText = "Leaderboards";
+                SetTvTitleText("Leaderboards");
                 llLeaderBoard.Visibility = ViewStates.Visible;
                 wlLeaderboard.Visibility = ViewStates.Visible;
                 ivGoblet.Visibility = ViewStates.Visible;
@@ -229,7 +222,7 @@ namespace knight_mares_project
                 ivPumpkin.StartAnimation(pumpkinAnimation);
                 ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
-                tvTitleText = "Knight-Mares";
+                SetTvTitleText("Knight-Mares");
                 llLeaderBoard.Visibility = ViewStates.Gone;
                 wlLeaderboard.Visibility = ViewStates.Gone;
                 ivGoblet.Visibility = ViewStates.Gone;
@@ -445,13 +438,13 @@ namespace knight_mares_project
             {
                 if (requestCode == 0)
                 {
-                    tvTitleText = "KNIGHTS TOUR COMPLETE";
+                    SetTvTitleText("KNIGHTS TOUR COMPLETE");
                     Board_Knight_s_Tour.solve = false;
                 }
                 else
                 {
                     int timecompleted = data.GetIntExtra("time", 0);
-                    tvTitleText = CheckHighScoreInLevel(requestCode, timecompleted);
+                    SetTvTitleText(CheckHighScoreInLevel(requestCode, timecompleted));
                 }
 
 
