@@ -82,6 +82,11 @@ namespace knight_mares_project
 
             // events
             this.game.winEvent += WinDialog;
+            if (this.game is Board_Knight_s_Tour)
+            {
+                Board_Knight_s_Tour tour = (Board_Knight_s_Tour)this.game;
+                tour.pauseBgMusic += PauseMusic;
+            }
 
             // creating timer
             won = false;
@@ -143,6 +148,7 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
+            //Thread.Sleep(1000);
             string msg = "";
             this.result = time;
             if (this.game is Board_Knight_s_Tour)
@@ -189,7 +195,7 @@ namespace knight_mares_project
             }
         }
 
-        public void PauseMusic() // move to main
+        public void PauseMusic(object s, EventArgs args) // move to main
         {
             Intent i = new Intent("music");
             i.PutExtra("action", 0); // 0 to turn on

@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using Android.Media;
+using Android.Media.Audiofx;
 
 namespace knight_mares_project
 {
@@ -22,7 +23,8 @@ namespace knight_mares_project
         private Context context;
         private bool isKnightResized; // knight bitmap needs to be resized once only
 
-        private MediaPlayer mpMove;
+        public MediaPlayer mpMove;
+        public static Single defaultMpPitch = -1;
         public Knight(Square starter, Context context)
         {
             this.curSquare = starter;
@@ -36,6 +38,8 @@ namespace knight_mares_project
             //this.curSquare.StepOn(MainActivity.flag);
 
             mpMove = MediaPlayer.Create(context, Resource.Raw.move2);
+            if(defaultMpPitch == -1)
+                defaultMpPitch = mpMove.PlaybackParams.Pitch;
             mpMove.SetVolume(1, 1);
         }
 
@@ -63,7 +67,10 @@ namespace knight_mares_project
         public void moveToSquare(Square s)
             // moves the knight to the square inputted
         {
+            if (Board_Knight_s_Tour.solve)
+                this.mpMove.PlaybackParams.SetPitch(this.mpMove.PlaybackParams.Pitch * 2);
             this.mpMove.Start();
+                
             this.curSquare.SetImageVisability(true);
             this.curSquare = s;
             this.curSquare.SetImageVisability(false);

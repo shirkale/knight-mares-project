@@ -21,6 +21,8 @@ namespace knight_mares_project
 
         public static bool solve = false;
 
+        public EventHandler pauseBgMusic;
+
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size;
@@ -55,7 +57,10 @@ namespace knight_mares_project
                     if (index < solution.Count)
                     {
                         if (index == 0)
+                        {
                             UnstepAll();
+                            pauseBgMusic.Invoke(this, EventArgs.Empty);
+                        }
                         this.player.moveToSquare(solution[index]);
                         Thread.Sleep(TimeSpan.FromMilliseconds(700-index*10));
                         this.player.GetCurrentSquare().StepOn();
@@ -66,6 +71,7 @@ namespace knight_mares_project
                     {
                         winEvent.Invoke(this, EventArgs.Empty);
                         index++;
+                        this.player.mpMove.PlaybackParams.SetPitch(Knight.defaultMpPitch);
                     }
                 }
 

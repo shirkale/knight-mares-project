@@ -36,6 +36,9 @@ namespace knight_mares_project
 
         private Toast debug;
 
+        static int delayCount = 10;
+        static bool isStarterMms = false;
+
         public Board_Generate(Context context, int size, int difficulty) : base(context)
         {
             this.context = context;
@@ -93,13 +96,24 @@ namespace knight_mares_project
                     FinalUnStepOnMultSquares(); // makes all multstepsquares stepable, if 1 turn into ghostsquare
 
                     this.player.moveToSquare(this.starter);
-                    this.starter.StepOn();
+                    if(isStarterMms)
+                        this.starter.StepOn();
+                    delayCount = 10;
                 }
             }
             else
             {
-                //for(int)
-                winEvent.Invoke(this, EventArgs.Empty);
+                if(delayCount > 0)
+                {
+                    InitializeBoard(canvas);
+                    delayCount--;
+                    Thread.Sleep(50);
+                    Invalidate();
+                }
+                else
+                {
+                    winEvent.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -117,6 +131,7 @@ namespace knight_mares_project
                             this.squares[i, j].UnstepOn();
                             this.squares[i, j].SetImageVisability(true);
                             checkWin++;
+                            isStarterMms = this.squares[i, j] == starter;
                         }
                         else
                         {
