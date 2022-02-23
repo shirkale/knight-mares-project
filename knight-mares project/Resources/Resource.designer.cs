@@ -4529,6 +4529,9 @@ namespace knight_mares_project
 			// aapt resource value: 0x7F0B003B
 			public const int support_simple_spinner_dropdown_item = 2131427387;
 			
+			// aapt resource value: 0x7F0B003C
+			public const int testLayout = 2131427388;
+			
 			static Layout()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

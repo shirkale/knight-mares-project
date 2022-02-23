@@ -181,7 +181,7 @@ namespace knight_mares_project
 
         protected override void OnPause()
         {
-            PauseMusic();
+            PauseMusic(this, EventArgs.Empty);
             base.OnPause();
         }
 
