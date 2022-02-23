@@ -109,7 +109,7 @@ namespace knight_mares_project
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.activity_main_save);
 
 
             // initializing widgets
@@ -167,6 +167,9 @@ namespace knight_mares_project
 
             tvLbSmall.Click += Tv1_Click;
             tvLbBig.Click += TvLbBig_Click;
+
+            tvWLbSmall.Click += Tv1_Click;
+            tvWLbBig.Click += TvLbBig_Click;
 
             // typgame init
 
