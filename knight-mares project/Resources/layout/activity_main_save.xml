@@ -10,20 +10,6 @@
     >
 
     
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="difficultydisplay"
-        android:id="@+id/tvDisplayDifficulty"
-        android:background="#8C6A03"
-        android:textColor="#213501"
-        android:padding="10dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:alpha="0.65"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-                />  
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +22,7 @@
         android:textColor="@android:color/white"
         android:id="@+id/tvTitle" 
         android:alpha="0.7"
-        android:layout_below="@id/tvDisplayDifficulty"
+        android:layout_alignParentTop="true"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,17 +56,44 @@
     </LinearLayout>
         
     
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="difficultydisplay"
+        android:id="@+id/tvDisplayDifficulty"
+        android:background="#8C6A03"
+        android:textColor="#213501"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:alpha="0.65"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_below="@id/llbuttons"
+                />  
 
     <ImageView
         android:layout_width="281dp"
         android:layout_height="222dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/jackolanternremoved2"
         android:id="@+id/ivPumpkin"
-        android:layout_below="@id/llbuttons"
+        android:layout_below="@id/tvDisplayDifficulty"
         android:layout_centerHorizontal="true"/>
 
 
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your High Scores"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#ff8800"
+        android:id="@+id/tvHighScore"
+        android:layout_below="@id/tvTitle"
+        android:visibility="gone"
+        />
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,7 +102,8 @@
         android:id="@+id/linLeader"
         android:alpha="0.7"
         android:visibility="gone"
-        android:layout_below="@id/tvTitle"
+        android:layout_below="@id/tvHighScore"
+
         >
 
         <TextView
@@ -108,7 +122,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="waiting..."
-            android:background="#ffff8800"
+            android:background="@drawable/edit_middle"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:id="@+id/tv2"
@@ -126,6 +140,20 @@
 
     </LinearLayout>
 
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="World High Scores"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#F5E99E"
+        android:id="@+id/tvWorldScore"
+        android:layout_below="@id/linLeader"
+        android:visibility="gone"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -133,8 +161,7 @@
         android:id="@+id/linWorld"
         android:alpha="0.7"
         android:visibility="gone"
-        android:layout_below="@id/linLeader"
-        android:layout_marginTop="30dp"
+        android:layout_below="@id/tvWorldScore"
         >
 
         <TextView
@@ -153,7 +180,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="waiting..."
-            android:background="#F5E99E"
+            android:background="@drawable/edit_middle_world"
             android:gravity="center"
             android:textColor="@android:color/black"
             android:id="@+id/tv2w"

@@ -293,43 +293,61 @@ namespace knight_mares_project
 			public const int btn_radio_to_on_mtrl_ring_outer_path_animation = 2130771991;
 			
 			// aapt resource value: 0x7F010018
-			public const int design_bottom_sheet_slide_in = 2130771992;
+			public const int changeTitleFadeIn = 2130771992;
 			
 			// aapt resource value: 0x7F010019
-			public const int design_bottom_sheet_slide_out = 2130771993;
+			public const int changeTitleFadeOut = 2130771993;
 			
 			// aapt resource value: 0x7F01001A
-			public const int design_snackbar_in = 2130771994;
+			public const int design_bottom_sheet_slide_in = 2130771994;
 			
 			// aapt resource value: 0x7F01001B
-			public const int design_snackbar_out = 2130771995;
+			public const int design_bottom_sheet_slide_out = 2130771995;
 			
 			// aapt resource value: 0x7F01001C
-			public const int fragment_close_enter = 2130771996;
+			public const int design_snackbar_in = 2130771996;
 			
 			// aapt resource value: 0x7F01001D
-			public const int fragment_close_exit = 2130771997;
+			public const int design_snackbar_out = 2130771997;
 			
 			// aapt resource value: 0x7F01001E
-			public const int fragment_fade_enter = 2130771998;
+			public const int fragment_close_enter = 2130771998;
 			
 			// aapt resource value: 0x7F01001F
-			public const int fragment_fade_exit = 2130771999;
+			public const int fragment_close_exit = 2130771999;
 			
 			// aapt resource value: 0x7F010020
-			public const int fragment_fast_out_extra_slow_in = 2130772000;
+			public const int fragment_fade_enter = 2130772000;
 			
 			// aapt resource value: 0x7F010021
-			public const int fragment_open_enter = 2130772001;
+			public const int fragment_fade_exit = 2130772001;
 			
 			// aapt resource value: 0x7F010022
-			public const int fragment_open_exit = 2130772002;
+			public const int fragment_fast_out_extra_slow_in = 2130772002;
 			
 			// aapt resource value: 0x7F010023
-			public const int pumpkinAnimation = 2130772003;
+			public const int fragment_open_enter = 2130772003;
 			
 			// aapt resource value: 0x7F010024
-			public const int undobuttonturn = 2130772004;
+			public const int fragment_open_exit = 2130772004;
+			
+			// aapt resource value: 0x7F010025
+			public const int fromHome = 2130772005;
+			
+			// aapt resource value: 0x7F010026
+			public const int fromLeader = 2130772006;
+			
+			// aapt resource value: 0x7F010027
+			public const int pumpkinAnimation = 2130772007;
+			
+			// aapt resource value: 0x7F010028
+			public const int toHome = 2130772008;
+			
+			// aapt resource value: 0x7F010029
+			public const int toLeader = 2130772009;
+			
+			// aapt resource value: 0x7F01002A
+			public const int undobuttonturn = 2130772010;
 			
 			static Animation()
 			{
@@ -3329,115 +3347,121 @@ namespace knight_mares_project
 			public const int design_snackbar_background = 2131165296;
 			
 			// aapt resource value: 0x7F070071
-			public const int edit_round_left = 2131165297;
+			public const int edit_middle = 2131165297;
 			
 			// aapt resource value: 0x7F070072
-			public const int edit_round_left_world = 2131165298;
+			public const int edit_middle_world = 2131165298;
 			
 			// aapt resource value: 0x7F070073
-			public const int edit_round_right = 2131165299;
+			public const int edit_round_left = 2131165299;
 			
 			// aapt resource value: 0x7F070074
-			public const int edit_round_right_world = 2131165300;
+			public const int edit_round_left_world = 2131165300;
 			
 			// aapt resource value: 0x7F070075
-			public const int forest = 2131165301;
+			public const int edit_round_right = 2131165301;
 			
 			// aapt resource value: 0x7F070076
-			public const int ghosticon = 2131165302;
+			public const int edit_round_right_world = 2131165302;
 			
 			// aapt resource value: 0x7F070077
-			public const int ghostpattern2 = 2131165303;
+			public const int forest = 2131165303;
 			
 			// aapt resource value: 0x7F070078
-			public const int goblet = 2131165304;
+			public const int ghosticon = 2131165304;
 			
 			// aapt resource value: 0x7F070079
-			public const int hauntedhouse = 2131165305;
+			public const int ghostpattern2 = 2131165305;
 			
 			// aapt resource value: 0x7F07007A
-			public const int homebutton4 = 2131165306;
+			public const int goblet = 2131165306;
 			
 			// aapt resource value: 0x7F07007B
-			public const int ic_mtrl_chip_checked_black = 2131165307;
+			public const int hauntedhouse = 2131165307;
 			
 			// aapt resource value: 0x7F07007C
-			public const int ic_mtrl_chip_checked_circle = 2131165308;
+			public const int homebutton4 = 2131165308;
 			
 			// aapt resource value: 0x7F07007D
-			public const int ic_mtrl_chip_close_circle = 2131165309;
+			public const int ic_mtrl_chip_checked_black = 2131165309;
 			
 			// aapt resource value: 0x7F07007E
-			public const int jackolanternremoved2 = 2131165310;
+			public const int ic_mtrl_chip_checked_circle = 2131165310;
 			
 			// aapt resource value: 0x7F07007F
-			public const int knightpic = 2131165311;
+			public const int ic_mtrl_chip_close_circle = 2131165311;
 			
 			// aapt resource value: 0x7F070080
-			public const int little_red_flag = 2131165312;
+			public const int jackolanternremoved2 = 2131165312;
 			
 			// aapt resource value: 0x7F070081
-			public const int mtrl_snackbar_background = 2131165313;
+			public const int knightpic = 2131165313;
 			
 			// aapt resource value: 0x7F070082
-			public const int mtrl_tabs_default_indicator = 2131165314;
+			public const int little_red_flag = 2131165314;
 			
 			// aapt resource value: 0x7F070083
-			public const int mute = 2131165315;
+			public const int mtrl_snackbar_background = 2131165315;
 			
 			// aapt resource value: 0x7F070084
-			public const int navigation_empty_icon = 2131165316;
+			public const int mtrl_tabs_default_indicator = 2131165316;
 			
 			// aapt resource value: 0x7F070085
-			public const int notification_action_background = 2131165317;
+			public const int mute = 2131165317;
 			
 			// aapt resource value: 0x7F070086
-			public const int notification_bg = 2131165318;
+			public const int navigation_empty_icon = 2131165318;
 			
 			// aapt resource value: 0x7F070087
-			public const int notification_bg_low = 2131165319;
+			public const int notification_action_background = 2131165319;
 			
 			// aapt resource value: 0x7F070088
-			public const int notification_bg_low_normal = 2131165320;
+			public const int notification_bg = 2131165320;
 			
 			// aapt resource value: 0x7F070089
-			public const int notification_bg_low_pressed = 2131165321;
+			public const int notification_bg_low = 2131165321;
 			
 			// aapt resource value: 0x7F07008A
-			public const int notification_bg_normal = 2131165322;
+			public const int notification_bg_low_normal = 2131165322;
 			
 			// aapt resource value: 0x7F07008B
-			public const int notification_bg_normal_pressed = 2131165323;
+			public const int notification_bg_low_pressed = 2131165323;
 			
 			// aapt resource value: 0x7F07008C
-			public const int notification_icon_background = 2131165324;
+			public const int notification_bg_normal = 2131165324;
 			
 			// aapt resource value: 0x7F07008D
-			public const int notification_template_icon_bg = 2131165325;
+			public const int notification_bg_normal_pressed = 2131165325;
 			
 			// aapt resource value: 0x7F07008E
-			public const int notification_template_icon_low_bg = 2131165326;
+			public const int notification_icon_background = 2131165326;
 			
 			// aapt resource value: 0x7F07008F
-			public const int notification_tile_bg = 2131165327;
+			public const int notification_template_icon_bg = 2131165327;
 			
 			// aapt resource value: 0x7F070090
-			public const int notify_panel_notification_icon_bg = 2131165328;
+			public const int notification_template_icon_low_bg = 2131165328;
 			
 			// aapt resource value: 0x7F070091
-			public const int skullmenu = 2131165329;
+			public const int notification_tile_bg = 2131165329;
 			
 			// aapt resource value: 0x7F070092
-			public const int snowtreesmol = 2131165330;
+			public const int notify_panel_notification_icon_bg = 2131165330;
 			
 			// aapt resource value: 0x7F070093
-			public const int sound = 2131165331;
+			public const int skullmenu = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int tooltip_frame_dark = 2131165332;
+			public const int snowtreesmol = 2131165332;
 			
 			// aapt resource value: 0x7F070095
-			public const int tooltip_frame_light = 2131165333;
+			public const int sound = 2131165333;
+			
+			// aapt resource value: 0x7F070096
+			public const int tooltip_frame_dark = 2131165334;
+			
+			// aapt resource value: 0x7F070097
+			public const int tooltip_frame_light = 2131165335;
 			
 			static Drawable()
 			{
@@ -4206,43 +4230,49 @@ namespace knight_mares_project
 			public const int tvDisplayDifficulty = 2131230970;
 			
 			// aapt resource value: 0x7F0800FB
-			public const int tvTime = 2131230971;
+			public const int tvHighScore = 2131230971;
 			
 			// aapt resource value: 0x7F0800FC
-			public const int tvTitle = 2131230972;
+			public const int tvTime = 2131230972;
 			
 			// aapt resource value: 0x7F0800FD
-			public const int @unchecked = 2131230973;
+			public const int tvTitle = 2131230973;
 			
 			// aapt resource value: 0x7F0800FE
-			public const int uniform = 2131230974;
+			public const int tvWorldScore = 2131230974;
 			
 			// aapt resource value: 0x7F0800FF
-			public const int unlabeled = 2131230975;
+			public const int @unchecked = 2131230975;
 			
 			// aapt resource value: 0x7F080100
-			public const int up = 2131230976;
+			public const int uniform = 2131230976;
 			
 			// aapt resource value: 0x7F080101
-			public const int useLogo = 2131230977;
+			public const int unlabeled = 2131230977;
 			
 			// aapt resource value: 0x7F080102
-			public const int view_offset_helper = 2131230978;
+			public const int up = 2131230978;
 			
 			// aapt resource value: 0x7F080103
-			public const int view_tree_saved_state_registry_owner = 2131230979;
+			public const int useLogo = 2131230979;
 			
 			// aapt resource value: 0x7F080104
-			public const int visible = 2131230980;
+			public const int view_offset_helper = 2131230980;
 			
 			// aapt resource value: 0x7F080105
-			public const int visible_removing_fragment_view_tag = 2131230981;
+			public const int view_tree_saved_state_registry_owner = 2131230981;
 			
 			// aapt resource value: 0x7F080106
-			public const int withText = 2131230982;
+			public const int visible = 2131230982;
 			
 			// aapt resource value: 0x7F080107
-			public const int wrap_content = 2131230983;
+			public const int visible_removing_fragment_view_tag = 2131230983;
+			
+			// aapt resource value: 0x7F080108
+			public const int withText = 2131230984;
+			
+			// aapt resource value: 0x7F080109
+			public const int wrap_content = 2131230985;
 			
 			static Id()
 			{

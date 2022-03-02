@@ -30,11 +30,14 @@ namespace knight_mares_project
         public static Intent musicIntent;
 
         Button btnStart, btnTour;
-        TextView tvTitle, tvDisplayDifficulty;
+        LinearLayout llButtons;
+        TextView tvTitle, tvDisplayDifficulty, tvHighScore, tvWorldScore;
         ISharedPreferences spHighScore;
 
         private void SetTvTitleText(string value)
         {
+            tvTitle.StartAnimation(changeTitleFadeOutAnimation);
+
             tvTitle.Text = value;
             if (value.Contains('\n'))
             {
@@ -44,6 +47,8 @@ namespace knight_mares_project
             {
                 tvTitle.TextSize = 30;
             }
+            tvTitle.StartAnimation(changeTitleFadeInAnimation);
+
         }
 
         //Dialog chooseLevel;
@@ -87,6 +92,12 @@ namespace knight_mares_project
         ImageView ivGoblet;
         ImageView ivPumpkin;
         Animation pumpkinAnimation;
+        Animation fromHomeAnimation;
+        Animation toLeaderAnimation;
+        Animation toHomeAnimation;
+        Animation fromLeaderAnimation;
+        Animation changeTitleFadeOutAnimation;
+        Animation changeTitleFadeInAnimation;
 
         // sound
 
@@ -116,6 +127,10 @@ namespace knight_mares_project
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
             btnTour = (Button)FindViewById(Resource.Id.btnKnightsTour);
+            llButtons = (LinearLayout)FindViewById(Resource.Id.llbuttons);
+            tvHighScore = (TextView)FindViewById(Resource.Id.tvHighScore);
+            tvWorldScore = (TextView)FindViewById(Resource.Id.tvWorldScore);
+
             tvDisplayDifficulty = (TextView)FindViewById(Resource.Id.tvDisplayDifficulty);
             tvTitle = (TextView)FindViewById(Resource.Id.tvTitle);
 
@@ -162,8 +177,15 @@ namespace knight_mares_project
             // animation init
 
             pumpkinAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.pumpkinAnimation);
+            fromHomeAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.fromHome);
+            toLeaderAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.toLeader);
+            toHomeAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.toHome);
+            fromLeaderAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.fromLeader);
+            changeTitleFadeOutAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.changeTitleFadeOut);
+            changeTitleFadeInAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.changeTitleFadeIn);
             ivPumpkin.StartAnimation(pumpkinAnimation);
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
+
 
             tvLbSmall.Click += Tv1_Click;
             tvLbBig.Click += TvLbBig_Click;
@@ -198,37 +220,101 @@ namespace knight_mares_project
 
         }
 
+        public void ShowLeader()
+        {
+            // scale animation to hide widgets in home
+            llButtons.StartAnimation(fromHomeAnimation);
+            tvDisplayDifficulty.StartAnimation(fromHomeAnimation);
+
+
+            // visibility gone in home
+            llButtons.Visibility = ViewStates.Gone;
+            tvDisplayDifficulty.Visibility = ViewStates.Gone;
+
+
+            ivPumpkin.ClearAnimation();
+            ivPumpkin.Visibility = ViewStates.Gone;
+
+
+            SetTvTitleText("Leaderboards"); // fade out fade in
+
+            // visibility visable in leaderboard
+            llLeaderBoard.Visibility = ViewStates.Visible;
+            wlLeaderboard.Visibility = ViewStates.Visible;
+            ivGoblet.Visibility = ViewStates.Visible;
+            tvHighScore.Visibility = ViewStates.Visible;
+            tvWorldScore.Visibility = ViewStates.Visible;
+
+            // scale animation to show widgets in leaderboard
+            llLeaderBoard.StartAnimation(toLeaderAnimation);
+            wlLeaderboard.StartAnimation(toLeaderAnimation);
+            ivGoblet.StartAnimation(toLeaderAnimation);
+            tvHighScore.StartAnimation(toLeaderAnimation);
+            tvWorldScore.StartAnimation(toLeaderAnimation);
+
+            SetLeaderboardText();
+        }
+
+        public void ShowHome()
+        {
+            // visibility visable in home
+            tvDisplayDifficulty.Visibility = ViewStates.Visible;
+            llButtons.Visibility = ViewStates.Visible;
+
+            // scale animation to show widgets in home
+            tvDisplayDifficulty.StartAnimation(toHomeAnimation);
+            llButtons.StartAnimation(toHomeAnimation);
+
+            ivPumpkin.Visibility = ViewStates.Visible;
+            ivPumpkin.StartAnimation(pumpkinAnimation);
+            ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
+
+            SetTvTitleText("Knight-Mares"); // fade out fade in
+
+            // visibility gone in leaderboard
+            llLeaderBoard.Visibility = ViewStates.Gone;
+            wlLeaderboard.Visibility = ViewStates.Gone;
+            ivGoblet.Visibility = ViewStates.Gone;
+            tvHighScore.Visibility = ViewStates.Gone;
+            tvWorldScore.Visibility = ViewStates.Gone;
+
+            // scale animation to show widgets in leaderboard
+            llLeaderBoard.StartAnimation(fromLeaderAnimation);
+            wlLeaderboard.StartAnimation(fromLeaderAnimation);
+            ivGoblet.StartAnimation(fromLeaderAnimation);
+            tvHighScore.StartAnimation(fromLeaderAnimation);
+            tvWorldScore.StartAnimation(fromLeaderAnimation);
+        }
         private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
-            if(e.Item.ItemId == Resource.Id.itemLeader)
+            if (llButtons.Animation == null)
             {
-                tvDisplayDifficulty.Visibility = ViewStates.Gone;
-                btnStart.Visibility = ViewStates.Gone;
-                btnTour.Visibility = ViewStates.Gone;
-                ivPumpkin.ClearAnimation();
-                ivPumpkin.Visibility = ViewStates.Gone;
-
-                SetTvTitleText("Leaderboards");
-                llLeaderBoard.Visibility = ViewStates.Visible;
-                wlLeaderboard.Visibility = ViewStates.Visible;
-                ivGoblet.Visibility = ViewStates.Visible;
-
-
-                SetLeaderboardText();
+                if (e.Item.ItemId == Resource.Id.itemLeader)
+                {
+                    if (llButtons.Visibility == ViewStates.Visible)
+                        ShowLeader();
+                }
+                else if (e.Item.ItemId == Resource.Id.itemhome)
+                {
+                    if (llButtons.Visibility == ViewStates.Gone)
+                        ShowHome();
+                }
             }
-            else if (e.Item.ItemId == Resource.Id.itemhome)
+            else
             {
-                tvDisplayDifficulty.Visibility = ViewStates.Visible;
-                btnStart.Visibility = ViewStates.Visible;
-                btnTour.Visibility = ViewStates.Visible;
-                ivPumpkin.Visibility = ViewStates.Visible;
-                ivPumpkin.StartAnimation(pumpkinAnimation);
-                ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
-
-                SetTvTitleText("Knight-Mares");
-                llLeaderBoard.Visibility = ViewStates.Gone;
-                wlLeaderboard.Visibility = ViewStates.Gone;
-                ivGoblet.Visibility = ViewStates.Gone;
+                if(!llButtons.Animation.HasStarted || llButtons.Animation.HasEnded)
+                {
+                    if (e.Item.ItemId == Resource.Id.itemLeader)
+                    {
+                        if (llButtons.Visibility == ViewStates.Visible)
+                            ShowLeader();
+                    }
+                    else if (e.Item.ItemId == Resource.Id.itemhome)
+                    {
+                        if (llButtons.Visibility == ViewStates.Gone)
+                            ShowHome();
+                    }
+                }
             }
         }
 
@@ -242,15 +328,18 @@ namespace knight_mares_project
 
         private void BtnTour_Click(object sender, EventArgs e)
         {
-            this.typegame = TypeGame.Tour;
-            Intent i = new Intent(this, typeof(GameActivity));
-            i.PutExtra("type", (char)this.typegame);
-            StartActivityForResult(i, 0);
+            if (llButtons.Visibility != ViewStates.Gone)
+            {
+                this.typegame = TypeGame.Tour;
+                Intent i = new Intent(this, typeof(GameActivity));
+                i.PutExtra("type", (char)this.typegame);
+                StartActivityForResult(i, 0);
+            }
         }
 
         private void TvLbBig_Click(object sender, EventArgs e)
         {
-            if (difficulty != 29)
+            if (difficulty != 30 && llLeaderBoard.Visibility != ViewStates.Gone)
             {
                 difficulty++;
                 SetLeaderboardText();
@@ -260,7 +349,7 @@ namespace knight_mares_project
 
         private void Tv1_Click(object sender, EventArgs e)
         {
-            if (difficulty != 4)
+            if (difficulty != 3 && llLeaderBoard.Visibility != ViewStates.Gone)
             {
                 difficulty--;
                 SetLeaderboardText();
@@ -427,11 +516,18 @@ namespace knight_mares_project
 
         private void BtnStart_Click(object sender, EventArgs e)
         {
-            this.typegame = TypeGame.Generate;
-            Intent i = new Intent(this, typeof(GameActivity));
-            i.PutExtra("level", difficulty);
-            i.PutExtra("type", (char)this.typegame);
-            StartActivityForResult(i, this.difficulty);
+            if (llButtons.Visibility != ViewStates.Gone)
+            {
+                if (difficulty < 3)
+                    difficulty = 3;
+                else if (difficulty > 30)
+                    difficulty = 30;
+                this.typegame = TypeGame.Generate;
+                Intent i = new Intent(this, typeof(GameActivity));
+                i.PutExtra("level", difficulty);
+                i.PutExtra("type", (char)this.typegame);
+                StartActivityForResult(i, this.difficulty);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -439,6 +535,7 @@ namespace knight_mares_project
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok)
             {
+                ShowHome();
                 if (requestCode == 0)
                 {
                     SetTvTitleText("KNIGHTS TOUR COMPLETE");
@@ -462,7 +559,7 @@ namespace knight_mares_project
 
         private string CheckHighScoreInLevel(int requestCode, int time) // updates high score and returns string to display
         {
-            string str = "You completed the level in " + time + " seconds.";
+            string str = ":::Kight-Mares:::\nYou completed the level in " + time + " seconds.";
 
             string level = "level" + requestCode;
 
