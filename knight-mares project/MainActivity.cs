@@ -187,10 +187,10 @@ namespace knight_mares_project
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
 
-            tvLbSmall.Click += Tv1_Click;
+            tvLbSmall.Click += TvLbSmall_Click;
             tvLbBig.Click += TvLbBig_Click;
 
-            tvWLbSmall.Click += Tv1_Click;
+            tvWLbSmall.Click += TvLbSmall_Click;
             tvWLbBig.Click += TvLbBig_Click;
 
             // typgame init
@@ -220,6 +220,7 @@ namespace knight_mares_project
 
         }
 
+        // show leaderboard views
         public void ShowLeader()
         {
             // scale animation to hide widgets in home
@@ -233,6 +234,8 @@ namespace knight_mares_project
 
 
             ivPumpkin.ClearAnimation();
+            ivPumpkin.StartAnimation(fromHomeAnimation);
+            ivPumpkin.Animation.AnimationEnd -= Animation_AnimationEnd;
             ivPumpkin.Visibility = ViewStates.Gone;
 
 
@@ -255,6 +258,7 @@ namespace knight_mares_project
             SetLeaderboardText();
         }
 
+        // show home views
         public void ShowHome()
         {
             // visibility visable in home
@@ -266,7 +270,7 @@ namespace knight_mares_project
             llButtons.StartAnimation(toHomeAnimation);
 
             ivPumpkin.Visibility = ViewStates.Visible;
-            ivPumpkin.StartAnimation(pumpkinAnimation);
+            ivPumpkin.StartAnimation(toHomeAnimation);
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
             SetTvTitleText("Knight-Mares"); // fade out fade in
@@ -285,6 +289,8 @@ namespace knight_mares_project
             tvHighScore.StartAnimation(fromLeaderAnimation);
             tvWorldScore.StartAnimation(fromLeaderAnimation);
         }
+
+        // bottom nav menu
         private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
             if (llButtons.Animation == null)
@@ -318,6 +324,7 @@ namespace knight_mares_project
             }
         }
 
+        // get database from firebase
         public async Task<List<int>> GetDatabase()
         {
             List<Score> getScore = await FirebaseHelper.GetAll();
@@ -337,6 +344,7 @@ namespace knight_mares_project
             }
         }
 
+        // leaderboard clicks
         private void TvLbBig_Click(object sender, EventArgs e)
         {
             if (difficulty != 30 && llLeaderBoard.Visibility != ViewStates.Gone)
@@ -347,7 +355,7 @@ namespace knight_mares_project
 
         }
 
-        private void Tv1_Click(object sender, EventArgs e)
+        private void TvLbSmall_Click(object sender, EventArgs e)
         {
             if (difficulty != 3 && llLeaderBoard.Visibility != ViewStates.Gone)
             {
@@ -356,6 +364,7 @@ namespace knight_mares_project
             }
         }
 
+        // loop animation
         private void Animation_AnimationEnd(object sender, Animation.AnimationEndEventArgs e)
         {
             if(ivPumpkin.Visibility == ViewStates.Visible)
@@ -455,7 +464,6 @@ namespace knight_mares_project
             MenuInflater.Inflate(Resource.Menu.menuDif, menu);
             return base.OnCreateOptionsMenu(menu);
         }
-
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             base.OnOptionsItemSelected(item);
@@ -481,6 +489,8 @@ namespace knight_mares_project
             return true;
         }
 
+
+        // dialog opened on select difficulty in menu
         public void DifficultyDialog()
         {
             this.difficultyDialog = new Dialog(this);
@@ -501,19 +511,19 @@ namespace knight_mares_project
             sb.ProgressChanged += Sb_ProgressChanged;
 
         }
-
+        // submit difficulty in dialog
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
             difficultyDialog.Dismiss();
         }
-
+        // seek bar in dialog
         private void Sb_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
         {
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
             SetLeaderboardText();
         }
-
+        // start generate
         private void BtnStart_Click(object sender, EventArgs e)
         {
             if (llButtons.Visibility != ViewStates.Gone)
@@ -530,6 +540,7 @@ namespace knight_mares_project
             }
         }
 
+        // comes back from game
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -556,7 +567,7 @@ namespace knight_mares_project
                 
             }
         }
-
+        // returns win string according to high scores
         private string CheckHighScoreInLevel(int requestCode, int time) // updates high score and returns string to display
         {
             string str = ":::Kight-Mares:::\nYou completed the level in " + time + " seconds.";
@@ -570,18 +581,29 @@ namespace knight_mares_project
                 editor.PutInt(level, time);
                 editor.Commit();
             }
-
-            if(worldRecord[requestCode - 3] == -1 || time <= worldRecord[requestCode - 3]) // checking high score from world records
+            if (worldRecord == null)
             {
-                str += "\nWorld Record!!!!";
-                worldRecord[requestCode - 3] = time;
-                FirebaseHelper.Update(new Score(worldRecord));
+                GetDatabase();
             }
+            try
+            {
+                if (worldRecord[requestCode - 3] == -1 || time <= worldRecord[requestCode - 3]) // checking high score from world records
+                {
+                    str += "\nWorld Record!!!!";
+                    worldRecord[requestCode - 3] = time;
+                    FirebaseHelper.Update(new Score(worldRecord));
+                }
+            }
+            catch
+            {
+                str += "\ncouldn't find database";
+            }
+                
             return str;
         }
 
 
-        public void ResumeMusic() // move to mainactivity
+        public void ResumeMusic()
         {
             if(!muted)
             {
@@ -600,7 +622,7 @@ namespace knight_mares_project
             }
         }
 
-        public void PauseMusic() // move to main
+        public void PauseMusic()
         {
             Intent i = new Intent("music");
             i.PutExtra("action", 0); // 0 to turn on

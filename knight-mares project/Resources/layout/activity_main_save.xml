@@ -70,11 +70,12 @@
         android:gravity="center"
         android:layout_below="@id/llbuttons"
                 />  
+    
 
     <ImageView
         android:layout_width="281dp"
         android:layout_height="222dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/jackolanternremoved2"
         android:id="@+id/ivPumpkin"
         android:layout_below="@id/tvDisplayDifficulty"
@@ -199,8 +200,8 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="400dp"
+        android:layout_width="150dp"
+        android:layout_height="300dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/goblet"
         android:id="@+id/ivGoblet"
