@@ -1,5 +1,7 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 using Android.Graphics;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
 using System;
@@ -39,7 +41,12 @@ namespace knight_mares_project
         static int delayCount = 10;
         static bool isStarterMms = false;
 
-        public Board_Generate(Context context, int size, int difficulty) : base(context)
+        public EventHandler startProg;
+        public EventHandler endProg;
+
+        protected Handler handler;
+
+        public Board_Generate(Context context, int size, int difficulty, Handler handler) : base(context)
         {
             this.context = context;
             this.size = size;
@@ -60,6 +67,8 @@ namespace knight_mares_project
             this.difficulty = difficulty;
 
             this.moves = new Stack<Square>();
+
+            this.handler = handler;
 
             debug = Toast.MakeText(this.context, ""+this.checkWin, ToastLength.Short);
         }
@@ -91,8 +100,17 @@ namespace knight_mares_project
 
                 if (firstDraw)
                 {
+                    Thread t = new Thread(new ThreadStart(ProgressBarStart));
+                    t.Start();
                     firstDraw = false;
                     GenerateRandomMap(canvas); // generates map
+                    if(t != null)
+                    {
+                        t.Abort();
+                        Message message = new Message();
+                        message.Arg1 = 0;
+                        handler.SendMessage(message);
+                    }
                     FinalUnStepOnMultSquares(); // makes all multstepsquares stepable, if 1 turn into ghostsquare
 
                     this.player.moveToSquare(this.starter);
@@ -115,6 +133,13 @@ namespace knight_mares_project
                     winEvent.Invoke(this, EventArgs.Empty);
                 }
             }
+        }
+
+        protected void ProgressBarStart()
+        {
+            Message message = new Message();
+            message.Arg1 = 1;
+            handler.SendMessage(message);            
         }
 
         private void FinalUnStepOnMultSquares()
@@ -234,7 +259,8 @@ namespace knight_mares_project
 
         protected void InitializeKnight()
         {
-            PickRandomStarter();
+            //PickRandomStarter();
+            this.starter = (GhostSquare)this.squares[0, 5];
             this.player = new Knight(this.starter, this.context);
             starter.ResizeBitmap(false);
             this.firstKnight = false;

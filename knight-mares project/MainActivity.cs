@@ -56,6 +56,7 @@ namespace knight_mares_project
         SeekBar sb;
         TextView tvDifficultyInDialog;
 
+
         //difficulty chosen in dialog and sent to gameactivity
         int _difficulty;
         private int difficulty

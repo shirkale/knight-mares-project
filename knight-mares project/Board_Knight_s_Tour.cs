@@ -22,8 +22,8 @@ namespace knight_mares_project
         public static bool solve = false;
 
         public EventHandler pauseBgMusic;
-
-        public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
+        Thread t;
+        public Board_Knight_s_Tour(Context context, int size, Handler handler) : base(context, size, 0, handler)
         {
             this.checkWin = size * size;
             this.solution = new List<Square>();
@@ -43,6 +43,8 @@ namespace knight_mares_project
 
                 if (firstDraw)
                 {
+                    t = new Thread(new ThreadStart(ProgressBarStart));
+                    t.Start();
                     firstDraw = false;
                     this.player.GetCurrentSquare().StepOn();
                     SolveTour();
@@ -93,6 +95,14 @@ namespace knight_mares_project
             for (int i = 0; i < this.solution.Count; i++)
             {
                 Console.WriteLine(this.solution[i].GetI() + ", " + this.solution[i].GetJ());
+            }
+
+            if (t != null)
+            {
+                t.Abort();
+                Message message = new Message();
+                message.Arg1 = 0;
+                handler.SendMessage(message);
             }
         }
 
