@@ -22,13 +22,16 @@ namespace knight_mares_project
         public static bool solve = false;
 
         public EventHandler pauseBgMusic;
-        Thread t;
-        public Board_Knight_s_Tour(Context context, int size, Handler handler) : base(context, size, 0, handler)
+
+        List<Square> allPaths;
+        public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size;
             this.solution = new List<Square>();
             count = 0;
             index = 0;
+
+            allPaths = FileHelper.ReadFromBinaryFile<List<Square>>();
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -43,8 +46,6 @@ namespace knight_mares_project
 
                 if (firstDraw)
                 {
-                    t = new Thread(new ThreadStart(ProgressBarStart));
-                    t.Start();
                     firstDraw = false;
                     this.player.GetCurrentSquare().StepOn();
                     SolveTour();
@@ -87,8 +88,30 @@ namespace knight_mares_project
         public void SolveTour()
         {
             GoBackAll();
-            solution.Add(starter);
-            FindTour(this.starter);
+            if (allPaths == null) // initializing file one time only
+            {
+                List<Square> writeToFile = new List<Square>();
+                for (int k = 0; k < size; k++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        Console.WriteLine("-----------------------------" + squares[k, j].GetI() + " " + squares[k, j].GetJ() + "---------------------------------");
+                        FindTour(squares[k, j]);
+                        writeToFile.AddRange(this.solution);
+                        UnstepAll();
+                        this.solution = new List<Square>();
+                        this.count = 0;
+                    }
+                }
+                FileHelper.WriteToBinaryFile<List<Square>>(writeToFile);
+            }
+            allPaths = FileHelper.ReadFromBinaryFile<List<Square>>(); // reading all paths from file computed
+
+            int starterPath = this.starter.GetI() * size + this.starter.GetJ(); // enumerates the starter path with one int instead of two
+            int pathIndex = starterPath * size * size;
+            this.solution = allPaths.GetRange(pathIndex, size * size);
+
+            //FindTour(this.starter);
 
             Console.WriteLine("solution count: " + solution.Count);
 
@@ -96,18 +119,12 @@ namespace knight_mares_project
             {
                 Console.WriteLine(this.solution[i].GetI() + ", " + this.solution[i].GetJ());
             }
-
-            if (t != null)
-            {
-                t.Abort();
-                Message message = new Message();
-                message.Arg1 = 0;
-                handler.SendMessage(message);
-            }
         }
 
         private bool FindTour(Square curSquare)
         {
+            if (count == 0)
+                solution.Add(curSquare);
             count++;
             Console.WriteLine(count);
             if (solution.Count == this.checkWin)

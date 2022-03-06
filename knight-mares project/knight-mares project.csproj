@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Board_Generate.cs" />
     <Compile Include="Board_Knight_s_Tour.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="FirebaseHelper.cs" />
     <Compile Include="GameActivity.cs" />
     <Compile Include="GhostSquare.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />
     <Compile Include="MusicPlayerBroadcastReciever.cs" />
-    <Compile Include="MyHandler.cs" />
     <Compile Include="MyService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,9 +200,6 @@
     <AndroidResource Include="Resources\drawable\ghosticon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\testLayout.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main_save.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +237,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\anim\fromLeader.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\progressDialog.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

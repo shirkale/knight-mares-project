@@ -34,9 +34,6 @@ namespace knight_mares_project
         //Animations
 
         Animation animTurnUndo;
-        private Dialog progressBar;
-
-        MyHandler myHandler;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -54,14 +51,6 @@ namespace knight_mares_project
 
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
 
-            // initializing progress bar and handler
-
-            progressBar = new Dialog(this);
-            progressBar.SetContentView(Resource.Layout.progressDialog);
-            progressBar.SetCancelable(false);
-
-            myHandler = new MyHandler(this, progressBar);
-
             // initializing board according to level selection
 
             difficulty = Intent.GetIntExtra("level", 3);
@@ -71,15 +60,15 @@ namespace knight_mares_project
             switch(type)
             {
                 case TypeGame.Generate:
-                    this.game = new Board_Generate(this, size, difficulty, myHandler);
+                    this.game = new Board_Generate(this, size, difficulty);
                     this.btnSolve.Visibility = ViewStates.Gone;
                     break;
                 case TypeGame.Tour:
-                    this.game = new Board_Knight_s_Tour(this, size, myHandler);
+                    this.game = new Board_Knight_s_Tour(this, size);
                     this.btnSolve.Visibility = ViewStates.Visible;
                     break;
                 default:
-                    this.game = new Board_Generate(this, size, difficulty, myHandler);
+                    this.game = new Board_Generate(this, size, difficulty);
                     break;
             }
             
