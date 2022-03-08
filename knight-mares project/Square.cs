@@ -15,7 +15,6 @@ using Color = Android.Graphics.Color;
 
 namespace knight_mares_project
 {
-    [Serializable]
     public abstract class Square
     {
         protected float x, y, w, h;

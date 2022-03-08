@@ -18,7 +18,8 @@ namespace knight_mares_project
 {
     public class FileHelper
     {
-        public static string filePath;
+        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "test.bin");
+
         //public void WriteToBinaryFile<T>(T objectToWrite, bool append = true)
         //{
         //    using (Stream stream = OpenFileOutput(filePath, FileCreationMode.Private))
@@ -46,20 +47,42 @@ namespace knight_mares_project
         //}
 
 
-        public static void SerializeNow(List<Square> lSquare)
+        public static void SerializeNow<T>(T objectToInsert)
         {
-            Stream s = System.IO.File.Open(filePath, FileMode.Append);
+            Stream s = System.IO.File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             BinaryFormatter b = new BinaryFormatter();
-            b.Serialize(s, lSquare);
+            b.Serialize(s, objectToInsert);
             s.Close();
         }
         public static T DeSerializeNow<T>()
         {
-            Stream s = System.IO.File.Open(filePath, FileMode.Append);
+            Stream s = System.IO.File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             BinaryFormatter b = new BinaryFormatter();
             T result = (T)b.Deserialize(s);
             s.Close();
             return result;
+        }
+
+        public static List<Square> SquarePathFromInt(List<int> source, Square[,] squareMatrix)
+        {
+            List<Square> newList = new List<Square>();
+            for (int k = 0; k < source.Count - 1; k += 2)
+            {
+                int i = k;
+                int j = k + 1;
+                newList.Add(squareMatrix[source[i], source[j]]);
+            }
+            return newList;
+        }
+        public static List<int> IntFromSquarePath(List<Square> source)
+        {
+            List<int> newList = new List<int>();
+            foreach(Square s in source)
+            {
+                newList.Add(s.GetI());
+                newList.Add(s.GetJ());
+            }
+            return newList;
         }
 
     }

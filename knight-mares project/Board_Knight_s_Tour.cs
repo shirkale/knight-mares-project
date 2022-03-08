@@ -31,7 +31,7 @@ namespace knight_mares_project
             count = 0;
             index = 0;
 
-            allPaths = null;//FileHelper.ReadFromBinaryFile<List<Square>>();
+            allPaths = FileHelper.SquarePathFromInt(FileHelper.DeSerializeNow<List<int>>(), squares);
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -103,9 +103,10 @@ namespace knight_mares_project
                         this.count = 0;
                     }
                 }
-                FileHelper.SerializeNow(writeToFile);
+                List<int> writeToFileInts = FileHelper.IntFromSquarePath(writeToFile);
+                FileHelper.SerializeNow(writeToFileInts);
             }
-            allPaths = FileHelper.DeSerializeNow<List<Square>>(); // reading all paths from file computed
+            allPaths = FileHelper.SquarePathFromInt(FileHelper.DeSerializeNow<List<int>>(), squares); // reading all paths from file computed beforehand
 
             int starterPath = this.starter.GetI() * size + this.starter.GetJ(); // enumerates the starter path with one int instead of two
             int pathIndex = starterPath * size * size;
