@@ -18,7 +18,7 @@ namespace knight_mares_project
 {
     public class FileHelper
     {
-        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "test.bin");
+        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "test1.bin");
 
         //public void WriteToBinaryFile<T>(T objectToWrite, bool append = true)
         //{
@@ -56,23 +56,34 @@ namespace knight_mares_project
         }
         public static T DeSerializeNow<T>()
         {
-            Stream s = System.IO.File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            BinaryFormatter b = new BinaryFormatter();
-            T result = (T)b.Deserialize(s);
-            s.Close();
-            return result;
+            try
+            {
+                Stream s = System.IO.File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                BinaryFormatter b = new BinaryFormatter();
+                T result = (T)b.Deserialize(s);
+                s.Close();
+                return result;
+            }
+            catch
+            {
+                return default;
+            }
         }
 
         public static List<Square> SquarePathFromInt(List<int> source, Square[,] squareMatrix)
         {
-            List<Square> newList = new List<Square>();
-            for (int k = 0; k < source.Count - 1; k += 2)
+            if (source != null)
             {
-                int i = k;
-                int j = k + 1;
-                newList.Add(squareMatrix[source[i], source[j]]);
+                List<Square> newList = new List<Square>();
+                for (int k = 0; k < source.Count - 1; k += 2)
+                {
+                    int i = k;
+                    int j = k + 1;
+                    newList.Add(squareMatrix[source[i], source[j]]);
+                }
+                return newList;
             }
-            return newList;
+            return null;
         }
         public static List<int> IntFromSquarePath(List<Square> source)
         {

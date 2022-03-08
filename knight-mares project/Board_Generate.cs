@@ -241,8 +241,8 @@ namespace knight_mares_project
 
         protected void InitializeKnight()
         {
-            PickRandomStarter();
-            //this.starter = (GhostSquare)this.squares[0, 0];
+            //PickRandomStarter();
+            this.starter = (GhostSquare)this.squares[3, 3];
             this.player = new Knight(this.starter, this.context);
             starter.ResizeBitmap(false);
             this.firstKnight = false;
