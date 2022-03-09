@@ -74,7 +74,6 @@ namespace knight_mares_project
                     {
                         winEvent.Invoke(this, EventArgs.Empty);
                         index++;
-                        this.player.mpMove.PlaybackParams.SetPitch(Knight.defaultMpPitch);
                     }
                 }
 
@@ -100,13 +99,16 @@ namespace knight_mares_project
                         this.count = 0;
                         Console.WriteLine("-----------------------------" + squares[k, j].GetI() + " " + squares[k, j].GetJ() + "---------------------------------");
                         squares[k, j].StepOn();
-                        FindTour(squares[k, j]);
-                        writeToFile.Add(FileHelper.IntFromSquarePath(this.solution));
+                        if (FindTour(squares[k, j]))
+                            writeToFile.Add(FileHelper.IntFromSquarePath(this.solution));
+                        else
+                            Console.WriteLine("help");
                     }
                 }
                 FileHelper.SerializeNow(writeToFile);
             }
             allPaths = FileHelper.DeSerializeNow<List<List<int>>>(); // reading all paths from file computed beforehand
+
 
             int starterPath = this.starter.GetI() * size + this.starter.GetJ(); // enumerates the starter path with one int instead of two
             List<int> intPath = allPaths[starterPath];
@@ -132,6 +134,8 @@ namespace knight_mares_project
         {
             if (count == 0)
                 solution.Add(curSquare);
+            if (count > 1000000)
+                return false;
             count++;
             Console.WriteLine(count);
             if (solution.Count == this.checkWin)

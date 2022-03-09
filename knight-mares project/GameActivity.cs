@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace knight_mares_project
 {
-    [Activity(Label = "GameActivity")]
+    [Activity(Label = "GameActivity", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class GameActivity : Activity
     {
         FrameLayout flGame;

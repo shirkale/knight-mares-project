@@ -13,12 +13,13 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
 
 namespace knight_mares_project
 {
     public class FileHelper
     {
-        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "test1.bin");
+        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder), "test1.bin");
 
         //public void WriteToBinaryFile<T>(T objectToWrite, bool append = true)
         //{
@@ -96,5 +97,16 @@ namespace knight_mares_project
             return newList;
         }
 
+
+        public static void Func()
+        {
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(LoadResourceText)).Assembly;
+            Stream stream = assembly.GetManifestResourceStream("WorkingWithFiles.LibTextResource.txt");
+            string text = "";
+            using (var reader = new System.IO.StreamReader(stream))
+            {
+                text = reader.ReadToEnd();
+            }
+        }
     }
 }

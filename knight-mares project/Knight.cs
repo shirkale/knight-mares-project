@@ -24,9 +24,6 @@ namespace knight_mares_project
         private bool isKnightResized; // knight bitmap needs to be resized once only
 
         public MediaPlayer mpMove;
-        public PlaybackParams pbParams;
-        public static Single defaultMpPitch = -1;
-        Single counter;
 
 
         private SoundPool.Builder builder;
@@ -43,14 +40,8 @@ namespace knight_mares_project
             //this.curSquare.StepOn(MainActivity.flag);
 
             mpMove = MediaPlayer.Create(context, Resource.Raw.move2);
-            if(defaultMpPitch == -1)
-                defaultMpPitch = mpMove.PlaybackParams.Pitch;
-            pbParams = new PlaybackParams();
-            pbParams.SetPitch(defaultMpPitch);
             mpMove.SetVolume(1, 1);
 
-
-            counter = defaultMpPitch;
         }
 
         public void Draw(Canvas canvas)
@@ -80,11 +71,6 @@ namespace knight_mares_project
             if(this.mpMove == null)
             {
                 mpMove = MediaPlayer.Create(context, Resource.Raw.move2);
-            }
-            if (Board_Knight_s_Tour.solve)
-            {
-                this.mpMove.PlaybackParams.SetPitch(counter);
-                counter *= 1.5f;
             }
             this.mpMove.Start();
                 
