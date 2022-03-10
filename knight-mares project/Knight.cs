@@ -26,13 +26,12 @@ namespace knight_mares_project
         public MediaPlayer mpMove;
 
 
-        private SoundPool.Builder builder;
         public Knight(Square starter, Context context)
         {
             this.curSquare = starter;
             this.context = context;
 
-            this.bitmap = BitmapFactory.DecodeResource(this.context.Resources, Resource.Drawable.knightpic);
+            this.bitmap = MainActivity.knight;
             this.bitmap = this.bitmap.Copy(Bitmap.Config.Argb8888, true); // turning the bitmap mutable
 
             this.isKnightResized = false;
@@ -88,5 +87,6 @@ namespace knight_mares_project
         {
             this.curSquare = square;
         }
+
     }
 }

@@ -15,6 +15,7 @@ using static Android.Resource;
 using Animation = Android.Views.Animations.Animation;
 using System.Threading.Tasks;
 using Android.Support.Design.Widget;
+using System.IO;
 
 namespace knight_mares_project
 {
@@ -26,6 +27,7 @@ namespace knight_mares_project
         public static Bitmap cuteGhostPurp; // ghost picture purp
         public static Bitmap cuteGhostBlue;
         public static Bitmap flag;
+        public static Bitmap knight;
 
         public static Intent musicIntent;
 
@@ -166,7 +168,8 @@ namespace knight_mares_project
             cuteGhostPurp = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolpurp); // ghost picture purp
             cuteGhostBlue = BitmapFactory.DecodeResource(Resources, Resource.Drawable.cutearmsupghostsmolblue);
             flag = BitmapFactory.DecodeResource(Resources, Resource.Drawable.little_red_flag);
-
+            if(knight == null)
+                knight = BitmapFactory.DecodeResource(Resources, Resource.Drawable.knightpic);
 
 
 
@@ -476,16 +479,20 @@ namespace knight_mares_project
             {
                 if (muted)
                 { 
-                    muted = !muted;
                     ResumeMusic();
                     item.SetIcon(Resource.Drawable.mute);
                 }
                 else
                 {
-                    muted = !muted;
                     PauseMusic();
                     item.SetIcon(Resource.Drawable.sound);
                 }
+                muted = !muted;
+            }
+            else if(item.ItemId == Resource.Id.changePic)
+            {
+                Intent i = new Intent(Android.Provider.MediaStore.ActionImageCapture);
+                StartActivityForResult(i, 100);
             }
             return true;
         }
@@ -552,6 +559,10 @@ namespace knight_mares_project
                 {
                     SetTvTitleText("KNIGHTS TOUR COMPLETE");
                     Board_Knight_s_Tour.solve = false;
+                }
+                else if(requestCode == 100)
+                {
+                    knight = (Bitmap)data.Extras.Get("data");
                 }
                 else
                 {

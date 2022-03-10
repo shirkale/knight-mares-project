@@ -19,7 +19,8 @@ namespace knight_mares_project
 {
     public class FileHelper
     {
-        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder), "test1.bin");
+        public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "test1.bin");
+
 
         //public void WriteToBinaryFile<T>(T objectToWrite, bool append = true)
         //{
@@ -53,7 +54,10 @@ namespace knight_mares_project
             Stream s = System.IO.File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             BinaryFormatter b = new BinaryFormatter();
             b.Serialize(s, objectToInsert);
+            //Stream s2 = System.IO.File.Open("/Downloads/testBin.bin", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            //b.Serialize(s2, objectToInsert);
             s.Close();
+
         }
         public static T DeSerializeNow<T>()
         {
@@ -95,18 +99,6 @@ namespace knight_mares_project
                 newList.Add(s.GetJ());
             }
             return newList;
-        }
-
-
-        public static void Func()
-        {
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(LoadResourceText)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream("WorkingWithFiles.LibTextResource.txt");
-            string text = "";
-            using (var reader = new System.IO.StreamReader(stream))
-            {
-                text = reader.ReadToEnd();
-            }
         }
     }
 }

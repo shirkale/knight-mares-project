@@ -24,12 +24,14 @@ namespace knight_mares_project
         public EventHandler pauseBgMusic;
 
         List<List<int>> allPaths;
+        Thread thread;
         public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
         {
             this.checkWin = size * size;
             this.solution = new List<Square>();
             count = 0;
             index = 0;
+            thread = null;
 
             allPaths = FileHelper.DeSerializeNow<List<List<int>>>(); // will be null if file not initialized
         }
@@ -89,22 +91,22 @@ namespace knight_mares_project
             GoBackAll();
             if (allPaths == null) // initializing file one time only
             {
-                List<List<int>> writeToFile = new List<List<int>>();
-                for (int k = 0; k < size; k++)
-                {
-                    for (int j = 0; j < size; j++)
-                    {
-                        UnstepAll();
-                        this.solution = new List<Square>();
-                        this.count = 0;
-                        Console.WriteLine("-----------------------------" + squares[k, j].GetI() + " " + squares[k, j].GetJ() + "---------------------------------");
-                        squares[k, j].StepOn();
-                        if (FindTour(squares[k, j]))
-                            writeToFile.Add(FileHelper.IntFromSquarePath(this.solution));
-                        else
-                            Console.WriteLine("help");
-                    }
-                }
+                List<List<int>> writeToFile = new List<List<int>>() { new List<int> {1 , 2 } };
+                //for (int k = 0; k < size; k++)
+                //{
+                //    for (int j = 0; j < size; j++)
+                //    {
+                //        UnstepAll();
+                //        this.solution = new List<Square>();
+                //        this.count = 0;
+                //        Console.WriteLine("-----------------------------" + squares[k, j].GetI() + " " + squares[k, j].GetJ() + "---------------------------------");
+                //        squares[k, j].StepOn();
+                //        if (FindTour(squares[k, j]))
+                //            writeToFile.Add(FileHelper.IntFromSquarePath(this.solution));
+                //        else
+                //            Console.WriteLine("help");
+                //    }
+                //}
                 FileHelper.SerializeNow(writeToFile);
             }
             allPaths = FileHelper.DeSerializeNow<List<List<int>>>(); // reading all paths from file computed beforehand
@@ -128,6 +130,69 @@ namespace knight_mares_project
             }
 
             this.solution = testList;
+
+
+
+
+
+            // thread option
+            //if (allPaths == null) // initializing file one time only
+            //{
+            //    if(thread == null)
+            //    {
+            //        thread = new Thread(new ThreadStart(FindAllPaths));
+            //        thread.Start();
+            //    }
+            //    if(thread.IsAlive)
+            //    {
+            //        FindTour(this.starter);
+            //    }
+            //}
+            //else
+            //{
+            //    int starterPath = this.starter.GetI() * size + this.starter.GetJ(); // enumerates the starter path with one int instead of two
+            //    List<int> intPath = allPaths[starterPath];
+            //    List<Square> testList = FileHelper.SquarePathFromInt(intPath, squares);
+
+            //    this.solution = testList;
+            //}
+
+            ////FindTour(this.starter);
+
+            //Console.WriteLine("solution count: " + solution.Count);
+
+            //for (int i = 0; i < this.solution.Count; i++)
+            //{
+            //    Console.WriteLine(this.solution[i].GetI() + ", " + this.solution[i].GetJ());
+            //    // check if correct
+            //    //if (this.solution[i] != testList[i])
+            //    //{
+            //    //    Console.WriteLine("==================WRONG==================");
+            //    //}
+            //}
+
+        }
+
+        private void FindAllPaths()
+        {
+            List<List<int>> writeToFile = new List<List<int>>();
+            for (int k = 0; k < size; k++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    UnstepAll();
+                    this.solution = new List<Square>();
+                    this.count = 0;
+                    Console.WriteLine("-----------------------------" + squares[k, j].GetI() + " " + squares[k, j].GetJ() + "---------------------------------");
+                    squares[k, j].StepOn();
+                    if (FindTour(squares[k, j]))
+                        writeToFile.Add(FileHelper.IntFromSquarePath(this.solution));
+                    else
+                        Console.WriteLine("help");
+                }
+            }
+            FileHelper.SerializeNow(writeToFile);
+            this.allPaths = writeToFile;
         }
 
         private bool FindTour(Square curSquare)
