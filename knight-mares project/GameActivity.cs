@@ -115,6 +115,8 @@ namespace knight_mares_project
         private void BtnHome_Click(object sender, EventArgs e)
         {
             Board_Knight_s_Tour.solve = false;
+            if(timer != null && timer.IsAlive)
+                timer.Abort();
             Finish();
         }
 
@@ -146,7 +148,6 @@ namespace knight_mares_project
 
         public void WinDialog(object s, EventArgs args)
         {
-            //Thread.Sleep(1000);
             string msg = "";
             this.result = time;
             if (this.game is Board_Knight_s_Tour)
@@ -174,31 +175,61 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
-            ResumeMusic();
+            if (!MainActivity.muted)
+            {
+                if (!MyService.musicInit)
+                {
+                    Intent musicIntent = new Intent(this, typeof(MyService));
+                    StartService(musicIntent);
+                }
+                else
+                {
+                    SendAction(1);
+                }
+            }
+            else
+            {
+                if (!MyService.musicInit)
+                {
+                    Intent musicIntent = new Intent(this, typeof(MyService));
+                    StartService(musicIntent);
+                }
+                else
+                {
+                    SendAction(0);
+                }
+            }
         }
 
         protected override void OnPause()
         {
-            PauseMusic(this, EventArgs.Empty);
+            if (!MyService.musicInit)
+            {
+                Intent musicIntent = new Intent(this, typeof(MyService));
+                StartService(musicIntent);
+            }
+            SendAction(0);
             base.OnPause();
         }
 
-        public void ResumeMusic() // move to mainactivity
-        { 
-            if(!MainActivity.muted)
+        public void ResumeMusic()
+        {
+            if (!MainActivity.muted)
             {
-                Intent i = new Intent("music");
-                i.PutExtra("action", 1); // 1 to turn on
-                SendBroadcast(i);
+                SendAction(1);
             }
         }
 
-        public void PauseMusic(object s, EventArgs args) // move to main
+        public void PauseMusic(object sender, EventArgs eventArgs)
         {
-            Intent i = new Intent("music");
-            i.PutExtra("action", 0); // 0 to turn on
-            SendBroadcast(i);
+            SendAction(0);
         }
 
+        public void SendAction(int action) // 1 to turn on music, 0 to turn off
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", action);
+            SendBroadcast(i);
+        }
     }
 }

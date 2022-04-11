@@ -20,10 +20,12 @@ namespace knight_mares_project
         MediaPlayer mp; // media player which plays the music
         MusicPlayerBroadcastReciever musicPlayerBroadcast; // broadcast reciever, is registered with the media player an plays the music according to the user
 
-        public static bool musicStopped = false;
+        public static bool musicInit = true; // checking if music has been initialized
         public override void OnCreate()
         {
             base.OnCreate();
+
+            musicInit = true;
 
             mp = MediaPlayer.Create(this, Resource.Raw.music);
             musicPlayerBroadcast = new MusicPlayerBroadcastReciever(mp);
@@ -47,13 +49,15 @@ namespace knight_mares_project
 
         private void RunUntilMusicStopped()
         {
-            while (!musicStopped) ;
+            while (musicInit) ;
             StopSelf();
         }
 
         public override void OnDestroy()
         {
             UnregisterReceiver(musicPlayerBroadcast);
+            musicInit = false;
+            base.OnDestroy();
         }
 
         public override IBinder OnBind(Intent intent)

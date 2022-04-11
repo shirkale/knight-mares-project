@@ -84,6 +84,7 @@
     <Compile Include="TypeGame.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\listofpaths.bin" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
@@ -241,9 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\anim\fromLeader.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="rtestwooo.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\camera.png" />

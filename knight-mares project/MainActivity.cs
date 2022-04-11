@@ -16,6 +16,8 @@ using Animation = Android.Views.Animations.Animation;
 using System.Threading.Tasks;
 using Android.Support.Design.Widget;
 using System.IO;
+using Android.Content.Res;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace knight_mares_project
 {
@@ -30,6 +32,8 @@ namespace knight_mares_project
         public static Bitmap knight;
 
         public static Intent musicIntent;
+
+        public static List<List<int>> knightTourPaths = null;
 
         Button btnStart, btnTour;
         LinearLayout llButtons;
@@ -222,6 +226,22 @@ namespace knight_mares_project
             btnTour.Click += BtnTour_Click;
             bottomnv.NavigationItemSelected += Bottomnv_NavigationItemSelected;
 
+
+
+            // read path file
+            const int maxReadSize = 256 * 1024;
+            byte[] content;
+            AssetManager assets = this.Assets;
+            using (BinaryReader br = new BinaryReader(assets.Open("listofpaths.bin")))
+            {
+                content = br.ReadBytes(maxReadSize);
+            }
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream(content))
+            {
+                object obj = bf.Deserialize(ms);
+                knightTourPaths = (List<List<int>>)obj;
+            }
         }
 
         // show leaderboard views
@@ -263,18 +283,24 @@ namespace knight_mares_project
         }
 
         // show home views
-        public void ShowHome()
+        public void ShowHome(bool animate)
         {
             // visibility visable in home
             tvDisplayDifficulty.Visibility = ViewStates.Visible;
             llButtons.Visibility = ViewStates.Visible;
+            ivPumpkin.Visibility = ViewStates.Visible;
 
             // scale animation to show widgets in home
-            tvDisplayDifficulty.StartAnimation(toHomeAnimation);
-            llButtons.StartAnimation(toHomeAnimation);
-
-            ivPumpkin.Visibility = ViewStates.Visible;
-            ivPumpkin.StartAnimation(toHomeAnimation);
+            if (animate)
+            {
+                tvDisplayDifficulty.StartAnimation(toHomeAnimation);
+                llButtons.StartAnimation(toHomeAnimation);
+                ivPumpkin.StartAnimation(toHomeAnimation);
+            }
+            else
+            {
+                ivPumpkin.StartAnimation(pumpkinAnimation);
+            }
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
 
             SetTvTitleText("Knight-Mares"); // fade out fade in
@@ -287,11 +313,14 @@ namespace knight_mares_project
             tvWorldScore.Visibility = ViewStates.Gone;
 
             // scale animation to show widgets in leaderboard
-            llLeaderBoard.StartAnimation(fromLeaderAnimation);
-            wlLeaderboard.StartAnimation(fromLeaderAnimation);
-            ivGoblet.StartAnimation(fromLeaderAnimation);
-            tvHighScore.StartAnimation(fromLeaderAnimation);
-            tvWorldScore.StartAnimation(fromLeaderAnimation);
+            if (animate)
+            {
+                llLeaderBoard.StartAnimation(fromLeaderAnimation);
+                wlLeaderboard.StartAnimation(fromLeaderAnimation);
+                ivGoblet.StartAnimation(fromLeaderAnimation);
+                tvHighScore.StartAnimation(fromLeaderAnimation);
+                tvWorldScore.StartAnimation(fromLeaderAnimation);
+            }
         }
 
         // bottom nav menu
@@ -307,7 +336,7 @@ namespace knight_mares_project
                 else if (e.Item.ItemId == Resource.Id.itemhome)
                 {
                     if (llButtons.Visibility == ViewStates.Gone)
-                        ShowHome();
+                        ShowHome(true);
                 }
             }
             else
@@ -322,7 +351,7 @@ namespace knight_mares_project
                     else if (e.Item.ItemId == Resource.Id.itemhome)
                     {
                         if (llButtons.Visibility == ViewStates.Gone)
-                            ShowHome();
+                            ShowHome(true);
                     }
                 }
             }
@@ -449,12 +478,40 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
-            ResumeMusic();
+            if(!muted)
+            {
+                if (!MyService.musicInit)
+                {
+                    musicIntent = new Intent(this, typeof(MyService));
+                    StartService(musicIntent);
+                }
+                else
+                {
+                    SendAction(1);
+                }
+            }
+            else
+            {
+                if (!MyService.musicInit)
+                {
+                    musicIntent = new Intent(this, typeof(MyService));
+                    StartService(musicIntent);
+                }
+                else
+                {
+                    SendAction(0);
+                }
+            }
         }
 
         protected override void OnPause()
         {
-            PauseMusic();
+            if (!MyService.musicInit)
+            {
+                Intent musicIntent = new Intent(this, typeof(MyService));
+                StartService(musicIntent);
+            }
+            SendAction(0);
             base.OnPause();
         }
 
@@ -463,8 +520,9 @@ namespace knight_mares_project
         // menu code
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuBuilder m = (MenuBuilder)menu;
-            m.SetOptionalIconsVisible(true);
+            if (menu is MenuBuilder) (menu as MenuBuilder).SetOptionalIconsVisible(true);
+
+
             MenuInflater.Inflate(Resource.Menu.menuDif, menu);
             return base.OnCreateOptionsMenu(menu);
         }
@@ -478,13 +536,26 @@ namespace knight_mares_project
             else if (item.ItemId == Resource.Id.mute)
             {
                 if (muted)
-                { 
-                    ResumeMusic();
+                {
+                    if(!MyService.musicInit)
+                    {
+                        musicIntent = new Intent(this, typeof(MyService));
+                        StartService(musicIntent);
+                    }
+                    else
+                    {
+                        SendAction(1);
+                    }
                     item.SetIcon(Resource.Drawable.mute);
                 }
                 else
                 {
-                    PauseMusic();
+                    if (!MyService.musicInit)
+                    {
+                        musicIntent = new Intent(this, typeof(MyService));
+                        StartService(musicIntent);
+                    }
+                    SendAction(0);
                     item.SetIcon(Resource.Drawable.sound);
                 }
                 muted = !muted;
@@ -496,7 +567,6 @@ namespace knight_mares_project
             }
             return true;
         }
-
 
         // dialog opened on select difficulty in menu
         public void DifficultyDialog()
@@ -554,7 +624,7 @@ namespace knight_mares_project
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok)
             {
-                ShowHome();
+                ShowHome(false);
                 if (requestCode == 0)
                 {
                     SetTvTitleText("KNIGHTS TOUR COMPLETE");
@@ -574,9 +644,8 @@ namespace knight_mares_project
                 tvTitle.Gravity = GravityFlags.Center;
                 tvTitle.Visibility = ViewStates.Visible;
 
-                llLeaderBoard.Visibility = ViewStates.Invisible;
-                wlLeaderboard.Visibility = ViewStates.Invisible;
-                
+                //llLeaderBoard.Visibility = ViewStates.Invisible;
+                //wlLeaderboard.Visibility = ViewStates.Invisible;
             }
         }
         // returns win string according to high scores
@@ -614,31 +683,29 @@ namespace knight_mares_project
             return str;
         }
 
+        public void SendAction(int action) // 1 to turn on music, 0 to turn off
+        {
+            Intent i = new Intent("music");
+            i.PutExtra("action", action);
+            SendBroadcast(i);
+        }
 
         public void ResumeMusic()
         {
-            if(!muted)
+            if(muted)
             {
-                if (MyService.musicStopped)
-                {
-                    MyService.musicStopped = false;
-                    musicIntent = new Intent(this, typeof(MyService));
-                    StartService(musicIntent);
-                }
-                else
-                {
-                    Intent i = new Intent("music");
-                    i.PutExtra("action", 1); // 1 to turn on
-                    SendBroadcast(i);
-                }
+                SendAction(1);
             }
         }
 
         public void PauseMusic()
         {
-            Intent i = new Intent("music");
-            i.PutExtra("action", 0); // 0 to turn on
-            SendBroadcast(i);
+            if (!MyService.musicInit)
+            {
+                musicIntent = new Intent(this, typeof(MyService));
+                StartService(musicIntent);
+            }
+            SendAction(0);
         }
 
 

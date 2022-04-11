@@ -80,6 +80,11 @@ namespace knight_mares_project
                     gsCur.ResizeBitmap(false);
                     checkWin++; // checkwin goes up - player still needs to step on the square
                 }
+                else
+                {
+                    MultipleStepSquare mms = (MultipleStepSquare)this.player.GetCurrentSquare();
+                    mms.SetWalkedOn(false);
+                }
 
                 this.player.GetCurrentSquare().UnstepOn();
                 this.player.moveToSquare(this.moves.Pop());

@@ -17,10 +17,8 @@ namespace knight_mares_project
     public class MusicPlayerBroadcastReciever : BroadcastReceiver
     {
         MediaPlayer mp;
-        Thread t;
-        public MusicPlayerBroadcastReciever()
-        {
-        }
+        Thread threadToCountServiceShutdown; // when service is turned on and music is shut down, the timer starts and shuts down the service at the end
+        public MusicPlayerBroadcastReciever() { }
         public MusicPlayerBroadcastReciever(MediaPlayer mp)
         {
             this.mp = mp;
@@ -29,32 +27,31 @@ namespace knight_mares_project
 
         private void CountDownTilMusicStopped()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 180; i++)
             {
                 Thread.Sleep(1000);
             }
 
-            MyService.musicStopped = true;
+            MyService.musicInit = false;
         }
 
         public override void OnReceive(Context context, Intent intent)
         {
-            //Toast.MakeText(context, "Received intent!", ToastLength.Short).Show();
             int action = intent.GetIntExtra("action", 0);
             if(action == 1)
             {
                 mp.Start();
                 mp.SetVolume((float)0.7, (float)0.7);
 
-                if(t!=null && t.IsAlive)
-                    t.Abort();
+                if(threadToCountServiceShutdown != null && threadToCountServiceShutdown.IsAlive)
+                    threadToCountServiceShutdown.Abort();
             }
             else if(action == 0)
             {
                 mp.Pause();
 
-                t = new Thread(CountDownTilMusicStopped);
-                t.Start();
+                threadToCountServiceShutdown = new Thread(CountDownTilMusicStopped);
+                threadToCountServiceShutdown.Start();
             }
         }
 

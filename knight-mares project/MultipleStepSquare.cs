@@ -77,5 +77,10 @@ namespace knight_mares_project
         {
             return this.steps;
         }
+
+        internal void SetWalkedOn(bool v)
+        {
+            this.walkedOver = v;
+        }
     }
 }
