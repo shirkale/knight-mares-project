@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace knight_mares_project
 {
-    public class Board_Knight_s_Tour : Board_Generate
+    public class Board_Knight_s_Tour : Board
     {
         List<Square> solution; // list into which a path will be inserted
         int count; // for debugging delete when done
@@ -23,12 +23,21 @@ namespace knight_mares_project
 
         public EventHandler pauseBgMusic; // pause music during solve
 
-        public Board_Knight_s_Tour(Context context, int size) : base(context, size, 0)
+        public Board_Knight_s_Tour(Context context, int size) : base(context, size)
         {
             this.checkWin = size * size - 1;
             this.solution = new List<Square>();
             count = 0;
             index = 0;
+        }
+
+        public override void GoBack()
+        {
+            if (this.moves.Count != 0) // if stack isn't empty - if the player has moved
+            {
+                this.player.GetCurrentSquare().UnstepOn();
+                this.player.moveToSquare(this.moves.Pop());
+            }
         }
 
         protected override void OnDraw(Canvas canvas)

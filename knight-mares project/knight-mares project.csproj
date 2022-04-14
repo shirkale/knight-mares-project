@@ -65,8 +65,10 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Board.cs" />
     <Compile Include="Board_Generate.cs" />
     <Compile Include="Board_Knight_s_Tour.cs" />
+    <Compile Include="Board_Tutorial.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="FirebaseHelper.cs" />
     <Compile Include="GameActivity.cs" />
@@ -245,6 +247,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\difficulty_dialog2.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

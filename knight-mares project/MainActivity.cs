@@ -35,7 +35,7 @@ namespace knight_mares_project
 
         public static List<List<int>> knightTourPaths = null;
 
-        Button btnStart, btnTour;
+        Button btnStart, btnTour, btnTutorial;
         LinearLayout llButtons;
         TextView tvTitle, tvDisplayDifficulty, tvHighScore, tvWorldScore;
         ISharedPreferences spHighScore;
@@ -134,6 +134,7 @@ namespace knight_mares_project
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
             btnTour = (Button)FindViewById(Resource.Id.btnKnightsTour);
+            btnTutorial = (Button)FindViewById(Resource.Id.btnTutorial);
             llButtons = (LinearLayout)FindViewById(Resource.Id.llbuttons);
             tvHighScore = (TextView)FindViewById(Resource.Id.tvHighScore);
             tvWorldScore = (TextView)FindViewById(Resource.Id.tvWorldScore);
@@ -224,6 +225,8 @@ namespace knight_mares_project
             btnStart.Click += BtnStart_Click; // button click that starts the game
 
             btnTour.Click += BtnTour_Click;
+            btnTutorial.Click += BtnTutorial_Click;
+
             bottomnv.NavigationItemSelected += Bottomnv_NavigationItemSelected;
 
 
@@ -241,6 +244,17 @@ namespace knight_mares_project
             {
                 object obj = bf.Deserialize(ms);
                 knightTourPaths = (List<List<int>>)obj;
+            }
+        }
+
+        private void BtnTutorial_Click(object sender, EventArgs e)
+        {
+            if (llButtons.Visibility != ViewStates.Gone)
+            {
+                this.typegame = TypeGame.Tutorial;
+                Intent i = new Intent(this, typeof(GameActivity));
+                i.PutExtra("type", (char)this.typegame);
+                StartActivityForResult(i, 101);
             }
         }
 
@@ -568,14 +582,19 @@ namespace knight_mares_project
             return true;
         }
 
-        // dialog opened on select difficulty in menu
+        // dialog opened on select gamemode and difficulty in menu
         public void DifficultyDialog()
         {
             this.difficultyDialog = new Dialog(this);
-            difficultyDialog.SetContentView(Resource.Layout.difficulty_dialog);
+            difficultyDialog.SetContentView(Resource.Layout.difficulty_dialog2);
             difficultyDialog.SetTitle("Difficulty");
             difficultyDialog.SetCancelable(true);
+
             Button btnSubmit = (Button)difficultyDialog.FindViewById(Resource.Id.btnSubmit);
+            RadioButton rbPath = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbPath);
+            RadioButton rbTour = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTour);
+            RadioButton rbTutorial = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTutorial);
+
             difficultyDialog.Show();
             btnSubmit.Click += BtnSubmit_Click;
 
@@ -586,9 +605,50 @@ namespace knight_mares_project
             sb.Progress = this.difficulty;
             tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
             tvDifficultyInDialog.Text = "" + this.difficulty;
-            sb.ProgressChanged += Sb_ProgressChanged;
 
+            if(rbPath.Checked)
+            {
+                sb.Visibility = ViewStates.Visible;
+                tvDifficultyInDialog.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                sb.Visibility = ViewStates.Invisible;
+                tvDifficultyInDialog.Visibility = ViewStates.Invisible;
+            }
+
+            sb.ProgressChanged += Sb_ProgressChanged;
+            rbPath.CheckedChange += RbPath_CheckedChange;
+            rbTour.CheckedChange += RbTour_CheckedChange;
+            rbTutorial.CheckedChange += RbTutorial_CheckedChange;
         }
+
+        private void RbTutorial_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            this.typegame = TypeGame.Tutorial;
+        }
+
+        private void RbTour_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            this.typegame = TypeGame.Tour;
+        }
+
+        private void RbPath_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked)
+            {
+                sb.Visibility = ViewStates.Visible;
+                tvDifficultyInDialog.Visibility = ViewStates.Visible;
+                this.typegame = TypeGame.Generate;
+            }
+            else
+            {
+                sb.Visibility = ViewStates.Invisible;
+                tvDifficultyInDialog.Visibility = ViewStates.Invisible;
+                tvDisplayDifficulty.Visibility = ViewStates.Invisible;
+            }
+        }
+
         // submit difficulty in dialog
         private void BtnSubmit_Click(object sender, EventArgs e)
         {

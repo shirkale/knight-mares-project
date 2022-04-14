@@ -42,6 +42,7 @@
             android:backgroundTint="#171747"
             android:padding="10dp"
             android:layout_marginRight="10dp"
+            android:textColor="@android:color/black"
             />
 
         <Button
@@ -52,7 +53,19 @@
             android:fontFamily="sans-serif-smallcaps"
             android:backgroundTint="#171747"
             android:padding="10dp"
+            android:layout_marginRight="10dp"
             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutorial"
+            android:id="@+id/btnTutorial"
+            android:fontFamily="sans-serif-smallcaps"
+            android:backgroundTint="#898C72"
+            android:padding="10dp"
+            />
+
     </LinearLayout>
         
     

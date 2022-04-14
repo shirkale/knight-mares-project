@@ -17,7 +17,7 @@ namespace knight_mares_project
     public class GameActivity : Activity
     {
         FrameLayout flGame;
-        Board_Generate game;
+        Board game;
 
         TextView tvTime;
 
@@ -66,6 +66,10 @@ namespace knight_mares_project
                 case TypeGame.Tour:
                     this.game = new Board_Knight_s_Tour(this, size);
                     this.btnSolve.Visibility = ViewStates.Visible;
+                    break;
+                case TypeGame.Tutorial:
+                    this.game = new Board_Tutorial(this, size);
+                    this.btnSolve.Visibility = ViewStates.Gone;
                     break;
                 default:
                     this.game = new Board_Generate(this, size, difficulty);
