@@ -72,8 +72,10 @@ namespace knight_mares_project
                 this.bitmap = MainActivity.cuteGhostPurp;
             this.isBitmapResized = false;
         }
+
         public void SetBitmap(Bitmap bitmap)
         {
+            isBitmapResized = false;
             this.bitmap = bitmap;
         }
     }

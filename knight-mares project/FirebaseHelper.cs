@@ -19,37 +19,37 @@ namespace knight_mares_project
         public static FirebaseClient client = new FirebaseClient("https://database-37bc4-default-rtdb.europe-west1.firebasedatabase.app/");
         private static string database = "dbWorldRecords";
 
-        public static async Task<List<Score>> GetAll()
+        public static async Task<List<ScoreList>> GetAll()
         {
-            var respone = await client.Child(database).OnceAsync<Score>();
-            return (respone).Select(item => new Score
+            var respone = await client.Child(database).OnceAsync<ScoreList>();
+            return (respone).Select(item => new ScoreList
             {
-                l = item.Object.l,
+                listOfScores = item.Object.listOfScores,
 
             }).ToList();
         }
 
-        public static async Task Add(List<Score> l)
+        public static async Task Add(List<ScoreList> l)
         {
             await client
                 .Child(database)
                 .PostAsync(l);
         }
 
-        public static async Task<Score> Get(int dif)
+        public static async Task<ScoreList> Get(int dif)
         {
             var allPersons = await GetAll();
             await client
               .Child(database)
-              .OnceAsync<Score>();
+              .OnceAsync<ScoreList>();
             return allPersons.Where(a => true).FirstOrDefault();
         }
 
-        public static async Task Update(Score state)
+        public static async Task Update(ScoreList state)
         {
             var toUpdatePerson = (await client
               .Child(database)
-              .OnceAsync<Score>()).Where(a => true).FirstOrDefault();
+              .OnceAsync<ScoreList>()).Where(a => true).FirstOrDefault();
 
             await client
               .Child(database)

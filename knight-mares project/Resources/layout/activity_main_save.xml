@@ -24,49 +24,18 @@
         android:alpha="0.7"
         android:layout_alignParentTop="true"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:text="Generate Path"
+        android:id="@+id/btnStart"
+        android:fontFamily="sans-serif-smallcaps"
+        android:backgroundTint="#171747"
+        android:padding="10dp"
         android:layout_marginTop="20dp"
-        android:id="@+id/llbuttons"
         android:layout_below="@id/tvTitle"
-        >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Generate Path"
-            android:id="@+id/btnStart"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@android:color/black"
-            />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Knight's Tour"
-            android:id="@+id/btnKnightsTour"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#171747"
-            android:padding="10dp"
-            android:layout_marginRight="10dp"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tutorial"
-            android:id="@+id/btnTutorial"
-            android:fontFamily="sans-serif-smallcaps"
-            android:backgroundTint="#898C72"
-            android:padding="10dp"
-            />
-
-    </LinearLayout>
+        />
         
     
     <TextView
@@ -81,7 +50,7 @@
         android:alpha="0.65"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:layout_below="@id/llbuttons"
+        android:layout_below="@id/btnStart"
                 />  
     
 

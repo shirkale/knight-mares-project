@@ -34,6 +34,7 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#171747"
+            android:buttonTint="#171747"
             />
         <RadioButton
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#171747"
+            android:buttonTint="#171747"
             />
         <RadioButton
             android:layout_width="match_parent"

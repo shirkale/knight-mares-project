@@ -13,6 +13,17 @@
         android:id="@+id/flBoard"
         android:layout_weight="5"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:id="@+id/tvTutorialInstructions"
+        android:background="#3D694F"
+        android:text="you can do it"
+        android:textColor="#fff"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_weight="0.5"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0px"

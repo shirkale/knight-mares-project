@@ -17,7 +17,7 @@ using System.Reflection;
 
 namespace knight_mares_project
 {
-    public class FileHelper
+    public class FileHelper // TO BE DELETED!!!!!!!!!!!
     {
         public static string filePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "test1.bin");
 

@@ -35,8 +35,7 @@ namespace knight_mares_project
 
         public static List<List<int>> knightTourPaths = null;
 
-        Button btnStart, btnTour, btnTutorial;
-        LinearLayout llButtons;
+        Button btnStart;
         TextView tvTitle, tvDisplayDifficulty, tvHighScore, tvWorldScore;
         ISharedPreferences spHighScore;
 
@@ -133,9 +132,6 @@ namespace knight_mares_project
             // initializing widgets
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
-            btnTour = (Button)FindViewById(Resource.Id.btnKnightsTour);
-            btnTutorial = (Button)FindViewById(Resource.Id.btnTutorial);
-            llButtons = (LinearLayout)FindViewById(Resource.Id.llbuttons);
             tvHighScore = (TextView)FindViewById(Resource.Id.tvHighScore);
             tvWorldScore = (TextView)FindViewById(Resource.Id.tvWorldScore);
 
@@ -204,7 +200,8 @@ namespace knight_mares_project
 
             // typgame init
 
-            typegame = TypeGame.Generate;
+            if(typegame == null)
+                typegame = TypeGame.Generate;
 
 
 
@@ -224,8 +221,6 @@ namespace knight_mares_project
 
             btnStart.Click += BtnStart_Click; // button click that starts the game
 
-            btnTour.Click += BtnTour_Click;
-            btnTutorial.Click += BtnTutorial_Click;
 
             bottomnv.NavigationItemSelected += Bottomnv_NavigationItemSelected;
 
@@ -247,27 +242,17 @@ namespace knight_mares_project
             }
         }
 
-        private void BtnTutorial_Click(object sender, EventArgs e)
-        {
-            if (llButtons.Visibility != ViewStates.Gone)
-            {
-                this.typegame = TypeGame.Tutorial;
-                Intent i = new Intent(this, typeof(GameActivity));
-                i.PutExtra("type", (char)this.typegame);
-                StartActivityForResult(i, 101);
-            }
-        }
 
         // show leaderboard views
         public void ShowLeader()
         {
             // scale animation to hide widgets in home
-            llButtons.StartAnimation(fromHomeAnimation);
+            btnStart.StartAnimation(fromHomeAnimation);
             tvDisplayDifficulty.StartAnimation(fromHomeAnimation);
 
 
             // visibility gone in home
-            llButtons.Visibility = ViewStates.Gone;
+            btnStart.Visibility = ViewStates.Gone;
             tvDisplayDifficulty.Visibility = ViewStates.Gone;
 
 
@@ -301,14 +286,14 @@ namespace knight_mares_project
         {
             // visibility visable in home
             tvDisplayDifficulty.Visibility = ViewStates.Visible;
-            llButtons.Visibility = ViewStates.Visible;
+            btnStart.Visibility = ViewStates.Visible;
             ivPumpkin.Visibility = ViewStates.Visible;
 
             // scale animation to show widgets in home
             if (animate)
             {
                 tvDisplayDifficulty.StartAnimation(toHomeAnimation);
-                llButtons.StartAnimation(toHomeAnimation);
+                btnStart.StartAnimation(toHomeAnimation);
                 ivPumpkin.StartAnimation(toHomeAnimation);
             }
             else
@@ -340,31 +325,31 @@ namespace knight_mares_project
         // bottom nav menu
         private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
-            if (llButtons.Animation == null)
+            if (btnStart.Animation == null)
             {
                 if (e.Item.ItemId == Resource.Id.itemLeader)
                 {
-                    if (llButtons.Visibility == ViewStates.Visible)
+                    if (btnStart.Visibility == ViewStates.Visible)
                         ShowLeader();
                 }
                 else if (e.Item.ItemId == Resource.Id.itemhome)
                 {
-                    if (llButtons.Visibility == ViewStates.Gone)
+                    if (btnStart.Visibility == ViewStates.Gone)
                         ShowHome(true);
                 }
             }
             else
             {
-                if(!llButtons.Animation.HasStarted || llButtons.Animation.HasEnded)
+                if(!btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
                 {
                     if (e.Item.ItemId == Resource.Id.itemLeader)
                     {
-                        if (llButtons.Visibility == ViewStates.Visible)
+                        if (btnStart.Visibility == ViewStates.Visible)
                             ShowLeader();
                     }
                     else if (e.Item.ItemId == Resource.Id.itemhome)
                     {
-                        if (llButtons.Visibility == ViewStates.Gone)
+                        if (btnStart.Visibility == ViewStates.Gone)
                             ShowHome(true);
                     }
                 }
@@ -374,22 +359,12 @@ namespace knight_mares_project
         // get database from firebase
         public async Task<List<int>> GetDatabase()
         {
-            List<Score> getScore = await FirebaseHelper.GetAll();
-            Score s = getScore[0];
-            worldRecord = s.l;
+            List<ScoreList> getScore = await FirebaseHelper.GetAll();
+            ScoreList s = getScore[0];
+            worldRecord = s.listOfScores;
             return worldRecord;
         }
 
-        private void BtnTour_Click(object sender, EventArgs e)
-        {
-            if (llButtons.Visibility != ViewStates.Gone)
-            {
-                this.typegame = TypeGame.Tour;
-                Intent i = new Intent(this, typeof(GameActivity));
-                i.PutExtra("type", (char)this.typegame);
-                StartActivityForResult(i, 0);
-            }
-        }
 
         // leaderboard clicks
         private void TvLbBig_Click(object sender, EventArgs e)
@@ -594,6 +569,7 @@ namespace knight_mares_project
             RadioButton rbPath = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbPath);
             RadioButton rbTour = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTour);
             RadioButton rbTutorial = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTutorial);
+            RadioGroup rgMode = (RadioGroup)difficultyDialog.FindViewById(Resource.Id.rgGamemode);
 
             difficultyDialog.Show();
             btnSubmit.Click += BtnSubmit_Click;
@@ -606,46 +582,59 @@ namespace knight_mares_project
             tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
             tvDifficultyInDialog.Text = "" + this.difficulty;
 
-            if(rbPath.Checked)
+            rgMode.CheckedChange += RgMode_CheckedChange;
+            switch(typegame)
             {
-                sb.Visibility = ViewStates.Visible;
-                tvDifficultyInDialog.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                sb.Visibility = ViewStates.Invisible;
-                tvDifficultyInDialog.Visibility = ViewStates.Invisible;
+                case TypeGame.Generate:
+                    rbPath.Checked = true;
+                    sb.Visibility = ViewStates.Visible;
+                    tvDifficultyInDialog.Visibility = ViewStates.Visible;
+                    break;
+                case TypeGame.Tour:
+                    rbTour.Checked = true;
+                    sb.Visibility = ViewStates.Invisible;
+                    tvDifficultyInDialog.Visibility = ViewStates.Invisible;
+                    break;
+                case TypeGame.Tutorial:
+                    rbTutorial.Checked = true;
+                    sb.Visibility = ViewStates.Invisible;
+                    tvDifficultyInDialog.Visibility = ViewStates.Invisible;
+                    break;
+                default:
+                    rbPath.Checked = true;
+                    sb.Visibility = ViewStates.Visible;
+                    tvDifficultyInDialog.Visibility = ViewStates.Visible;
+                    break;
             }
 
             sb.ProgressChanged += Sb_ProgressChanged;
-            rbPath.CheckedChange += RbPath_CheckedChange;
-            rbTour.CheckedChange += RbTour_CheckedChange;
-            rbTutorial.CheckedChange += RbTutorial_CheckedChange;
         }
 
-        private void RbTutorial_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private void ChangeMode(ViewStates difVisibility, string buttonText, TypeGame curTypeGame)
         {
-            this.typegame = TypeGame.Tutorial;
+            sb.Visibility = difVisibility;
+            tvDifficultyInDialog.Visibility = difVisibility;
+            tvDisplayDifficulty.Visibility = difVisibility;
+            btnStart.Text = buttonText;
+            this.typegame = curTypeGame;
         }
 
-        private void RbTour_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private void RgMode_CheckedChange(object sender, RadioGroup.CheckedChangeEventArgs e)
         {
-            this.typegame = TypeGame.Tour;
-        }
-
-        private void RbPath_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
-        {
-            if (e.IsChecked)
+            switch(e.CheckedId)
             {
-                sb.Visibility = ViewStates.Visible;
-                tvDifficultyInDialog.Visibility = ViewStates.Visible;
-                this.typegame = TypeGame.Generate;
-            }
-            else
-            {
-                sb.Visibility = ViewStates.Invisible;
-                tvDifficultyInDialog.Visibility = ViewStates.Invisible;
-                tvDisplayDifficulty.Visibility = ViewStates.Invisible;
+                case Resource.Id.rbPath:
+                    ChangeMode(ViewStates.Visible, "Generate Path", TypeGame.Generate);
+                    break;
+                case Resource.Id.rbTour:
+                    ChangeMode(ViewStates.Invisible, "Knight's Tour", TypeGame.Tour);
+                    break;
+                case Resource.Id.rbTutorial:
+                    ChangeMode(ViewStates.Invisible, "Tutorial", TypeGame.Tutorial);
+                    break;
+                default:
+                    ChangeMode(ViewStates.Visible, "Generate Path", TypeGame.Generate);
+                    break;
             }
         }
 
@@ -664,16 +653,16 @@ namespace knight_mares_project
         // start generate
         private void BtnStart_Click(object sender, EventArgs e)
         {
-            if (llButtons.Visibility != ViewStates.Gone)
+            if (btnStart.Visibility != ViewStates.Gone)
             {
                 if (difficulty < 3)
                     difficulty = 3;
                 else if (difficulty > 30)
                     difficulty = 30;
-                this.typegame = TypeGame.Generate;
+
                 Intent i = new Intent(this, typeof(GameActivity));
                 i.PutExtra("level", difficulty);
-                i.PutExtra("type", (char)this.typegame);
+                i.PutExtra("type", (int)this.typegame);
                 StartActivityForResult(i, this.difficulty);
             }
         }
@@ -689,23 +678,27 @@ namespace knight_mares_project
                 {
                     SetTvTitleText("KNIGHTS TOUR COMPLETE");
                     Board_Knight_s_Tour.solve = false;
+                    this.typegame = TypeGame.Tour;
                 }
                 else if(requestCode == 100)
                 {
                     knight = (Bitmap)data.Extras.Get("data");
                 }
+                else if(requestCode == 101)
+                {
+                    SetTvTitleText("Knight-Mares");
+                    this.typegame = TypeGame.Tutorial;
+                }
                 else
                 {
                     int timecompleted = data.GetIntExtra("time", 0);
                     SetTvTitleText(CheckHighScoreInLevel(requestCode, timecompleted));
+                    this.typegame = TypeGame.Generate;
                 }
 
 
                 tvTitle.Gravity = GravityFlags.Center;
                 tvTitle.Visibility = ViewStates.Visible;
-
-                //llLeaderBoard.Visibility = ViewStates.Invisible;
-                //wlLeaderboard.Visibility = ViewStates.Invisible;
             }
         }
         // returns win string according to high scores
@@ -732,7 +725,7 @@ namespace knight_mares_project
                 {
                     str += "\nWorld Record!!!!";
                     worldRecord[requestCode - 3] = time;
-                    FirebaseHelper.Update(new Score(worldRecord));
+                    FirebaseHelper.Update(new ScoreList(worldRecord));
                 }
             }
             catch

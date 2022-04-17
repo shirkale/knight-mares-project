@@ -12,14 +12,14 @@ using static Android.Resource;
 
 namespace knight_mares_project
 {
-    public class Score
+    public class ScoreList
     {
-        public List<int> l;
+        public List<int> listOfScores;
 
-        public Score() { }
-        public Score(List<int> l)
+        public ScoreList() { }
+        public ScoreList(List<int> l)
         {
-            this.l = l;
+            this.listOfScores = l;
         }
         
 

@@ -34,6 +34,10 @@ namespace knight_mares_project
         //Animations
 
         Animation animTurnUndo;
+
+        // tutorial
+        TextView tvTutorialInstructions;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -50,11 +54,12 @@ namespace knight_mares_project
             this.btnSolve = (Button)FindViewById(Resource.Id.btnSolve);
 
             this.tvTime = (TextView)FindViewById(Resource.Id.tvTime);
+            this.tvTutorialInstructions = (TextView)FindViewById(Resource.Id.tvTutorialInstructions);
 
             // initializing board according to level selection
 
             difficulty = Intent.GetIntExtra("level", 3);
-            TypeGame type = (TypeGame)Intent.GetCharExtra("type", '0');
+            TypeGame type = (TypeGame)Intent.GetIntExtra("type", 0);
             int size = 8;
 
             switch(type)
@@ -68,7 +73,7 @@ namespace knight_mares_project
                     this.btnSolve.Visibility = ViewStates.Visible;
                     break;
                 case TypeGame.Tutorial:
-                    this.game = new Board_Tutorial(this, size);
+                    this.game = new Board_Tutorial(this, size, tvTutorialInstructions);
                     this.btnSolve.Visibility = ViewStates.Gone;
                     break;
                 default:
@@ -156,11 +161,13 @@ namespace knight_mares_project
             this.result = time;
             if (this.game is Board_Knight_s_Tour)
                 msg = "The Knight's Tour is complete!";
-            else
+            else if (this.game is Board_Generate)
                 msg = string.Format("You have defeated all the ghosts in difficulty {0} in {1} seconds!", difficulty, result);
+            else
+                msg = "Tutorial Complete!";
             won = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.SetTitle("You Win!!! Hooray!!!");
+            builder.SetTitle("Hooray!!!");
             builder.SetMessage(msg);
             builder.SetCancelable(false);
             builder.SetPositiveButton("back to main menu", OkAction);

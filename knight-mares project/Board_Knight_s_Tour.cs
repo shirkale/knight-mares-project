@@ -16,7 +16,6 @@ namespace knight_mares_project
     public class Board_Knight_s_Tour : Board
     {
         List<Square> solution; // list into which a path will be inserted
-        int count; // for debugging delete when done
         int index; // for running the simulation solution comp calculates
 
         public static bool solve = false;
@@ -46,7 +45,10 @@ namespace knight_mares_project
             {
                 InitializeBoard(canvas);
                 if (firstKnight)
+                {
+                    PickRandomStarter();
                     InitializeKnight();
+                }
 
                 this.player.Draw(canvas);
 
@@ -56,7 +58,7 @@ namespace knight_mares_project
                     this.player.GetCurrentSquare().StepOn();
                     SolveTour();
 
-                    UnstepAll();
+                    GoOverAll(false);
                     this.player.moveToSquare(this.solution[0]);
                     this.player.GetCurrentSquare().StepOn();
                 }
@@ -67,7 +69,7 @@ namespace knight_mares_project
                     {
                         if (index == 0) // initialize solve
                         {
-                            UnstepAll();
+                            GoOverAll(false);
                             this.player.moveToSquare(solution[index]);
                             this.player.GetCurrentSquare().StepOn();
                             pauseBgMusic.Invoke(this, EventArgs.Empty); // pause background music, hear steps
@@ -101,8 +103,23 @@ namespace knight_mares_project
 
             int starterPath = this.starter.GetI() * size + this.starter.GetJ(); // enumerates the starter path with one int instead of two
             List<int> intPath = MainActivity.knightTourPaths[starterPath]; // path of ints, each pair represents 1 square
-            this.solution = FileHelper.SquarePathFromInt(intPath, squares);
+            this.solution = SquarePathFromInt(intPath, squares);
 
+        }
+        public static List<Square> SquarePathFromInt(List<int> source, Square[,] squareMatrix)
+        {
+            if (source != null)
+            {
+                List<Square> newList = new List<Square>();
+                for (int k = 0; k < source.Count - 1; k += 2)
+                {
+                    int i = k;
+                    int j = k + 1;
+                    newList.Add(squareMatrix[source[i], source[j]]);
+                }
+                return newList;
+            }
+            return null;
         }
 
         private void GoBackAll()
@@ -110,17 +127,6 @@ namespace knight_mares_project
             while (this.moves.Count > 0)
             {
                 this.GoBack();
-            }
-        }
-
-        private void UnstepAll()
-        {
-            for (int i = 0; i < this.size; i++)
-            {
-                for (int j = 0; j < this.size; j++)
-                {
-                    squares[i, j].UnstepOn();
-                }
             }
         }
     }

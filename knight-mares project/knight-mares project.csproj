@@ -81,7 +81,7 @@
     <Compile Include="MyService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Score.cs" />
+    <Compile Include="ScoreList.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="TypeGame.cs" />
   </ItemGroup>

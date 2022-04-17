@@ -48,7 +48,10 @@ namespace knight_mares_project
             {
                 InitializeBoard(canvas);
                 if (firstKnight)
+                {
+                    PickRandomStarter();
                     InitializeKnight();
+                }
 
                 if (firstDraw)
                 {

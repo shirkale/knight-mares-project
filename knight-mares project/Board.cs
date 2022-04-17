@@ -94,16 +94,15 @@ namespace knight_mares_project
             return squares[0, 0];
         }
 
-        protected void InitializeKnight()
+        protected virtual void InitializeKnight()
         {
-            PickRandomStarter();
             this.player = new Knight(this.starter, this.context);
             (starter as GhostSquare).ResizeBitmap(false);
             this.firstKnight = false;
             starter.StepOn();
         }
 
-        private void PickRandomStarter() // picking random square for starter position
+        protected void PickRandomStarter() // picking random square for starter position
         {
             Random random = new Random();
             int i = random.Next(0, size);
@@ -149,6 +148,23 @@ namespace knight_mares_project
                 this.player.Draw(canvas);
 
             Invalidate();
+        }
+
+        protected void GoOverAll(bool step)
+        {
+            for (int i = 0; i < this.size; i++)
+            {
+                for (int j = 0; j < this.size; j++)
+                {
+                    if (step)
+                    {
+                        squares[i, j].StepOn();
+                        if(squares[i, j] is GhostSquare) { (squares[i, j] as GhostSquare).SetBitmap(MainActivity.snowtree); } // there is need for them to be trees to reset, not all flags.
+                    }
+                    else
+                        squares[i, j].UnstepOn();
+                }
+            }
         }
     }
 }
