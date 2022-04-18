@@ -69,7 +69,6 @@
     <Compile Include="Board_Generate.cs" />
     <Compile Include="Board_Knight_s_Tour.cs" />
     <Compile Include="Board_Tutorial.cs" />
-    <Compile Include="FileHelper.cs" />
     <Compile Include="FirebaseHelper.cs" />
     <Compile Include="GameActivity.cs" />
     <Compile Include="GhostSquare.cs" />

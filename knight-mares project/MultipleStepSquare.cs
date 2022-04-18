@@ -16,14 +16,12 @@ namespace knight_mares_project
     {
         private int steps; // the amount of steps you can step on the square
         private Paint numP; // paint for the number on the multstepsquare
-        private char endChar; // x to put at end of path - when can't be stepped on
-        public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context, int size) : base(x, y, w, h, i, j, context)
+        public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
         {
             this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
-            this.numP.TextSize = 30;
-            this.endChar = 'x';
+            this.numP.TextSize = 40;
         }
 
         public MultipleStepSquare(Square s) : base(s)
@@ -31,7 +29,7 @@ namespace knight_mares_project
             this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
-            this.numP.TextSize = 30;
+            this.numP.TextSize = 40;
         }
 
         public override void StepOn()
@@ -66,7 +64,7 @@ namespace knight_mares_project
             if(visibility)
             {
                 if(this.steps == 0)
-                    canvas.DrawText("" + this.endChar, this.x + this.w / 2, this.y + this.h / 2, this.numP);
+                    canvas.DrawText("", this.x + this.w / 2, this.y + this.h / 2, this.numP);
                 else
                     canvas.DrawText("" + this.steps, this.x + this.w / 2, this.y + this.h / 2, this.numP);
             }

@@ -67,14 +67,17 @@ namespace knight_mares_project
                 case TypeGame.Generate:
                     this.game = new Board_Generate(this, size, difficulty);
                     this.btnSolve.Visibility = ViewStates.Gone;
+                    this.tvTutorialInstructions.Visibility = ViewStates.Gone;
                     break;
                 case TypeGame.Tour:
                     this.game = new Board_Knight_s_Tour(this, size);
                     this.btnSolve.Visibility = ViewStates.Visible;
+                    this.tvTutorialInstructions.Visibility = ViewStates.Gone;
                     break;
                 case TypeGame.Tutorial:
                     this.game = new Board_Tutorial(this, size, tvTutorialInstructions);
                     this.btnSolve.Visibility = ViewStates.Gone;
+                    this.tvTutorialInstructions.Visibility = ViewStates.Visible;
                     break;
                 default:
                     this.game = new Board_Generate(this, size, difficulty);
@@ -186,6 +189,22 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
+            ResumeMusic();
+        }
+
+        protected override void OnPause()
+        {
+            if (!MyService.musicInit)
+            {
+                Intent musicIntent = new Intent(this, typeof(MyService));
+                StartService(musicIntent);
+            }
+            SendAction(0);
+            base.OnPause();
+        }
+
+        public void ResumeMusic()
+        {
             if (!MainActivity.muted)
             {
                 if (!MyService.musicInit)
@@ -209,25 +228,6 @@ namespace knight_mares_project
                 {
                     SendAction(0);
                 }
-            }
-        }
-
-        protected override void OnPause()
-        {
-            if (!MyService.musicInit)
-            {
-                Intent musicIntent = new Intent(this, typeof(MyService));
-                StartService(musicIntent);
-            }
-            SendAction(0);
-            base.OnPause();
-        }
-
-        public void ResumeMusic()
-        {
-            if (!MainActivity.muted)
-            {
-                SendAction(1);
             }
         }
 

@@ -64,7 +64,7 @@ namespace knight_mares_project
 
         }
 
-        public void moveToSquare(Square s)
+        public void MoveToSquare(Square s)
             // moves the knight to the square inputted
         {
             if(this.mpMove == null)

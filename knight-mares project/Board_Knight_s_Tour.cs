@@ -18,7 +18,7 @@ namespace knight_mares_project
         List<Square> solution; // list into which a path will be inserted
         int index; // for running the simulation solution comp calculates
 
-        public static bool solve = false;
+        public static bool solve = false; // if true, 
 
         public EventHandler pauseBgMusic; // pause music during solve
 
@@ -26,7 +26,6 @@ namespace knight_mares_project
         {
             this.checkWin = size * size - 1;
             this.solution = new List<Square>();
-            count = 0;
             index = 0;
         }
 
@@ -35,7 +34,7 @@ namespace knight_mares_project
             if (this.moves.Count != 0) // if stack isn't empty - if the player has moved
             {
                 this.player.GetCurrentSquare().UnstepOn();
-                this.player.moveToSquare(this.moves.Pop());
+                this.player.MoveToSquare(this.moves.Pop());
             }
         }
 
@@ -59,7 +58,7 @@ namespace knight_mares_project
                     SolveTour();
 
                     GoOverAll(false);
-                    this.player.moveToSquare(this.solution[0]);
+                    this.player.MoveToSquare(this.solution[0]);
                     this.player.GetCurrentSquare().StepOn();
                 }
 
@@ -70,13 +69,13 @@ namespace knight_mares_project
                         if (index == 0) // initialize solve
                         {
                             GoOverAll(false);
-                            this.player.moveToSquare(solution[index]);
+                            this.player.MoveToSquare(solution[index]);
                             this.player.GetCurrentSquare().StepOn();
                             pauseBgMusic.Invoke(this, EventArgs.Empty); // pause background music, hear steps
                         }
                         else
                         {
-                            this.player.moveToSquare(solution[index]);
+                            this.player.MoveToSquare(solution[index]);
                             Thread.Sleep(TimeSpan.FromMilliseconds(700 - index * 10));
                             this.player.GetCurrentSquare().StepOn();
                         }

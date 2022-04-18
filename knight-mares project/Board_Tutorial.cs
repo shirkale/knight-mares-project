@@ -1,14 +1,7 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace knight_mares_project
@@ -16,18 +9,12 @@ namespace knight_mares_project
     public class Board_Tutorial : Board
     {
         TextView tvMessage;
-        string message // message to be written in the textview to the player
-        {
-            get { try { return tvMessage.Text; } catch { return ""; } }
-            set { tvMessage.Text = value; }
-
-        }
         int delay;
-        int delaystarter_;
-        int delayStarter
+        int _delaystarter;
+        int DelayStarter
         {
-            set { delay = value; delaystarter_ = value; }
-            get { return delaystarter_; }
+            set { delay = value; _delaystarter = value; }
+            get { return _delaystarter; }
         }
 
         int phase; // the phase the tutorial is in. starts at 0
@@ -37,9 +24,9 @@ namespace knight_mares_project
             this.size = size;
             this.checkWin = 1;
             this.tvMessage = tvMessage;
-            this.message = "This is how a knight moves on a chessboard.\nClick the ghost to move";
+            tvMessage.Text = "This is how a knight moves on a chessboard.\nClick the ghost to move";
             this.phase = 0;
-            this.delayStarter = 5;
+            this.DelayStarter = 5;
 
         }
 
@@ -53,7 +40,7 @@ namespace knight_mares_project
                 if (firstDraw)
                 {
                     InitializeBoard(canvas);
-                    this.message = "This is how a knight moves on a chessboard.";
+                    tvMessage.Text = "This is how a knight moves on a chessboard.";
                     starter = squares[3, 3];
                     InitializeKnight();
 
@@ -62,7 +49,7 @@ namespace knight_mares_project
                 }
                 else if(delay > 0)
                 {
-                    if(delay != delayStarter)
+                    if(delay != DelayStarter)
                         Thread.Sleep(1000);
 
                     for (int i = 0; i < 8; i++)
@@ -76,7 +63,7 @@ namespace knight_mares_project
                 }
                 else
                 {
-                    delayStarter = 5;
+                    DelayStarter = 5;
                     for (int i = 0; i < 8; i++)
                     {
                         Square cur = squares[starter.GetI() + xMove[i], starter.GetJ() + yMove[i]];
@@ -91,7 +78,7 @@ namespace knight_mares_project
             {
                 if (firstDraw)
                 {
-                    this.message += "\nClick the ghost to move";
+                    tvMessage.Text += "\nClick the ghost to move";
 
                     // path
                     squares[5, 2].UnstepOn();
@@ -109,9 +96,9 @@ namespace knight_mares_project
                 if(firstDraw)
                 {
                     GoOverAll(true);
-                    this.message = "Now try with two ghosts";
+                    tvMessage.Text = "Now try with two ghosts";
                     starter = squares[6, 0];
-                    player.moveToSquare(starter);
+                    player.MoveToSquare(starter);
                     checkWin = 2;
 
                     // path
@@ -131,10 +118,10 @@ namespace knight_mares_project
                 if(firstDraw)
                 {
                     GoOverAll(true);
-                    this.message = "Try This:\nNotice how you can't go back :)\nIf you get stuck, undo using the orange arrow";
+                    tvMessage.Text = "Try This:\nNotice how you can't go back :)\nIf you get stuck, undo using the orange arrow";
                     starter = squares[2, 1];
                     starter.StepOn();
-                    player.moveToSquare(starter);
+                    player.MoveToSquare(starter);
                     checkWin = 8;
 
                     // path
@@ -160,10 +147,10 @@ namespace knight_mares_project
                 if (firstDraw)
                 {
                     GoOverAll(true);
-                    this.message = "On these special squares you can step multiple times";
+                    tvMessage.Text = "On these special squares you can step multiple times";
                     starter = squares[5, 5];
                     starter.StepOn();
-                    player.moveToSquare(starter);
+                    player.MoveToSquare(starter);
                     checkWin = 7;
 
                     // path
@@ -195,10 +182,10 @@ namespace knight_mares_project
                 if (firstDraw)
                 {
                     GoOverAll(false);
-                    this.message = "Knight's tour fills the board! Try to solve it!\nIn knight's tour mode the code does it for you ;)\nClick the blue home button below to go back to main menu";
+                    tvMessage.Text = "Knight's tour fills the board! Try to solve it!\nIn knight's tour mode the code does it for you ;)\nClick the blue home button below to go back to main menu";
                     starter = squares[0, 0];
                     starter.StepOn();
-                    player.moveToSquare(starter);
+                    player.MoveToSquare(starter);
                     checkWin = 63;
 
                     firstDraw = false;
@@ -214,7 +201,7 @@ namespace knight_mares_project
 
         private void ResetBoardNextPhase(string message)
         {
-            this.message = message;
+            tvMessage.Text = message;
             if (delay != 0)
             {
                 Thread.Sleep(500);
@@ -245,7 +232,7 @@ namespace knight_mares_project
                 }
 
                 this.player.GetCurrentSquare().UnstepOn();
-                this.player.moveToSquare(this.moves.Pop());
+                this.player.MoveToSquare(this.moves.Pop());
             }
         }
 

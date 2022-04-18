@@ -11,7 +11,7 @@ using System.Text;
 
 namespace knight_mares_project
 {
-    public class GhostSquareForKnightsTour : GhostSquare
+    public class GhostSquareForKnightsTour : GhostSquare // to be deleted
     {
         protected int numOfPossibleMoves; // num of possible moves for each square according to it's placement on the board
         //protected bool invisibleWalkedOver;

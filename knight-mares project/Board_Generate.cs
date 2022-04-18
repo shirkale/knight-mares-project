@@ -37,7 +37,7 @@ namespace knight_mares_project
                 }
 
                 this.player.GetCurrentSquare().UnstepOn();
-                this.player.moveToSquare(this.moves.Pop());
+                this.player.MoveToSquare(this.moves.Pop());
             }
         }
 
@@ -59,7 +59,7 @@ namespace knight_mares_project
                     GenerateRandomMap(canvas); // generates map
                     FinalUnStepOnMultSquares(); // makes all multstepsquares stepable, if 1 turn into ghostsquare
 
-                    this.player.moveToSquare(this.starter);
+                    this.player.MoveToSquare(this.starter);
                     if(isStarterMms)
                         this.starter.StepOn();
                     delayCount = 10;
@@ -137,7 +137,7 @@ namespace knight_mares_project
                             this.checkWin--;
                         }
                     }
-                    this.player.moveToSquare(nextSquare);
+                    this.player.MoveToSquare(nextSquare);
                     nextSquare.UnstepOn();
                 }
                 else

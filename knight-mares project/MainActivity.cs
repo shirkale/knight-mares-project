@@ -37,6 +37,7 @@ namespace knight_mares_project
 
         Button btnStart;
         TextView tvTitle, tvDisplayDifficulty, tvHighScore, tvWorldScore;
+
         ISharedPreferences spHighScore;
 
         private void SetTvTitleText(string value)
@@ -91,8 +92,8 @@ namespace knight_mares_project
         TextView tvLbSmall, tvLb, tvLbBig;
 
         // world leaderboard
-        LinearLayout wlLeaderboard;
-        TextView tvWLbSmall, tvWLb, tvWLbBig;
+        LinearLayout llWorldBoard;
+        TextView tvWbSmall, tvWb, tvWbBig;
 
         // animation
         ImageView ivGoblet;
@@ -143,10 +144,10 @@ namespace knight_mares_project
             tvLbBig = (TextView)FindViewById(Resource.Id.tv3);
             llLeaderBoard = (LinearLayout)FindViewById(Resource.Id.linLeader);
 
-            tvWLbSmall = (TextView)FindViewById(Resource.Id.tv1w);
-            tvWLb = (TextView)FindViewById(Resource.Id.tv2w);
-            tvWLbBig = (TextView)FindViewById(Resource.Id.tv3w);
-            wlLeaderboard = (LinearLayout)FindViewById(Resource.Id.linWorld);
+            tvWbSmall = (TextView)FindViewById(Resource.Id.tv1w);
+            tvWb = (TextView)FindViewById(Resource.Id.tv2w);
+            tvWbBig = (TextView)FindViewById(Resource.Id.tv3w);
+            llWorldBoard = (LinearLayout)FindViewById(Resource.Id.linWorld);
 
             ivPumpkin = (ImageView)FindViewById(Resource.Id.ivPumpkin);
             ivGoblet = (ImageView)FindViewById(Resource.Id.ivGoblet);
@@ -195,8 +196,8 @@ namespace knight_mares_project
             tvLbSmall.Click += TvLbSmall_Click;
             tvLbBig.Click += TvLbBig_Click;
 
-            tvWLbSmall.Click += TvLbSmall_Click;
-            tvWLbBig.Click += TvLbBig_Click;
+            tvWbSmall.Click += TvLbSmall_Click;
+            tvWbBig.Click += TvLbBig_Click;
 
             // typgame init
 
@@ -266,14 +267,14 @@ namespace knight_mares_project
 
             // visibility visable in leaderboard
             llLeaderBoard.Visibility = ViewStates.Visible;
-            wlLeaderboard.Visibility = ViewStates.Visible;
+            llWorldBoard.Visibility = ViewStates.Visible;
             ivGoblet.Visibility = ViewStates.Visible;
             tvHighScore.Visibility = ViewStates.Visible;
             tvWorldScore.Visibility = ViewStates.Visible;
 
             // scale animation to show widgets in leaderboard
             llLeaderBoard.StartAnimation(toLeaderAnimation);
-            wlLeaderboard.StartAnimation(toLeaderAnimation);
+            llWorldBoard.StartAnimation(toLeaderAnimation);
             ivGoblet.StartAnimation(toLeaderAnimation);
             tvHighScore.StartAnimation(toLeaderAnimation);
             tvWorldScore.StartAnimation(toLeaderAnimation);
@@ -306,7 +307,7 @@ namespace knight_mares_project
 
             // visibility gone in leaderboard
             llLeaderBoard.Visibility = ViewStates.Gone;
-            wlLeaderboard.Visibility = ViewStates.Gone;
+            llWorldBoard.Visibility = ViewStates.Gone;
             ivGoblet.Visibility = ViewStates.Gone;
             tvHighScore.Visibility = ViewStates.Gone;
             tvWorldScore.Visibility = ViewStates.Gone;
@@ -315,7 +316,7 @@ namespace knight_mares_project
             if (animate)
             {
                 llLeaderBoard.StartAnimation(fromLeaderAnimation);
-                wlLeaderboard.StartAnimation(fromLeaderAnimation);
+                llWorldBoard.StartAnimation(fromLeaderAnimation);
                 ivGoblet.StartAnimation(fromLeaderAnimation);
                 tvHighScore.StartAnimation(fromLeaderAnimation);
                 tvWorldScore.StartAnimation(fromLeaderAnimation);
@@ -458,9 +459,9 @@ namespace knight_mares_project
             else
                 s3 += "" + worldRecord[level - 2] + " seconds";
 
-            tvWLbSmall.Text = s1;
-            tvWLb.Text = s2;
-            tvWLbBig.Text = s3;
+            tvWbSmall.Text = s1;
+            tvWb.Text = s2;
+            tvWbBig.Text = s3;
             
         }
 
@@ -704,7 +705,7 @@ namespace knight_mares_project
         // returns win string according to high scores
         private string CheckHighScoreInLevel(int requestCode, int time) // updates high score and returns string to display
         {
-            string str = ":::Kight-Mares:::\nYou completed the level in " + time + " seconds.";
+            string str = ":::Knight-Mares:::\nYou completed the level in " + time + " seconds.";
 
             string level = "level" + requestCode;
 

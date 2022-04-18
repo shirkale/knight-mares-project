@@ -29,7 +29,7 @@ namespace knight_mares_project
         protected readonly int[] xMove = { -1, 1, 2, 2, 1, -1, -2, -2 };
         protected readonly int[] yMove = { 2, 2, 1, -1, -2, -2, -1, 1 };
 
-        public EventHandler winEvent;
+        public EventHandler winEvent; // event which when triggered in GameActivity shows winning dialog
 
         protected Stack<Square> moves; // stack into which we insert squares the player goes on
 
@@ -65,7 +65,7 @@ namespace knight_mares_project
                 if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
                     this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
-                    this.player.moveToSquare(newSquare);
+                    this.player.MoveToSquare(newSquare);
 
                     if (!(newSquare is MultipleStepSquare))
                         checkWin--;
@@ -131,8 +131,6 @@ namespace knight_mares_project
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
                         this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context, size);
-                        if (this is Board_Knight_s_Tour)
-                            this.squares[i, j] = new GhostSquareForKnightsTour(x, y, w, h, i, j, this.context, size);
                     }
 
                     this.squares[i, j].Draw(canvas); // draw cur square
