@@ -145,6 +145,7 @@ namespace knight_mares_project
                     if (k < steps / 2)
                     {
                         firstDraw = true;
+                        checkWin = difficulty;
                         InitializeBoard(canvas);
                         GenerateRandomMap(canvas);
                     }
@@ -158,7 +159,7 @@ namespace knight_mares_project
         private bool CalculateChance() // calculates chance for multstepsquares
         {
             Random random = new Random();
-            return random.Next(100) < 10;
+            return random.Next(100) < 20;
         }
 
 

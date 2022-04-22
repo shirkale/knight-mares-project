@@ -25,14 +25,14 @@ namespace knight_mares_project
             mp.Looping = true;
         }
 
-        private void CountDownTilMusicStopped()
+        private void CountDownForServiceShutDown()
         {
             for (int i = 0; i < 180; i++)
             {
                 Thread.Sleep(1000);
             }
 
-            MyService.musicInit = false;
+            MusicService.musicInit = false;
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -41,7 +41,6 @@ namespace knight_mares_project
             if(action == 1)
             {
                 mp.Start();
-                mp.SetVolume((float)0.7, (float)0.7);
 
                 if(threadToCountServiceShutdown != null && threadToCountServiceShutdown.IsAlive)
                     threadToCountServiceShutdown.Abort();
@@ -50,7 +49,7 @@ namespace knight_mares_project
             {
                 mp.Pause();
 
-                threadToCountServiceShutdown = new Thread(CountDownTilMusicStopped);
+                threadToCountServiceShutdown = new Thread(CountDownForServiceShutDown);
                 threadToCountServiceShutdown.Start();
             }
         }

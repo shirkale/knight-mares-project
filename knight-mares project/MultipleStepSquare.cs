@@ -21,7 +21,7 @@ namespace knight_mares_project
             this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
-            this.numP.TextSize = 40;
+            this.numP.TextSize = this.w / 2;
         }
 
         public MultipleStepSquare(Square s) : base(s)
@@ -29,7 +29,7 @@ namespace knight_mares_project
             this.steps = 0;
             this.numP = new Paint();
             this.numP.Color = Color.YellowGreen;
-            this.numP.TextSize = 40;
+            this.numP.TextSize = this.w/2;
         }
 
         public override void StepOn()
@@ -66,7 +66,7 @@ namespace knight_mares_project
                 if(this.steps == 0)
                     canvas.DrawText("", this.x + this.w / 2, this.y + this.h / 2, this.numP);
                 else
-                    canvas.DrawText("" + this.steps, this.x + this.w / 2, this.y + this.h / 2, this.numP);
+                    canvas.DrawText("" + this.steps, this.x + this.w / 3, this.y + this.h / 1.5f, this.numP);
             }
         }
 

@@ -194,9 +194,9 @@ namespace knight_mares_project
 
         protected override void OnPause()
         {
-            if (!MyService.musicInit)
+            if (!MusicService.musicInit)
             {
-                Intent musicIntent = new Intent(this, typeof(MyService));
+                Intent musicIntent = new Intent(this, typeof(MusicService));
                 StartService(musicIntent);
             }
             SendAction(0);
@@ -207,9 +207,9 @@ namespace knight_mares_project
         {
             if (!MainActivity.muted)
             {
-                if (!MyService.musicInit)
+                if (!MusicService.musicInit)
                 {
-                    Intent musicIntent = new Intent(this, typeof(MyService));
+                    Intent musicIntent = new Intent(this, typeof(MusicService));
                     StartService(musicIntent);
                 }
                 else
@@ -219,9 +219,9 @@ namespace knight_mares_project
             }
             else
             {
-                if (!MyService.musicInit)
+                if (!MusicService.musicInit)
                 {
-                    Intent musicIntent = new Intent(this, typeof(MyService));
+                    Intent musicIntent = new Intent(this, typeof(MusicService));
                     StartService(musicIntent);
                 }
                 else

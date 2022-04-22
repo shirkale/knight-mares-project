@@ -72,12 +72,11 @@
     <Compile Include="FirebaseHelper.cs" />
     <Compile Include="GameActivity.cs" />
     <Compile Include="GhostSquare.cs" />
-    <Compile Include="GhostSquareForKnightsTour.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />
     <Compile Include="MusicPlayerBroadcastReciever.cs" />
-    <Compile Include="MyService.cs" />
+    <Compile Include="MusicService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScoreList.cs" />
@@ -146,7 +145,7 @@
     <AndroidResource Include="Resources\layout\difficulty_dialog.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\menuDif.xml" />
+    <AndroidResource Include="Resources\menu\camera_and_mute_menu.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ghostpattern2.jpg" />
@@ -168,9 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\back_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\skullmenu.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\anim\pumpkinAnimation.xml" />

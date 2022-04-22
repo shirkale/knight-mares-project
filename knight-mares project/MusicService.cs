@@ -15,7 +15,7 @@ using System.Threading;
 namespace knight_mares_project
 {
     [Service]
-    public class MyService : Service
+    public class MusicService : Service
     {
         MediaPlayer mp; // media player which plays the music
         MusicPlayerBroadcastReciever musicPlayerBroadcast; // broadcast reciever, is registered with the media player an plays the music according to the user
@@ -41,8 +41,8 @@ namespace knight_mares_project
 
 
             // thread which stops the service if music is stopped for a long time, user left the app
-            Thread t = new Thread(RunUntilMusicStopped);
-            t.Start();
+            Thread threadStopService = new Thread(RunUntilMusicStopped);
+            threadStopService.Start();
 
             return base.OnStartCommand(intent, flags, startId);
         }

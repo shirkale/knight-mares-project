@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:background="@drawable/forest"
     >
 
@@ -25,14 +25,15 @@
         android:layout_alignParentTop="true"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Generate Path"
+        android:text="Play Game!"
         android:id="@+id/btnStart"
         android:fontFamily="sans-serif-smallcaps"
         android:backgroundTint="#171747"
         android:padding="10dp"
         android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/tvTitle"
 
         />

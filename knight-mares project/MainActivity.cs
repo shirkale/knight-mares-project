@@ -177,7 +177,7 @@ namespace knight_mares_project
 
             // music player
 
-            musicIntent = new Intent(this, typeof(MyService));
+            musicIntent = new Intent(this, typeof(MusicService));
             StartService(musicIntent);
 
             // animation init
@@ -191,13 +191,6 @@ namespace knight_mares_project
             changeTitleFadeInAnimation = AnimationUtils.LoadAnimation(this, Resource.Animation.changeTitleFadeIn);
             ivPumpkin.StartAnimation(pumpkinAnimation);
             ivPumpkin.Animation.AnimationEnd += Animation_AnimationEnd;
-
-
-            tvLbSmall.Click += TvLbSmall_Click;
-            tvLbBig.Click += TvLbBig_Click;
-
-            tvWbSmall.Click += TvLbSmall_Click;
-            tvWbBig.Click += TvLbBig_Click;
 
             // typgame init
 
@@ -213,33 +206,39 @@ namespace knight_mares_project
             //{
             //    l.Add(-1);
             //}
-            //Score s = new Score(l);
+            //ScoreList s = new ScoreList(l);
             //FirebaseHelper.Add(s);
-            
+
             GetDatabase();
 
             // click functions
 
             btnStart.Click += BtnStart_Click; // button click that starts the game
-
-
             bottomnv.NavigationItemSelected += Bottomnv_NavigationItemSelected;
 
+            tvLbSmall.Click += TvLbSmall_Click;
+            tvLbBig.Click += TvLbBig_Click;
+
+            tvWbSmall.Click += TvLbSmall_Click;
+            tvWbBig.Click += TvLbBig_Click;
 
 
             // read path file
-            const int maxReadSize = 256 * 1024;
-            byte[] content;
-            AssetManager assets = this.Assets;
-            using (BinaryReader br = new BinaryReader(assets.Open("listofpaths.bin")))
+            if (knightTourPaths == null)
             {
-                content = br.ReadBytes(maxReadSize);
-            }
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream(content))
-            {
-                object obj = bf.Deserialize(ms);
-                knightTourPaths = (List<List<int>>)obj;
+                const int maxReadSize = 256 * 1024;
+                byte[] content;
+                AssetManager assets = this.Assets;
+                using (BinaryReader br = new BinaryReader(assets.Open("listofpaths.bin")))
+                {
+                    content = br.ReadBytes(maxReadSize);
+                }
+                BinaryFormatter bf = new BinaryFormatter();
+                using (MemoryStream ms = new MemoryStream(content))
+                {
+                    object obj = bf.Deserialize(ms);
+                    knightTourPaths = (List<List<int>>)obj;
+                }
             }
         }
 
@@ -326,41 +325,63 @@ namespace knight_mares_project
         // bottom nav menu
         private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
-            if (btnStart.Animation == null)
+            if (btnStart.Animation == null || !btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
             {
                 if (e.Item.ItemId == Resource.Id.itemLeader)
                 {
                     if (btnStart.Visibility == ViewStates.Visible)
+                    {
                         ShowLeader();
+                        btnStart.Clickable = false;
+                        tvWbBig.Clickable = true;
+                        tvWbSmall.Clickable = true;
+                    }
                 }
                 else if (e.Item.ItemId == Resource.Id.itemhome)
                 {
                     if (btnStart.Visibility == ViewStates.Gone)
+                    {
                         ShowHome(true);
-                }
-            }
-            else
-            {
-                if(!btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
-                {
-                    if (e.Item.ItemId == Resource.Id.itemLeader)
-                    {
-                        if (btnStart.Visibility == ViewStates.Visible)
-                            ShowLeader();
-                    }
-                    else if (e.Item.ItemId == Resource.Id.itemhome)
-                    {
-                        if (btnStart.Visibility == ViewStates.Gone)
-                            ShowHome(true);
+                        btnStart.Clickable = true;
+                        tvWbBig.Clickable = false;
+                        tvWbSmall.Clickable = true;
                     }
                 }
             }
+            //else
+            //{
+            //    if(!btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
+            //    {
+            //        if (e.Item.ItemId == Resource.Id.itemLeader)
+            //        {
+            //            if (btnStart.Visibility == ViewStates.Visible)
+            //            {
+            //                ShowLeader();
+            //                btnStart.Clickable = false;
+            //                tvWbBig.Clickable = true;
+            //                tvWbSmall.Clickable = true;
+            //            }
+            //        }
+            //        else if (e.Item.ItemId == Resource.Id.itemhome)
+            //        {
+            //            if (btnStart.Visibility == ViewStates.Gone)
+            //            {
+            //                ShowHome(true);
+            //                btnStart.Clickable = true;
+            //                tvWbBig.Clickable = false;
+            //                tvWbSmall.Clickable = true;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         // get database from firebase
         public async Task<List<int>> GetDatabase()
         {
             List<ScoreList> getScore = await FirebaseHelper.GetAll();
+            if (getScore == null)
+                return null;
             ScoreList s = getScore[0];
             worldRecord = s.listOfScores;
             return worldRecord;
@@ -441,27 +462,36 @@ namespace knight_mares_project
             if(worldRecord == null)
                 await GetDatabase();
 
-            s1 = "" + (level - 1) + '\n';
-            if (worldRecord[level-4] == -1)
-                s1 += "---";
-            else
-                s1 += "" + worldRecord[level-4] + " seconds";
+            try
+            {
+                s1 = "" + (level - 1) + '\n';
+                if (worldRecord[level - 4] == -1)
+                    s1 += "---";
+                else
+                    s1 += "" + worldRecord[level - 4] + " seconds";
 
-            s2 = "" + (level) + '\n';
-            if (worldRecord[level - 3] == -1)
-                s2 += "---";
-            else
-                s2 += "" + worldRecord[level - 3] + " seconds";
+                s2 = "" + (level) + '\n';
+                if (worldRecord[level - 3] == -1)
+                    s2 += "---";
+                else
+                    s2 += "" + worldRecord[level - 3] + " seconds";
 
-            s3 = "" + (level + 1) + '\n';
-            if (worldRecord[level - 2] == -1)
-                s3 += "---";
-            else
-                s3 += "" + worldRecord[level - 2] + " seconds";
+                s3 = "" + (level + 1) + '\n';
+                if (worldRecord[level - 2] == -1)
+                    s3 += "---";
+                else
+                    s3 += "" + worldRecord[level - 2] + " seconds";
 
-            tvWbSmall.Text = s1;
-            tvWb.Text = s2;
-            tvWbBig.Text = s3;
+                tvWbSmall.Text = s1;
+                tvWb.Text = s2;
+                tvWbBig.Text = s3;
+            }
+            catch
+            {
+                tvWbSmall.Text = "error";
+                tvWb.Text = "error";
+                tvWbBig.Text = "error";
+            }
             
         }
 
@@ -470,9 +500,9 @@ namespace knight_mares_project
             base.OnResume();
             if(!muted)
             {
-                if (!MyService.musicInit)
+                if (!MusicService.musicInit)
                 {
-                    musicIntent = new Intent(this, typeof(MyService));
+                    musicIntent = new Intent(this, typeof(MusicService));
                     StartService(musicIntent);
                 }
                 else
@@ -482,9 +512,9 @@ namespace knight_mares_project
             }
             else
             {
-                if (!MyService.musicInit)
+                if (!MusicService.musicInit)
                 {
-                    musicIntent = new Intent(this, typeof(MyService));
+                    musicIntent = new Intent(this, typeof(MusicService));
                     StartService(musicIntent);
                 }
                 else
@@ -496,9 +526,9 @@ namespace knight_mares_project
 
         protected override void OnPause()
         {
-            if (!MyService.musicInit)
+            if (!MusicService.musicInit)
             {
-                Intent musicIntent = new Intent(this, typeof(MyService));
+                Intent musicIntent = new Intent(this, typeof(MusicService));
                 StartService(musicIntent);
             }
             SendAction(0);
@@ -513,23 +543,19 @@ namespace knight_mares_project
             if (menu is MenuBuilder) (menu as MenuBuilder).SetOptionalIconsVisible(true);
 
 
-            MenuInflater.Inflate(Resource.Menu.menuDif, menu);
+            MenuInflater.Inflate(Resource.Menu.camera_and_mute_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             base.OnOptionsItemSelected(item);
-            if (item.ItemId == Resource.Id.difficulty)
-            {
-                DifficultyDialog();
-            }
-            else if (item.ItemId == Resource.Id.mute)
+            if (item.ItemId == Resource.Id.mute)
             {
                 if (muted)
                 {
-                    if(!MyService.musicInit)
+                    if(!MusicService.musicInit)
                     {
-                        musicIntent = new Intent(this, typeof(MyService));
+                        musicIntent = new Intent(this, typeof(MusicService));
                         StartService(musicIntent);
                     }
                     else
@@ -540,9 +566,9 @@ namespace knight_mares_project
                 }
                 else
                 {
-                    if (!MyService.musicInit)
+                    if (!MusicService.musicInit)
                     {
-                        musicIntent = new Intent(this, typeof(MyService));
+                        musicIntent = new Intent(this, typeof(MusicService));
                         StartService(musicIntent);
                     }
                     SendAction(0);
@@ -571,17 +597,14 @@ namespace knight_mares_project
             RadioButton rbTour = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTour);
             RadioButton rbTutorial = (RadioButton)difficultyDialog.FindViewById(Resource.Id.rbTutorial);
             RadioGroup rgMode = (RadioGroup)difficultyDialog.FindViewById(Resource.Id.rgGamemode);
-
-            difficultyDialog.Show();
-            btnSubmit.Click += BtnSubmit_Click;
-
-
             sb = (SeekBar)difficultyDialog.FindViewById(Resource.Id.sbDifficulty);
+            tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
+
             sb.Max = 30;
             sb.Min = 3;
             sb.Progress = this.difficulty;
-            tvDifficultyInDialog = (TextView)difficultyDialog.FindViewById(Resource.Id.displayDifficulty);
             tvDifficultyInDialog.Text = "" + this.difficulty;
+
 
             rgMode.CheckedChange += RgMode_CheckedChange;
             switch(typegame)
@@ -608,15 +631,17 @@ namespace knight_mares_project
                     break;
             }
 
+            btnSubmit.Click += BtnSubmit_Click;
             sb.ProgressChanged += Sb_ProgressChanged;
+
+            difficultyDialog.Show();
         }
 
-        private void ChangeMode(ViewStates difVisibility, string buttonText, TypeGame curTypeGame)
+        private void ChangeMode(ViewStates difVisibility, TypeGame curTypeGame)
         {
             sb.Visibility = difVisibility;
             tvDifficultyInDialog.Visibility = difVisibility;
             tvDisplayDifficulty.Visibility = difVisibility;
-            btnStart.Text = buttonText;
             this.typegame = curTypeGame;
         }
 
@@ -625,16 +650,16 @@ namespace knight_mares_project
             switch(e.CheckedId)
             {
                 case Resource.Id.rbPath:
-                    ChangeMode(ViewStates.Visible, "Generate Path", TypeGame.Generate);
+                    ChangeMode(ViewStates.Visible, TypeGame.Generate);
                     break;
                 case Resource.Id.rbTour:
-                    ChangeMode(ViewStates.Invisible, "Knight's Tour", TypeGame.Tour);
+                    ChangeMode(ViewStates.Invisible, TypeGame.Tour);
                     break;
                 case Resource.Id.rbTutorial:
-                    ChangeMode(ViewStates.Invisible, "Tutorial", TypeGame.Tutorial);
+                    ChangeMode(ViewStates.Invisible, TypeGame.Tutorial);
                     break;
                 default:
-                    ChangeMode(ViewStates.Visible, "Generate Path", TypeGame.Generate);
+                    ChangeMode(ViewStates.Visible, TypeGame.Generate);
                     break;
             }
         }
@@ -643,28 +668,31 @@ namespace knight_mares_project
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
             difficultyDialog.Dismiss();
+            if (difficulty < 3)
+                difficulty = 3;
+            else if (difficulty > 30)
+                difficulty = 30;
+
+            if (this.typegame == null)
+                this.typegame = TypeGame.Generate;
+
+            Intent i = new Intent(this, typeof(GameActivity));
+            i.PutExtra("level", difficulty);
+            i.PutExtra("type", (int)this.typegame);
+            StartActivityForResult(i, this.difficulty);
         }
         // seek bar in dialog
         private void Sb_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
         {
             this.difficulty = e.Progress;
             tvDifficultyInDialog.Text = "" + this.difficulty;
-            SetLeaderboardText();
         }
         // start generate
         private void BtnStart_Click(object sender, EventArgs e)
         {
             if (btnStart.Visibility != ViewStates.Gone)
             {
-                if (difficulty < 3)
-                    difficulty = 3;
-                else if (difficulty > 30)
-                    difficulty = 30;
-
-                Intent i = new Intent(this, typeof(GameActivity));
-                i.PutExtra("level", difficulty);
-                i.PutExtra("type", (int)this.typegame);
-                StartActivityForResult(i, this.difficulty);
+                DifficultyDialog();
             }
         }
 
@@ -754,9 +782,9 @@ namespace knight_mares_project
 
         public void PauseMusic()
         {
-            if (!MyService.musicInit)
+            if (!MusicService.musicInit)
             {
-                musicIntent = new Intent(this, typeof(MyService));
+                musicIntent = new Intent(this, typeof(MusicService));
                 StartService(musicIntent);
             }
             SendAction(0);

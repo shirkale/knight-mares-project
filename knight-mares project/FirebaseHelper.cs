@@ -29,7 +29,7 @@ namespace knight_mares_project
             }).ToList();
         }
 
-        public static async Task Add(List<ScoreList> l)
+        public static async Task Add(ScoreList l)
         {
             await client
                 .Child(database)
