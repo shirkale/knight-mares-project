@@ -85,6 +85,7 @@ namespace knight_mares_project
                     if(index == solution.Count)
                     {
                         index++;
+                        solve = false;
                         winEvent.Invoke(this, EventArgs.Empty);
                     }
                 }
@@ -92,6 +93,7 @@ namespace knight_mares_project
             }
             else
             {
+                solve = false;
                 winEvent.Invoke(this, EventArgs.Empty);
             }
         }

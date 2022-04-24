@@ -26,10 +26,7 @@ namespace knight_mares_project
 
         protected Paint p; // paint is used when knight stands on square, hiding the image with visibility
 
-        protected Context context;
-
-
-        public Square(float x, float y, float w, float h, int i, int j, Context context)
+        public Square(float x, float y, float w, float h, int i, int j)
         {
             this.x = x;
             this.y = y;
@@ -40,7 +37,6 @@ namespace knight_mares_project
             this.i = i;
             this.j = j;
 
-            this.context = context;
             visibility = true;
 
             this.p = new Paint(); 
@@ -65,8 +61,6 @@ namespace knight_mares_project
             this.i = s.i;
             this.j = s.j;
 
-
-            this.context = s.context;
             this.visibility = s.visibility;
             this.p = s.p;
         }

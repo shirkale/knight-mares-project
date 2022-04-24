@@ -183,6 +183,7 @@ namespace knight_mares_project
             Intent i = new Intent();
             i.PutExtra("time", this.result);
             SetResult(Result.Ok, i);
+            Board_Knight_s_Tour.solve = false;
             Finish();
         }
 

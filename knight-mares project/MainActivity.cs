@@ -199,7 +199,7 @@ namespace knight_mares_project
 
 
 
-            // initialization of firebase database
+            //initialization of firebase database
 
             //List<int> l = new List<int>();
             //for (int i = 0; i < 30; i++)
@@ -348,32 +348,6 @@ namespace knight_mares_project
                     }
                 }
             }
-            //else
-            //{
-            //    if(!btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
-            //    {
-            //        if (e.Item.ItemId == Resource.Id.itemLeader)
-            //        {
-            //            if (btnStart.Visibility == ViewStates.Visible)
-            //            {
-            //                ShowLeader();
-            //                btnStart.Clickable = false;
-            //                tvWbBig.Clickable = true;
-            //                tvWbSmall.Clickable = true;
-            //            }
-            //        }
-            //        else if (e.Item.ItemId == Resource.Id.itemhome)
-            //        {
-            //            if (btnStart.Visibility == ViewStates.Gone)
-            //            {
-            //                ShowHome(true);
-            //                btnStart.Clickable = true;
-            //                tvWbBig.Clickable = false;
-            //                tvWbSmall.Clickable = true;
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         // get database from firebase
@@ -498,7 +472,7 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
-            if(!muted)
+            if (!muted)
             {
                 if (!MusicService.musicInit)
                 {

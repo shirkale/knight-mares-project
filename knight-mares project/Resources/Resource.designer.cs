@@ -3452,19 +3452,16 @@ namespace knight_mares_project
 			public const int notify_panel_notification_icon_bg = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int skullmenu = 2131165332;
+			public const int snowtreesmol = 2131165332;
 			
 			// aapt resource value: 0x7F070095
-			public const int snowtreesmol = 2131165333;
+			public const int sound = 2131165333;
 			
 			// aapt resource value: 0x7F070096
-			public const int sound = 2131165334;
+			public const int tooltip_frame_dark = 2131165334;
 			
 			// aapt resource value: 0x7F070097
-			public const int tooltip_frame_dark = 2131165335;
-			
-			// aapt resource value: 0x7F070098
-			public const int tooltip_frame_light = 2131165336;
+			public const int tooltip_frame_light = 2131165335;
 			
 			static Drawable()
 			{
@@ -4545,46 +4542,43 @@ namespace knight_mares_project
 			public const int design_text_input_password_icon = 2131427374;
 			
 			// aapt resource value: 0x7F0B002F
-			public const int difficulty_dialog = 2131427375;
+			public const int difficulty_dialog2 = 2131427375;
 			
 			// aapt resource value: 0x7F0B0030
-			public const int difficulty_dialog2 = 2131427376;
+			public const int mtrl_layout_snackbar = 2131427376;
 			
 			// aapt resource value: 0x7F0B0031
-			public const int mtrl_layout_snackbar = 2131427377;
+			public const int mtrl_layout_snackbar_include = 2131427377;
 			
 			// aapt resource value: 0x7F0B0032
-			public const int mtrl_layout_snackbar_include = 2131427378;
+			public const int notification_action = 2131427378;
 			
 			// aapt resource value: 0x7F0B0033
-			public const int notification_action = 2131427379;
+			public const int notification_action_tombstone = 2131427379;
 			
 			// aapt resource value: 0x7F0B0034
-			public const int notification_action_tombstone = 2131427380;
+			public const int notification_template_custom_big = 2131427380;
 			
 			// aapt resource value: 0x7F0B0035
-			public const int notification_template_custom_big = 2131427381;
+			public const int notification_template_icon_group = 2131427381;
 			
 			// aapt resource value: 0x7F0B0036
-			public const int notification_template_icon_group = 2131427382;
+			public const int notification_template_part_chronometer = 2131427382;
 			
 			// aapt resource value: 0x7F0B0037
-			public const int notification_template_part_chronometer = 2131427383;
+			public const int notification_template_part_time = 2131427383;
 			
 			// aapt resource value: 0x7F0B0038
-			public const int notification_template_part_time = 2131427384;
+			public const int select_dialog_item_material = 2131427384;
 			
 			// aapt resource value: 0x7F0B0039
-			public const int select_dialog_item_material = 2131427385;
+			public const int select_dialog_multichoice_material = 2131427385;
 			
 			// aapt resource value: 0x7F0B003A
-			public const int select_dialog_multichoice_material = 2131427386;
+			public const int select_dialog_singlechoice_material = 2131427386;
 			
 			// aapt resource value: 0x7F0B003B
-			public const int select_dialog_singlechoice_material = 2131427387;
-			
-			// aapt resource value: 0x7F0B003C
-			public const int support_simple_spinner_dropdown_item = 2131427388;
+			public const int support_simple_spinner_dropdown_item = 2131427387;
 			
 			static Layout()
 			{

@@ -142,9 +142,6 @@
     <AndroidResource Include="Resources\drawable\snowtreesmol.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\difficulty_dialog.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\menu\camera_and_mute_menu.xml" />
   </ItemGroup>
   <ItemGroup>

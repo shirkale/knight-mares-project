@@ -31,31 +31,34 @@
             android:layout_height="wrap_content"
             android:id="@+id/rbPath"
             android:text="GENERATE PATH"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#171747"
             android:buttonTint="#171747"
+            android:textStyle="bold"
             />
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rbTour"
             android:text="KNIGHT'S TOUR"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#171747"
             android:buttonTint="#171747"
+            android:textStyle="bold"
             />
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rbTutorial"
             android:text="TUTORIAL"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#171747"
             android:checked="true"
             android:buttonTint="#171747"
+            android:textStyle="bold"
             />
 
     </RadioGroup>
@@ -67,6 +70,8 @@
         android:thumbTint="#171747"
         android:orientation="vertical"
         android:progress="50"
+        android:progressTint="#171747"
+        
         />
 
     <TextView

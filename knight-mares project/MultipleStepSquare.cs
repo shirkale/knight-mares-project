@@ -16,7 +16,7 @@ namespace knight_mares_project
     {
         private int steps; // the amount of steps you can step on the square
         private Paint numP; // paint for the number on the multstepsquare
-        public MultipleStepSquare(float x, float y, float w, float h, int i, int j, Context context) : base(x, y, w, h, i, j, context)
+        public MultipleStepSquare(float x, float y, float w, float h, int i, int j) : base(x, y, w, h, i, j)
         {
             this.steps = 0;
             this.numP = new Paint();

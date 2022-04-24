@@ -148,7 +148,7 @@ namespace knight_mares_project
             Invalidate();
         }
 
-        protected void GoOverAll(bool step)
+        protected void GoOverAll(bool step) // for loop that goes over all squares on board, if step is true the squares are stepped on, if not squares are unsteped on
         {
             for (int i = 0; i < this.size; i++)
             {
@@ -165,4 +165,4 @@ namespace knight_mares_project
             }
         }
     }
-}
+    }
