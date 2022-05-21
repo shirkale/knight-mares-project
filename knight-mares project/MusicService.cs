@@ -18,45 +18,33 @@ namespace knight_mares_project
     public class MusicService : Service
     {
         MediaPlayer mp; // media player which plays the music
-        MusicPlayerBroadcastReciever musicPlayerBroadcast; // broadcast reciever, is registered with the media player an plays the music according to the user
-
-        public static bool musicInit = true; // checking if music has been initialized
+        MusicPlayerBroadcastReceiver musicPlayerBroadcast; // broadcast reciever, is registered with the media player an plays the music according to the user
         public override void OnCreate()
         {
             base.OnCreate();
-
-            musicInit = true;
-
-            mp = MediaPlayer.Create(this, Resource.Raw.music);
-            musicPlayerBroadcast = new MusicPlayerBroadcastReciever(mp);
-
-            IntentFilter intentFilter = new IntentFilter("music");
-            RegisterReceiver(musicPlayerBroadcast, intentFilter);
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Intent i = new Intent("music");
-            i.PutExtra("action", 1);
-            SendBroadcast(i);
+            mp = MediaPlayer.Create(this, Resource.Raw.music);
+            musicPlayerBroadcast = new MusicPlayerBroadcastReceiver(mp);
 
+            IntentFilter intentFilter = new IntentFilter("music");
+            RegisterReceiver(musicPlayerBroadcast, intentFilter);
 
-            // thread which stops the service if music is stopped for a long time, user left the app
-            Thread threadStopService = new Thread(RunUntilMusicStopped);
-            threadStopService.Start();
+            if (!MainActivity.muted)
+            {
+                Intent i = new Intent("music");
+                i.PutExtra("action", 1);
+                SendBroadcast(i);
+            }
+
 
             return base.OnStartCommand(intent, flags, startId);
-        }
-
-        private void RunUntilMusicStopped()
-        {
-            while (musicInit) ;
-            StopSelf();
         }
 
         public override void OnDestroy()
         {
             UnregisterReceiver(musicPlayerBroadcast);
-            musicInit = false;
             base.OnDestroy();
         }
 

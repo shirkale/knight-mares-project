@@ -36,15 +36,6 @@ namespace knight_mares_project
                 .PostAsync(l);
         }
 
-        public static async Task<ScoreList> Get(int dif)
-        {
-            var allPersons = await GetAll();
-            await client
-              .Child(database)
-              .OnceAsync<ScoreList>();
-            return allPersons.Where(a => true).FirstOrDefault();
-        }
-
         public static async Task Update(ScoreList state)
         {
             var toUpdatePerson = (await client

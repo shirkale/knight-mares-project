@@ -195,41 +195,17 @@ namespace knight_mares_project
 
         protected override void OnPause()
         {
-            if (!MusicService.musicInit)
-            {
-                Intent musicIntent = new Intent(this, typeof(MusicService));
-                StartService(musicIntent);
-            }
-            SendAction(0);
+            PauseMusic(this, EventArgs.Empty);
             base.OnPause();
         }
+
 
         public void ResumeMusic()
         {
             if (!MainActivity.muted)
-            {
-                if (!MusicService.musicInit)
-                {
-                    Intent musicIntent = new Intent(this, typeof(MusicService));
-                    StartService(musicIntent);
-                }
-                else
-                {
-                    SendAction(1);
-                }
-            }
+                SendAction(1);
             else
-            {
-                if (!MusicService.musicInit)
-                {
-                    Intent musicIntent = new Intent(this, typeof(MusicService));
-                    StartService(musicIntent);
-                }
-                else
-                {
-                    SendAction(0);
-                }
-            }
+                PauseMusic(this, EventArgs.Empty);
         }
 
         public void PauseMusic(object sender, EventArgs eventArgs)

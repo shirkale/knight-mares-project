@@ -75,7 +75,7 @@
     <Compile Include="Knight.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MultipleStepSquare.cs" />
-    <Compile Include="MusicPlayerBroadcastReciever.cs" />
+    <Compile Include="MusicPlayerBroadcastReceiver.cs" />
     <Compile Include="MusicService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

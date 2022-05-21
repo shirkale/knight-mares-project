@@ -8,7 +8,7 @@ namespace knight_mares_project
 {
     public class Board_Tutorial : Board
     {
-        TextView tvMessage;
+        TextView tvMessage; // textview that shows the instructions
         int delay;
         int _delaystarter;
         int DelayStarter
@@ -147,7 +147,7 @@ namespace knight_mares_project
                 if (firstDraw)
                 {
                     GoOverAll(true);
-                    tvMessage.Text = "On these special squares you can step multiple times";
+                    tvMessage.Text = "On these special squares you can step multiple times\n(it's the one with the number 7 on it)";
                     starter = squares[5, 5];
                     starter.StepOn();
                     player.MoveToSquare(starter);

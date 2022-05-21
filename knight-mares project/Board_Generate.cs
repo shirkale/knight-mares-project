@@ -60,8 +60,8 @@ namespace knight_mares_project
                     FinalUnStepOnMultSquares(); // makes all multstepsquares stepable, if 1 turn into ghostsquare
 
                     this.player.MoveToSquare(this.starter);
-                    if(isStarterMms)
-                        this.starter.StepOn();
+                    if (isStarterMms)
+                        (this.starter as MultipleStepSquare).UnstepOnFinal();
                     delayCount = 10;
                 }
             }
@@ -188,9 +188,7 @@ namespace knight_mares_project
                 newY = j + yMove[n];
 
                 if (tried[n] == false && EdgeCheck(newX, newY) && squares[newX, newY].IsWalkedOver())
-                {
                     return squares[newX, newY];
-                }
                 else
                     tried[n] = true;
             }

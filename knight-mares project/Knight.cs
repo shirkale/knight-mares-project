@@ -20,23 +20,23 @@ namespace knight_mares_project
         private Square curSquare; // the square the knight is currently on
 
         private Bitmap bitmap; // picture of the horse
-        private Context context;
         private bool isKnightResized; // knight bitmap needs to be resized once only
 
-        public MediaPlayer mpMove;
+        public MediaPlayer mpMove; // sound of knight movement
 
+        private Context context; // context in order to create music player
 
         public Knight(Square starter, Context context)
         {
             this.curSquare = starter;
-            this.context = context;
 
             this.bitmap = MainActivity.knight;
             this.bitmap = this.bitmap.Copy(Bitmap.Config.Argb8888, true); // turning the bitmap mutable
 
             this.isKnightResized = false;
             this.curSquare.SetImageVisability(false);
-            //this.curSquare.StepOn(MainActivity.flag);
+
+            this.context = context;
 
             mpMove = MediaPlayer.Create(context, Resource.Raw.move2);
             mpMove.SetVolume(1, 1);
@@ -63,6 +63,24 @@ namespace knight_mares_project
             canvas.DrawBitmap(this.bitmap, x, y, null);
 
         }
+
+        public bool CanMakeJump(Square s)
+        {
+            if (s.IsWalkedOver())
+                return false;
+            if (this.curSquare.GetI() + 2 == s.GetI() || this.curSquare.GetI() - 2 == s.GetI())
+            {
+                if (this.curSquare.GetJ() + 1 == s.GetJ() || this.curSquare.GetJ() - 1 == s.GetJ())
+                    return true;
+            }
+            else if (this.curSquare.GetJ() + 2 == s.GetJ() || this.curSquare.GetJ() - 2 == s.GetJ())
+            {
+                if (this.curSquare.GetI() + 1 == s.GetI() || this.curSquare.GetI() - 1 == s.GetI())
+                    return true;
+            }
+            return false;
+        }
+
 
         public void MoveToSquare(Square s)
             // moves the knight to the square inputted

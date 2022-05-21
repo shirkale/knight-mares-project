@@ -62,7 +62,7 @@ namespace knight_mares_project
             if (e.Action == MotionEventActions.Down && !Board_Knight_s_Tour.solve)
             {
                 Square newSquare = FindClickedSquare((int)e.GetX(), (int)e.GetY()); // find the square that the user clicked on
-                if (this.player.GetCurrentSquare().CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
+                if (this.player.CanMakeJump(newSquare)) // if the player can make the jump it will jump and step on the clicked square
                 {
                     this.moves.Push(this.player.GetCurrentSquare()); // pushes move into the stack for later undos
                     this.player.MoveToSquare(newSquare);
@@ -111,9 +111,9 @@ namespace knight_mares_project
             this.starter = (GhostSquare)squares[i, j];
         }
 
-        protected bool EdgeCheck(int newX, int newY) // returns true if the x and y are on the board
+        protected bool EdgeCheck(int newI, int newJ) // returns true if the x and y are on the board
         {
-            return (!(newX < 0 || newX >= this.size || newY < 0 || newY >= this.size));
+            return (!(newI < 0 || newI >= this.size || newJ < 0 || newJ >= this.size));
         }
 
         public void InitializeBoard(Canvas canvas) // initializes board and player on first run, draws all squares
@@ -130,7 +130,7 @@ namespace knight_mares_project
                 {
                     if (this.firstDraw) // if it's the first time, the function will initialize the squares along with drawing them
                     {
-                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, this.context, size);
+                        this.squares[i, j] = new GhostSquare(x, y, w, h, i, j, size);
                     }
 
                     this.squares[i, j].Draw(canvas); // draw cur square

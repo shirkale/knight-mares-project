@@ -76,23 +76,6 @@ namespace knight_mares_project
             return otherX >= this.x && otherX <= this.x + this.w && otherY >= this.y && otherY <= this.y + this.h;
         }
 
-        public bool CanMakeJump(Square s)
-        {
-            if (s.IsWalkedOver())
-                return false;
-            if (this.i + 2 == s.i || this.i - 2 == s.i)
-            {
-                if (this.j + 1 == s.j || this.j - 1 == s.j)
-                    return true;
-            }
-            else if (this.j + 2 == s.j || this.j - 2 == s.j)
-            {
-                if (this.i + 1 == s.i || this.i - 1 == s.i)
-                    return true;
-            }
-            return false;
-        }
-
         internal void SetImageVisability(bool visibility)
         {
             this.visibility = visibility;

@@ -130,6 +130,10 @@ namespace knight_mares_project
             SetContentView(Resource.Layout.activity_main_save);
 
 
+
+            GetDatabase();
+
+
             // initializing widgets
 
             btnStart = (Button)FindViewById(Resource.Id.btnStart);
@@ -198,7 +202,6 @@ namespace knight_mares_project
                 typegame = TypeGame.Generate;
 
 
-
             //initialization of firebase database
 
             //List<int> l = new List<int>();
@@ -209,7 +212,10 @@ namespace knight_mares_project
             //ScoreList s = new ScoreList(l);
             //FirebaseHelper.Add(s);
 
-            GetDatabase();
+            ////clearing isharedpreferences
+            //ISharedPreferencesEditor editor = spHighScore.Edit();
+            //editor.Clear();
+            //editor.Commit();
 
             // click functions
 
@@ -325,6 +331,7 @@ namespace knight_mares_project
         // bottom nav menu
         private void Bottomnv_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
+            SetLeaderboardText();
             if (btnStart.Animation == null || !btnStart.Animation.HasStarted || btnStart.Animation.HasEnded)
             {
                 if (e.Item.ItemId == Resource.Id.itemLeader)
@@ -354,7 +361,7 @@ namespace knight_mares_project
         public async Task<List<int>> GetDatabase()
         {
             List<ScoreList> getScore = await FirebaseHelper.GetAll();
-            if (getScore == null)
+            if (getScore == null || getScore.Count == 0)
                 return null;
             ScoreList s = getScore[0];
             worldRecord = s.listOfScores;
@@ -433,11 +440,13 @@ namespace knight_mares_project
             if (difficulty == 30)
                 level = 29;
 
-            if(worldRecord == null)
-                await GetDatabase();
+            
 
             try
             {
+                if (worldRecord == null)
+                    await GetDatabase();
+
                 s1 = "" + (level - 1) + '\n';
                 if (worldRecord[level - 4] == -1)
                     s1 += "---";
@@ -472,52 +481,52 @@ namespace knight_mares_project
         protected override void OnResume()
         {
             base.OnResume();
-            if (!muted)
+            ResumeMusic();
+            if (worldRecord == null)
             {
-                if (!MusicService.musicInit)
-                {
-                    musicIntent = new Intent(this, typeof(MusicService));
-                    StartService(musicIntent);
-                }
-                else
-                {
-                    SendAction(1);
-                }
-            }
-            else
-            {
-                if (!MusicService.musicInit)
-                {
-                    musicIntent = new Intent(this, typeof(MusicService));
-                    StartService(musicIntent);
-                }
-                else
-                {
-                    SendAction(0);
-                }
+                try { GetDatabase(); }
+                catch { }
             }
         }
 
         protected override void OnPause()
         {
-            if (!MusicService.musicInit)
-            {
-                Intent musicIntent = new Intent(this, typeof(MusicService));
-                StartService(musicIntent);
-            }
-            SendAction(0);
+            PauseMusic(this, EventArgs.Empty);
             base.OnPause();
         }
 
+        public void ResumeMusic()
+        {
+            if (!muted)
+                SendAction(1);
+            else
+                PauseMusic(this, EventArgs.Empty);
+        }
 
+        public void PauseMusic(object sender, EventArgs eventArgs)
+        {
+            SendAction(0);
+        }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+        }
 
         // menu code
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
+            MenuInflater.Inflate(Resource.Menu.camera_and_mute_menu, menu);
+
             if (menu is MenuBuilder) (menu as MenuBuilder).SetOptionalIconsVisible(true);
 
+            IMenuItem menuItem = menu.GetItem(0);
 
-            MenuInflater.Inflate(Resource.Menu.camera_and_mute_menu, menu);
+            if (muted)
+                menuItem.SetIcon(Resource.Drawable.sound);
+            else
+                menuItem.SetIcon(Resource.Drawable.mute);
+
             return base.OnCreateOptionsMenu(menu);
         }
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -527,24 +536,11 @@ namespace knight_mares_project
             {
                 if (muted)
                 {
-                    if(!MusicService.musicInit)
-                    {
-                        musicIntent = new Intent(this, typeof(MusicService));
-                        StartService(musicIntent);
-                    }
-                    else
-                    {
-                        SendAction(1);
-                    }
+                    SendAction(1);
                     item.SetIcon(Resource.Drawable.mute);
                 }
                 else
                 {
-                    if (!MusicService.musicInit)
-                    {
-                        musicIntent = new Intent(this, typeof(MusicService));
-                        StartService(musicIntent);
-                    }
                     SendAction(0);
                     item.SetIcon(Resource.Drawable.sound);
                 }
@@ -653,7 +649,23 @@ namespace knight_mares_project
             Intent i = new Intent(this, typeof(GameActivity));
             i.PutExtra("level", difficulty);
             i.PutExtra("type", (int)this.typegame);
-            StartActivityForResult(i, this.difficulty);
+            switch(this.typegame)
+            {
+                case TypeGame.Generate:
+                    StartActivityForResult(i, this.difficulty);
+                    break;
+                case TypeGame.Tour:
+                    StartActivityForResult(i, 0);
+                    break;
+                case TypeGame.Tutorial:
+                    StartActivityForResult(i, 101);
+                    break;
+                default:
+                    this.difficulty = 3;
+                    StartActivityForResult(i, this.difficulty);
+                    break;
+
+            }
         }
         // seek bar in dialog
         private void Sb_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
@@ -728,6 +740,7 @@ namespace knight_mares_project
                 {
                     str += "\nWorld Record!!!!";
                     worldRecord[requestCode - 3] = time;
+                    SetLeaderboardText();
                     FirebaseHelper.Update(new ScoreList(worldRecord));
                 }
             }
@@ -735,7 +748,8 @@ namespace knight_mares_project
             {
                 str += "\ncouldn't find database";
             }
-                
+
+
             return str;
         }
 
@@ -744,24 +758,6 @@ namespace knight_mares_project
             Intent i = new Intent("music");
             i.PutExtra("action", action);
             SendBroadcast(i);
-        }
-
-        public void ResumeMusic()
-        {
-            if(muted)
-            {
-                SendAction(1);
-            }
-        }
-
-        public void PauseMusic()
-        {
-            if (!MusicService.musicInit)
-            {
-                musicIntent = new Intent(this, typeof(MusicService));
-                StartService(musicIntent);
-            }
-            SendAction(0);
         }
 
 
