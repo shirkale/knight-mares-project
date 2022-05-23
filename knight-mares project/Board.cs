@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace knight_mares_project
 {
@@ -73,7 +74,7 @@ namespace knight_mares_project
                     newSquare.StepOn();
                     Invalidate();
                 }
-                //Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short).Show();
+                //Toast.MakeText(this.context, "" + this.checkWin, ToastLength.Short);
             }
             return false;
         }

@@ -24,7 +24,7 @@ namespace knight_mares_project
 
         public Board_Knight_s_Tour(Context context, int size) : base(context, size)
         {
-            this.checkWin = size * size;
+            this.checkWin = size * size - 1;
             this.solution = new List<Square>();
             index = 0;
         }
@@ -35,6 +35,7 @@ namespace knight_mares_project
             {
                 this.player.GetCurrentSquare().UnstepOn();
                 this.player.MoveToSquare(this.moves.Pop());
+                checkWin++;
             }
         }
 
